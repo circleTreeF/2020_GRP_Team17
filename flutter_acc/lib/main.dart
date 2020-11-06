@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'demo/stream/stream_acc.dart';
+import 'stream/stream_acc.dart';
 
 
 
@@ -45,12 +45,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   void initState(){
-//   accelerometerEvents.listen((AccelerometerEvent event) {
 
-
+    /*if we do not use the stream , we can just add
+accelerometerEvents.listen((AccelerometerEvent event) {});
+here.
+*/
     super.initState();
- // },
- //   );
+
         }
 
 

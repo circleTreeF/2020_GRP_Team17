@@ -1,6 +1,4 @@
-/*
 
- */
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -25,20 +23,20 @@ class StreamAccHome extends StatefulWidget {
   @override
   _StreamAccHomeState createState() => _StreamAccHomeState();
 
-
 }
 
 class _StreamAccHomeState extends State<StreamAccHome>{
     AccSensor acc=new AccSensor();
-    AccelerometerEvent event;
-    StreamSubscription _streamAccSubscription;
+    AccelerometerEvent event;  //use the class or just method?
+   StreamSubscription _streamAccSubscription;
     StreamController<String> _streamAcc;
     StreamSink _streamSink;
-    String _data='0.00';
-@override
-void dispose(){
-    _streamAcc.close();
-    super.dispose();
+    String _data='no data';
+
+  @override
+  void dispose(){
+      _streamAcc.close();
+      super.dispose();
 }
 
   @override
@@ -46,7 +44,7 @@ void dispose(){
     super.initState();
     _accelerometerEvent(event);
     _streamAcc=StreamController.broadcast();
-    _streamAccSubscription=_streamAcc.stream.listen(onData);
+    _streamAccSubscription=_streamAcc.stream.listen(onData);//if the data is changed,call onData
     _streamSink=_streamAcc.sink;
     print('completed');
   }
@@ -60,12 +58,12 @@ void dispose(){
   void onData(String data){
 
   setState((){
-    _data=data;
+    _data=data;   //change the data in stream
   });
     //print("$data");
   }
 
-
+/*decide when to start or pause*/
   void _pauseStream(){
     print('pause');
     _streamAccSubscription.pause();
@@ -75,18 +73,17 @@ void dispose(){
     _streamAccSubscription.resume();
   }
 
-  void _addDataToString() async{
+  void _addDataToStream() async{
 
     String data =await fetchData();
-    //_streamDemo.add(data);
-    _streamSink.add(data);
+    _streamSink.add(data); //add data to stream
   }
 
 
   void  _accelerometerEvent(AccelerometerEvent event) {
     accelerometerEvents.listen((AccelerometerEvent accEvent) {
       this.event = accEvent;
-      _addDataToString();
+      _addDataToStream();  //listen the acc event and add data to stream
     });
   }
 
@@ -99,12 +96,14 @@ void dispose(){
           children: <Widget>[
             StreamBuilder(
             stream: _streamAcc.stream,
-              builder: (context,snapshot)=> Text('${snapshot.data}'),
+              builder: (context,snapshot)=> Text('${snapshot.data}'),//display on the screen
             ),
           Row(
             mainAxisAlignment:MainAxisAlignment.center ,
-            children: <Widget>[
-              FlatButton(
+
+           //maybe this part can control the start and end time
+           children: <Widget>[
+             FlatButton(
                 child: Text('log in'),
                 onPressed: _resumeStream,
               ),
