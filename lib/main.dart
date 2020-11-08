@@ -4,9 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'settings_menu.dart';
 import 'template/globals.dart' as globals;
 
+/**
+ * These code is developed based on the example code of flutter-geolocator from
+ * GitHub: https://github.com/Baseflow/flutter-geolocator/tree/master/geolocator/example/lib
+ */
+
 /// Defines the main theme color.
 final MaterialColor themeMaterialColor =
-createMaterialColor(const Color.fromRGBO(48, 49, 60, 1));
+    createMaterialColor(const Color.fromRGBO(48, 49, 60, 1));
 
 /// Utility method to create a material color from any given
 /// color.
