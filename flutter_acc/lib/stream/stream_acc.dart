@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_acce/acc.dart';
+
 import 'package:sensors/sensors.dart';
 
 class StreamAcc extends StatelessWidget {
@@ -10,7 +10,7 @@ class StreamAcc extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('StreamDemo'),
+        title: Text('Stream_Acc'),
         elevation: 0.0,
       ),
        body: StreamAccHome(),
@@ -26,12 +26,12 @@ class StreamAccHome extends StatefulWidget {
 }
 
 class _StreamAccHomeState extends State<StreamAccHome>{
-    AccSensor acc=new AccSensor();
-    AccelerometerEvent event;  //use the class or just method?
-   StreamSubscription _streamAccSubscription;
+
+    AccelerometerEvent event;
     StreamController<String> _streamAcc;
     StreamSink _streamSink;
-    String _data='no data';
+    List<double> _accelerometerValues;  //create a list to store the acc value
+    List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
 
   @override
   void dispose(){
@@ -42,78 +42,64 @@ class _StreamAccHomeState extends State<StreamAccHome>{
   @override
   void initState(){
     super.initState();
-    _accelerometerEvent(event);
+    _streamSubscriptions.add(_accelerometerEvent(event));//call method to get the current accelerometer and add the data to the stream list
     _streamAcc=StreamController.broadcast();
-    _streamAccSubscription=_streamAcc.stream.listen(onData);//if the data is changed,call onData
-    _streamSink=_streamAcc.sink;
-    print('completed');
+    _streamSink=_streamAcc.sink;//create a sink to store the data in stream.
   }
 
+
+  //fetch data
   Future<String> fetchData() async {
     await Future.delayed(Duration(seconds: 1));
-
-    return acc.accelerometerEvent(event).toString();
+    return this.event.toString();
   }
 
-  void onData(String data){
-
-  setState((){
-    _data=data;   //change the data in stream
-  });
-    //print("$data");
-  }
-
-/*decide when to start or pause*/
-  void _pauseStream(){
-    print('pause');
-    _streamAccSubscription.pause();
-  }
-  void _resumeStream(){
-    print('resume');
-    _streamAccSubscription.resume();
-  }
 
   void _addDataToStream() async{
-
     String data =await fetchData();
     _streamSink.add(data); //add data to stream
   }
 
 
-  void  _accelerometerEvent(AccelerometerEvent event) {
-    accelerometerEvents.listen((AccelerometerEvent accEvent) {
-      this.event = accEvent;
+   _accelerometerEvent(AccelerometerEvent event) {
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      setState((){
+        _accelerometerValues= <double>[event.x, event.y, event.z];
+      });
+      this.event = event;
+      this._accelerometerValues= _accelerometerValues;
       _addDataToStream();  //listen the acc event and add data to stream
     });
+
   }
 
+
+  // display
   @override
   Widget build(BuildContext context) {
+
+    final List<String> accelerometer =
+    _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
+    
     return Container(
       child: Center(
         child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+
           children: <Widget>[
-            StreamBuilder(
+
+           /* StreamBuilder(
+
             stream: _streamAcc.stream,
+
               builder: (context,snapshot)=> Text('${snapshot.data}'),//display on the screen
             ),
-          Row(
-            mainAxisAlignment:MainAxisAlignment.center ,
+           */
 
-           //maybe this part can control the start and end time
-           children: <Widget>[
-             FlatButton(
-                child: Text('log in'),
-                onPressed: _resumeStream,
-              ),
-              FlatButton(
-                child: Text('log out'),
-                onPressed: _pauseStream,
-              ),
 
-            ],
-          ),
+            Text('Accelerometer: $accelerometer'),
+
+
   ]
       ),
     )
