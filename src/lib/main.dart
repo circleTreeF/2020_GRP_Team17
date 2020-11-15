@@ -11,7 +11,7 @@ import 'template/globals.dart' as globals;
 
 /// Defines the main theme color.
 final MaterialColor themeMaterialColor =
-    createMaterialColor(const Color.fromRGBO(48, 49, 60, 1));
+    createMaterialColor(const Color.fromRGBO(0, 0, 0, 1));
 
 /// Utility method to create a material color from any given
 /// color.
@@ -50,30 +50,30 @@ class BaseflowPluginExample extends StatelessWidget {
       title: 'Baseflow ${globals.pluginName}',
       theme: ThemeData(
         accentColor: Colors.white60,
-        backgroundColor: const Color.fromRGBO(48, 49, 60, 0.8),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         buttonTheme: ButtonThemeData(
           buttonColor: themeMaterialColor.shade500,
           disabledColor: themeMaterialColor.withRed(200),
           splashColor: themeMaterialColor.shade50,
           textTheme: ButtonTextTheme.primary,
         ),
-        bottomAppBarColor: const Color.fromRGBO(57, 58, 71, 1),
+        bottomAppBarColor: const Color.fromRGBO(255, 255, 255, 0.6),
         hintColor: themeMaterialColor.shade500,
         primarySwatch: createMaterialColor(const Color.fromRGBO(48, 49, 60, 1)),
         textTheme: TextTheme(
           bodyText1: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 16,
             height: 1.3,
           ),
           bodyText2: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 18,
             height: 1.2,
           ),
           button: TextStyle(color: Colors.white),
           headline1: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 18,
           ),
         ),

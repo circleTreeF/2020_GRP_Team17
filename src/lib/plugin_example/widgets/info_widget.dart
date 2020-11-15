@@ -19,10 +19,10 @@ class InfoWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(title,
-              style: const TextStyle(fontSize: 32.0, color: Colors.white),
+              style: const TextStyle(fontSize: 32.0, color: Colors.black),
               textAlign: TextAlign.center),
           Text(message,
-              style: const TextStyle(fontSize: 16.0, color: Colors.white),
+              style: const TextStyle(fontSize: 16.0, color: Colors.black),
               textAlign: TextAlign.center),
         ],
       ),
