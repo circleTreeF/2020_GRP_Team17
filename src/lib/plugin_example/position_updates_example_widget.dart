@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'package:sensors/sensors.dart';
+
 import 'widgets/info_widget.dart';
 
 /// A widget that will request and display position updates
@@ -13,9 +15,15 @@ class PositionUpdatesExampleWidget extends StatefulWidget {
       _PositionUpdatesExampleWidgetState();
 }
 
-class _PositionUpdatesExampleWidgetState
-    extends State<PositionUpdatesExampleWidget> {
+class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWidget> {
   StreamSubscription<Position> _positionStreamSubscription;
+
+  AccelerometerEvent event;
+  StreamController<String> _streamAcc;
+  StreamSink _streamSink;
+  List<double> _accelerometerValues;  //create a list to store the acc value
+  List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
+
   final _positions = <Position>[];
 
   @override
@@ -79,7 +87,12 @@ class _PositionUpdatesExampleWidgetState
       ),
     ];
 
+    /**
+     * Page rendering
+     */
     listItems.addAll(_positions.map((position) {
+      final List<String> accelerometer =
+      _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
       return ListTile(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +100,11 @@ class _PositionUpdatesExampleWidgetState
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Text(
-              '${position.latitude}, ${position.longitude}',
+              'GPS:   ${position.latitude}, ${position.longitude}',
+              style: const TextStyle(fontSize: 16.0, color: Colors.black),
+            ),
+            Text(
+              'Accelerometer:   $accelerometer',
               style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
             Text(
@@ -134,13 +151,47 @@ class _PositionUpdatesExampleWidgetState
     });
   }
 
+  _accelerometerEvent(AccelerometerEvent event) {
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      setState((){
+        _accelerometerValues= <double>[event.x, event.y, event.z];
+      });
+      this.event = event;
+      this._accelerometerValues= _accelerometerValues;
+      _addDataToStream();  //listen the acc event and add data to stream
+    });
+  }
+
+
+  void _addDataToStream() async{
+    String data =await fetchData();
+    _streamSink.add(data); //add data to stream
+  }
+
+  //fetch data
+  Future<String> fetchData() async {
+    await Future.delayed(Duration(seconds: 1));
+    return this.event.toString();
+  }
+
+
+  @override
+  void initState(){
+    print("initState Now");
+    super.initState();
+    _streamSubscriptions.add(_accelerometerEvent(event));//call method to get the current accelerometer and add the data to the stream list
+    _streamAcc=StreamController.broadcast();
+    _streamSink=_streamAcc.sink;//create a sink to store the data in stream.
+  }
+
+
   @override
   void dispose() {
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription.cancel();
       _positionStreamSubscription = null;
     }
-
+    _streamAcc.close();
     super.dispose();
   }
 }
