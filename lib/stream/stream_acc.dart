@@ -61,7 +61,7 @@ class _StreamAccHomeState extends State<StreamAccHome>{
   }
 
 
-   _accelerometerEvent(AccelerometerEvent event) {
+    AccelerometerEvent _accelerometerEvent(AccelerometerEvent event) {
     accelerometerEvents.listen((AccelerometerEvent event) {
       setState((){
         _accelerometerValues= <double>[event.x, event.y, event.z];
@@ -70,7 +70,7 @@ class _StreamAccHomeState extends State<StreamAccHome>{
       this._accelerometerValues= _accelerometerValues;
       _addDataToStream();  //listen the acc event and add data to stream
     });
-
+return event;
   }
 
 
