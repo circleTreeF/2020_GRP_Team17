@@ -67,84 +67,55 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
           return _buildListView();
         });
   }
-
   Widget _buildListView() {
-    final listItems = <Widget>[
-      ListTile(
-        title: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RaisedButton(
-              child: _buildButtonText(),
-              color: _determineButtonColor(),
-              padding: const EdgeInsets.all(8.0),
-              onPressed: _toggleListening,
+    var box = new SizedBox(
+      child: new Column(
+        children: [
+          RaisedButton(
+            child: _buildButtonText(),
+            color: _determineButtonColor(),
+            padding: const EdgeInsets.all(8.0),
+            onPressed: _toggleListening,
+          ),
+          ListTile(
+            title: new Text(  _cardTextGPS() ,
+                style: new TextStyle(fontWeight: FontWeight.w500)),
+            subtitle: new Text(_cardTextAcc() ),
+            leading: new Icon(
+              Icons.restaurant_menu,
+              color: Colors.blue[500],
             ),
-            RaisedButton(
-              child: Text('Clear'),
-              padding: const EdgeInsets.all(8.0),
-              onPressed: () => setState(_positions.clear),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
+    );
 
-
-    ];
-
-
-
-    /*
-    listItems.addAll(_positions.map((position) {
-
-      return ListTile(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Text(
-              'GPS:   ${position.latitude}, ${position.longitude}',
-              style: const TextStyle(fontSize: 16.0, color: Colors.black),
-            ),
-
-            Text(
-              position.timestamp.toString(),
-              style: const TextStyle(fontSize: 12.0, color: Colors.black),
-            ),
-          ],
-        ),
-      );
-    }));*/
-
-
-
-    /*listItems.addAll(_accelerometerEvent.map((acc) {
-
-      return ListTile(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Text(
-              'Acc:   ${acc.x}, ${acc.y}, ${acc.z}',
-              style: const TextStyle(fontSize: 16.0, color: Colors.black),
-            ),
-
-
-          ],
-        ),
-      );
-    }));
-
-
-    return ListView(
-      children: listItems,
+    return Card(
+      child: box,
     );
   }
-  */
+    // AccelerometerEvent acc = _accelerometerEvent.last;
+    // Position pos =  _positions.last;
+
+
+  String  _cardTextGPS() {
+    if(position != null && event != null){
+      return 'GPS:  ${ position.latitude}, ${ position.longitude}';
+    } else {
+      return 'GPS: wait';
+    }
+  }
+
+  String  _cardTextAcc() {
+    if(position != null && event != null){
+      return 'Acc:   ${event.x}, ${event.y}, ${event.z}';
+    } else {
+      return 'Acc: wait';
+    }
+  }
+
+
+
 
 
   bool _isListening() => !(_positionStreamSubscription == null ||
