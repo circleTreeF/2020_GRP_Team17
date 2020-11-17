@@ -25,7 +25,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   <StreamSubscription<dynamic>>[];
   final _positions = <Position>[];
 
-  final _accelerometerEvent =< AccelerometerEvent>[];
+  final _accelerometerEvent =< AccelerometerEvent>[];// store the accelerometer data .
 
 
   @override
@@ -93,21 +93,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
     ];
 
-   /* return Container(
-        child: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
 
-                children: <Widget>[
 
-                  Text('Accelerometer: ${event.x},${event.y},${event.z}'),
-                  Text('GPS:  ${position.altitude}, ${position.longitude}'),
-
-                ]
-
-            )
-        )
-    );*/
     /*
     listItems.addAll(_positions.map((position) {
 
@@ -132,6 +119,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     }));*/
 
 
+
     /*listItems.addAll(_accelerometerEvent.map((acc) {
 
       return ListTile(
@@ -150,12 +138,14 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
         ),
       );
     }));
-*/
+
 
     return ListView(
       children: listItems,
     );
   }
+  */
+
 
   bool _isListening() => !(_positionStreamSubscription == null ||
       _positionStreamSubscription.isPaused);
