@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:sensors/sensors.dart';
 
 import 'widgets/info_widget.dart';
+
+import 'package:csv/csv.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'package:permission/permission.dart';
 
 /// A widget that will request and display position updates
 /// using the device's location services.
@@ -26,7 +34,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   final _positions = <Position>[];
 
   final _accelerometerEvent =< AccelerometerEvent>[];// store the accelerometer data .
-
+  final _accelerometerEvent2 = <List<double>>[];
 
   @override
   Widget build(BuildContext context) {
@@ -67,84 +75,55 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
           return _buildListView();
         });
   }
-
   Widget _buildListView() {
-    final listItems = <Widget>[
-      ListTile(
-        title: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RaisedButton(
-              child: _buildButtonText(),
-              color: _determineButtonColor(),
-              padding: const EdgeInsets.all(8.0),
-              onPressed: _toggleListening,
+    var box = new SizedBox(
+      child: new Column(
+        children: [
+          RaisedButton(
+            child: _buildButtonText(),
+            color: _determineButtonColor(),
+            padding: const EdgeInsets.all(8.0),
+            onPressed: _toggleListening,
+          ),
+          ListTile(
+            title: new Text(  _cardTextGPS() ,
+                style: new TextStyle(fontWeight: FontWeight.w500)),
+            subtitle: new Text(_cardTextAcc() ),
+            leading: new Icon(
+              Icons.restaurant_menu,
+              color: Colors.blue[500],
             ),
-            RaisedButton(
-              child: Text('Clear'),
-              padding: const EdgeInsets.all(8.0),
-              onPressed: () => setState(_positions.clear),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
+    );
 
-
-    ];
-
-
-
-    /*
-    listItems.addAll(_positions.map((position) {
-
-      return ListTile(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Text(
-              'GPS:   ${position.latitude}, ${position.longitude}',
-              style: const TextStyle(fontSize: 16.0, color: Colors.black),
-            ),
-
-            Text(
-              position.timestamp.toString(),
-              style: const TextStyle(fontSize: 12.0, color: Colors.black),
-            ),
-          ],
-        ),
-      );
-    }));*/
-
-
-
-    /*listItems.addAll(_accelerometerEvent.map((acc) {
-
-      return ListTile(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Text(
-              'Acc:   ${acc.x}, ${acc.y}, ${acc.z}',
-              style: const TextStyle(fontSize: 16.0, color: Colors.black),
-            ),
-
-
-          ],
-        ),
-      );
-    }));
-
-
-    return ListView(
-      children: listItems,
+    return Card(
+      child: box,
     );
   }
-  */
+  // AccelerometerEvent acc = _accelerometerEvent.last;
+  // Position pos =  _positions.last;
+
+
+  String  _cardTextGPS() {
+    if(position != null && event != null){
+      return 'GPS:  ${ position.latitude}, ${ position.longitude}';
+    } else {
+      return 'GPS: wait';
+    }
+  }
+
+  String  _cardTextAcc() {
+    if(position != null && event != null){
+      return 'Acc:   ${event.x}, ${event.y}, ${event.z}';
+    } else {
+      return 'Acc: wait';
+    }
+  }
+
+
+
 
 
   bool _isListening() => !(_positionStreamSubscription == null ||
@@ -177,13 +156,17 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       setState(() {
         this.event=event;
         _accelerometerEvent.add(event);
-
+        _accelerometerEvent2.add([event.x, event.y, event.z]);
+        //print(event.x);
+        //_storeListToCSV(_accelerometerEvent);
+        //print(_accelerometerEvent[10]);
       });
     }));
 
     setState(() {
       if (_positionStreamSubscription.isPaused) {
         _positionStreamSubscription.resume();
+        print(_accelerometerEvent.length);
       } else {
         _positionStreamSubscription.pause();
       }
@@ -194,15 +177,54 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
 
+  //find out the path of .csv
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    //print("1");
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    print(path);
+    return File('$path/StoreAcc.txt');
+  }
 
 
+  //store list to CSV
+  Future<File> _storeListToCSV(List _targetList) async {
+    String csv = const ListToCsvConverter().convert(_targetList);
+    //print(csv);
+    final file = await _localFile;
+    return file.writeAsString(csv);
+  }
 
+  // Future<File> _storeListToTXT(String _targetString) async {
+  //   //print(csv);
+  //   final file = await _localFile;
+  //   return file.writeAsString(_targetString);
+  // }
+
+
+  //read csv file to list
+  Future<List<dynamic>> readFromFile() async {
+    try {
+      final file = await _localFile;
+      String contents = await file.readAsString();
+      List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter().convert(contents);
+      print(rowsAsListOfValues);
+      //print(rowsAsListOfValues.length);
+      return rowsAsListOfValues;
+    } catch (e) {
+      // If encountering an error, return 0.
+      return null;
+    }
+  }
 
   @override
   void initState(){
     print("initState Now");
     super.initState();
-
   }
 
 
@@ -215,6 +237,10 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
       subscription.cancel();
     }
+    _storeListToCSV(_accelerometerEvent2);
+    //print(_accelerometerEvent2.length);
+    readFromFile();
+    print("terminates");
     super.dispose();
   }
 }
