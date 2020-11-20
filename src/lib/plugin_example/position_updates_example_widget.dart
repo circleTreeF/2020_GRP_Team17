@@ -19,6 +19,7 @@ class PositionUpdatesExampleWidget extends StatefulWidget {
 class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWidget> {
 
   StreamSubscription<Position> _positionStreamSubscription;
+  //the array list for the updating streaming location value
   AccelerometerEvent event;
   Position position;
   List<StreamSubscription<dynamic>> _streamSubscriptions =
@@ -158,10 +159,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       } else {
         _positionStreamSubscription.pause();
       }
-
-
     });
-
   }
 
 

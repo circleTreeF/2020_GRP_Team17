@@ -7,11 +7,14 @@ import 'template/globals.dart' as globals;
 /**
  * These code is developed based on the example code of flutter-geolocator from
  * GitHub: https://github.com/Baseflow/flutter-geolocator/tree/master/geolocator/example/lib
+ *
+ * @author: Yizirui FANG ID: 20127091 Email: scyyf1@nottingham.edu.cn
+ * @version: 1.0.0
  */
 
 /// Defines the main theme color.
 final MaterialColor themeMaterialColor =
-    createMaterialColor(const Color.fromRGBO(0, 0, 0, 1));
+    createMaterialColor(const Color.fromRGBO(255, 255, 255, 1));
 
 /// Utility method to create a material color from any given
 /// color.
@@ -33,7 +36,6 @@ MaterialColor createMaterialColor(Color color) {
       1,
     );
   }
-  ;
 
   return MaterialColor(color.value, swatch);
 }
