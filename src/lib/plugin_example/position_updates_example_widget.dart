@@ -34,7 +34,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   final _positions = <Position>[];
 
   final _accelerometerEvent =< AccelerometerEvent>[];// store the accelerometer data .
-  final _accelerometerEvent2 = <List<double>>[];
+  final _storeList = <List<double>>[];
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +156,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       setState(() {
         this.event=event;
         _accelerometerEvent.add(event);
-        _accelerometerEvent2.add([event.x, event.y, event.z]);
+        _storeList.add([currentMillSecond(), position.longitude, position.latitude, event.x, event.y, event.z]);
         //print(event.x);
         //_storeListToCSV(_accelerometerEvent);
         //print(_accelerometerEvent[10]);
@@ -176,6 +176,9 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
   }
 
+  double currentMillSecond(){
+    return new DateTime.now().millisecondsSinceEpoch.toDouble();
+  }
 
   //find out the path of .csv
   Future<String> get _localPath async {
@@ -237,7 +240,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
       subscription.cancel();
     }
-    _storeListToCSV(_accelerometerEvent2);
+    _storeListToCSV(_storeList);
     //print(_accelerometerEvent2.length);
     readFromFile();
     print("terminates");
