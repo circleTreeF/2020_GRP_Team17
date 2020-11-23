@@ -11,7 +11,7 @@ import 'template/globals.dart' as globals;
 
 /// Defines the main theme color.
 final MaterialColor themeMaterialColor =
-    createMaterialColor(const Color.fromRGBO(0, 0, 0, 1));
+    createMaterialColor(const Color.fromRGBO(255, 255, 255, 1));
 
 /// Utility method to create a material color from any given
 /// color.
