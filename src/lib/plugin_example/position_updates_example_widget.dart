@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -24,21 +23,23 @@ class PositionUpdatesExampleWidget extends StatefulWidget {
       _PositionUpdatesExampleWidgetState();
 }
 
-class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWidget> {
-
+class _PositionUpdatesExampleWidgetState
+    extends State<PositionUpdatesExampleWidget> {
+  // the list of collected position of this users in order
   StreamSubscription<Position> _positionStreamSubscription;
   AccelerometerEvent event;
   Position position;
-  List<StreamSubscription<dynamic>> _streamSubscriptions =
-  <StreamSubscription<dynamic>>[];//use to store the events and cancel or pause the events.
+  List<StreamSubscription<dynamic>> _streamSubscriptions = <
+      StreamSubscription<
+          dynamic>>[]; //use to store the events and cancel or pause the events.
   final _positions = <Position>[];
 
-  final _accelerometerEvent =< AccelerometerEvent>[];// store the accelerometer data .
+  final _accelerometerEvent =
+      <AccelerometerEvent>[]; // store the accelerometer data .
   final _storeList = <List<double>>[];
 
   @override
   Widget build(BuildContext context) {
-
     /// main
     return FutureBuilder<LocationPermission>(
         future: Geolocator.checkPermission(),
@@ -89,9 +90,9 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
             onPressed: _toggleListening,
           ),
           ListTile(
-            title: new Text(  _cardTextGPS() ,
+            title: new Text(_cardTextGPS(),
                 style: new TextStyle(fontWeight: FontWeight.w500)),
-            subtitle: new Text(_cardTextAcc() ),
+            subtitle: new Text(_cardTextAcc()),
             leading: new Icon(
               Icons.restaurant_menu,
               color: Colors.blue[500],
@@ -105,14 +106,15 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       child: box,
     );
   }
+
   // AccelerometerEvent acc = _accelerometerEvent.last;
   // Position pos =  _positions.last;
 
   /// Returns current GPS data
   /// author: Shihui QUE
-  String  _cardTextGPS() {
-    if(position != null && event != null){
-      return 'GPS:  ${ position.latitude}, ${ position.longitude}';
+  String _cardTextGPS() {
+    if (position != null && event != null) {
+      return 'GPS:  ${position.latitude}, ${position.longitude}';
     } else {
       return 'GPS: wait';
     }
@@ -120,17 +122,13 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
   /// Returns current accelerometer data
   /// author: Shihui QUE
-  String  _cardTextAcc() {
-    if(position != null && event != null){
+  String _cardTextAcc() {
+    if (position != null && event != null) {
       return 'Acc:   ${event.x}, ${event.y}, ${event.z}';
     } else {
       return 'Acc: wait';
     }
   }
-
-
-
-
 
   bool _isListening() => !(_positionStreamSubscription == null ||
       _positionStreamSubscription.isPaused);
@@ -151,20 +149,26 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       _positionStreamSubscription = positionStream.handleError((error) {
         _positionStreamSubscription.cancel();
         _positionStreamSubscription = null;
-      }).listen((position) => setState((){
-        _positions.add(position);
-        this.position=position;
-      }));
+      }).listen((position) => setState(() {
+            _positions.add(position);
+            this.position = position;
+          }));
       _positionStreamSubscription.pause();
     }
-
 
     _streamSubscriptions
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
       setState(() {
-        this.event=event;
-        _accelerometerEvent.add(event);//
-        _storeList.add([currentMillSecond(), position.longitude, position.latitude, event.x, event.y, event.z]); //each time new piece of data generated, added to _storeList
+        this.event = event;
+        _accelerometerEvent.add(event); //
+        _storeList.add([
+          currentMillSecond(),
+          position.longitude,
+          position.latitude,
+          event.x,
+          event.y,
+          event.z
+        ]); //each time new piece of data generated, added to _storeList
       });
     }));
 
@@ -175,14 +179,11 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       } else {
         _positionStreamSubscription.pause();
       }
-
-
     });
-
   }
 
   /// gets current time
-  double currentMillSecond(){
+  double currentMillSecond() {
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
 
@@ -199,7 +200,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     print(path);
     return File('$path/StoreAcc.csv');
   }
-  
+
   ///store list to CSV
   Future<File> _storeListToCSV(List _targetList) async {
     String csv = const ListToCsvConverter().convert(_targetList);
@@ -214,13 +215,13 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   //   return file.writeAsString(_targetString);
   // }
 
-
   ///read csv file to list
   Future<List<dynamic>> readFromFile() async {
     try {
       final file = await _localFile;
       String contents = await file.readAsString();
-      List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter().convert(contents);
+      List<List<dynamic>> rowsAsListOfValues =
+          const CsvToListConverter().convert(contents);
       print(rowsAsListOfValues);
       //print(rowsAsListOfValues.length);
       return rowsAsListOfValues;
@@ -231,12 +232,12 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
   @override
-  void initState(){
+  void initState() {
     print("initState Now");
     super.initState();
   }
 
-
+  /// This is to terminate the operations of logging the GPS information
   @override
   void dispose() {
     if (_positionStreamSubscription != null) {
@@ -246,7 +247,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
       subscription.cancel();
     }
-    _storeListToCSV(_storeList); // convert double list to csv stream and store in csv file
+    _storeListToCSV(
+        _storeList); // convert double list to csv stream and store in csv file
     //print(_accelerometerEvent2.length);
     readFromFile(); // test sentence, read form csv file
     print("terminates");
