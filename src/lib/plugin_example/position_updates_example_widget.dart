@@ -30,7 +30,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   AccelerometerEvent event;
   Position position;
   List<StreamSubscription<dynamic>> _streamSubscriptions =
-  <StreamSubscription<dynamic>>[];
+  <StreamSubscription<dynamic>>[];//use to store the events and cancel or pause the events.
   final _positions = <Position>[];
 
   final _accelerometerEvent =< AccelerometerEvent>[];// store the accelerometer data .
@@ -163,11 +163,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
       setState(() {
         this.event=event;
-        _accelerometerEvent.add(event);
+        _accelerometerEvent.add(event);//
         _storeList.add([currentMillSecond(), position.longitude, position.latitude, event.x, event.y, event.z]); //each time new piece of data generated, added to _storeList
-        //print(event.x);
-        //_storeListToCSV(_accelerometerEvent);
-        //print(_accelerometerEvent[10]);
       });
     }));
 
