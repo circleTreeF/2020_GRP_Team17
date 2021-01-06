@@ -156,7 +156,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       setState(() {
         this.event=event;
         _accelerometerEvent.add(event);
-        _storeList.add([currentMillSecond(), position.longitude, position.latitude, event.x, event.y, event.z]);
+        _storeList.add([currentMillSecond(), position.longitude, position.latitude, event.x, event.y, event.z]); //each time new piece of data generated, added to _storeList
         //print(event.x);
         //_storeListToCSV(_accelerometerEvent);
         //print(_accelerometerEvent[10]);
@@ -176,25 +176,26 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
   }
 
+  /// gets current time
   double currentMillSecond(){
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
 
-  //find out the path of .csv
+  ///find out the path of .csv
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     //print("1");
     return directory.path;
   }
 
+  ///get .csv file as file var
   Future<File> get _localFile async {
     final path = await _localPath;
     print(path);
     return File('$path/StoreAcc.csv');
   }
-
-
-  //store list to CSV
+  
+  ///store list to CSV
   Future<File> _storeListToCSV(List _targetList) async {
     String csv = const ListToCsvConverter().convert(_targetList);
     //print(csv);
@@ -209,7 +210,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   // }
 
 
-  //read csv file to list
+  ///read csv file to list
   Future<List<dynamic>> readFromFile() async {
     try {
       final file = await _localFile;
@@ -240,9 +241,9 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
       subscription.cancel();
     }
-    _storeListToCSV(_storeList);
+    _storeListToCSV(_storeList); // convert double list to csv stream and store in csv file
     //print(_accelerometerEvent2.length);
-    readFromFile();
+    readFromFile(); // test sentence, read form csv file
     print("terminates");
     super.dispose();
   }
