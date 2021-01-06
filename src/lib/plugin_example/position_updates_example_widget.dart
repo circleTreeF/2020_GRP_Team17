@@ -39,7 +39,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   @override
   Widget build(BuildContext context) {
 
-
+    /// main
     return FutureBuilder<LocationPermission>(
         future: Geolocator.checkPermission(),
         builder: (context, snapshot) {
@@ -75,6 +75,9 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
           return _buildListView();
         });
   }
+
+  /// Top control button and information display module
+  /// author: Shihui QUE
   Widget _buildListView() {
     var box = new SizedBox(
       child: new Column(
@@ -105,7 +108,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   // AccelerometerEvent acc = _accelerometerEvent.last;
   // Position pos =  _positions.last;
 
-
+  /// Returns current GPS data
+  /// author: Shihui QUE
   String  _cardTextGPS() {
     if(position != null && event != null){
       return 'GPS:  ${ position.latitude}, ${ position.longitude}';
@@ -114,6 +118,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     }
   }
 
+  /// Returns current accelerometer data
+  /// author: Shihui QUE
   String  _cardTextAcc() {
     if(position != null && event != null){
       return 'Acc:   ${event.x}, ${event.y}, ${event.z}';
@@ -129,6 +135,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   bool _isListening() => !(_positionStreamSubscription == null ||
       _positionStreamSubscription.isPaused);
 
+  /// Change color and text of button
   Widget _buildButtonText() {
     return Text(_isListening() ? 'Stop listening' : 'Start listening');
   }
@@ -137,6 +144,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     return _isListening() ? Colors.red : Colors.green;
   }
 
+  /// Switch of listening
   void _toggleListening() {
     if (_positionStreamSubscription == null) {
       final positionStream = Geolocator.getPositionStream();
