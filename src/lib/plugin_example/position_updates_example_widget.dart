@@ -4,21 +4,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:my_road/plugin_example/Score.dart';
 import 'package:sensors/sensors.dart';
 
 import 'widgets/info_widget.dart';
 
 import 'package:csv/csv.dart';
-import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:permission/permission.dart';
 
 /// A widget that will request and display position updates
 /// using the device's location services.
 class PositionUpdatesExampleWidget extends StatefulWidget {
+
   @override
   _PositionUpdatesExampleWidgetState createState() =>
       _PositionUpdatesExampleWidgetState();
@@ -29,13 +26,15 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   StreamSubscription<Position> _positionStreamSubscription;
   AccelerometerEvent event;
   Position position;
-  List<StreamSubscription<dynamic>> _streamSubscriptions =
-  <StreamSubscription<dynamic>>[];//use to store the events and cancel or pause the events.
+  StreamSubscription _streamSubscriptions; //use to store the events and cancel or pause the events.
   final _positions = <Position>[];
+  final _accelerometerEvent = <AccelerometerEvent>[
+  ]; // store the accelerometer data .
+  final  _storeAccZFirstFilterList = <double> [];
 
-  final _accelerometerEvent =< AccelerometerEvent>[];// store the accelerometer data .
+  get storeAccZFirstFilterList => _storeAccZFirstFilterList;
   final _storeList = <List<double>>[];
-
+int _accZ;
   @override
   Widget build(BuildContext context) {
 
@@ -58,9 +57,11 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
                         'request permissions before continuing'),
                 RaisedButton(
                   child: const Text('Request permission'),
-                  onPressed: () => Geolocator.requestPermission()
-                      .then((status) => setState(_positions.clear)),
+                  onPressed: () =>
+                      Geolocator.requestPermission()
+                          .then((status) => setState(_positions.clear)),
                 ),
+
               ],
             );
           }
@@ -78,25 +79,88 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
   /// Top control button and information display module
   /// author: Shihui QUE
+
   Widget _buildListView() {
     var box = new SizedBox(
       child: new Column(
         children: [
           RaisedButton(
-            child: _buildButtonText(),
-            color: _determineButtonColor(),
+            child: _buildButtonText0(),
+            color: _determineButtonColor0(),
             padding: const EdgeInsets.all(8.0),
-            onPressed: _toggleListening,
+            onPressed: _toggleListeningGPS,
           ),
           ListTile(
-            title: new Text(  _cardTextGPS() ,
+            title: new Text(_cardTextGPS(),
                 style: new TextStyle(fontWeight: FontWeight.w500)),
-            subtitle: new Text(_cardTextAcc() ),
+            // subtitle: new Text(_cardTextAcc() ),
             leading: new Icon(
               Icons.restaurant_menu,
               color: Colors.blue[500],
             ),
-          )
+          ),
+          RaisedButton(
+            child: _buildButtonText1(),
+            color: _determineButtonColor1(),
+            padding: const EdgeInsets.all(8.0),
+            onPressed: _toggleListeningAcc,
+          ),
+          RaisedButton(
+            child: _buildButtonText2(),
+            color: _determineButtonColor2(),
+            padding: const EdgeInsets.all(8.0),
+            onPressed: _pauseStream,
+          ),
+          ListTile(
+            title: new Text(_cardTextAccX(),
+                style: new TextStyle(fontWeight: FontWeight.w500)),
+            leading: new Icon(
+              Icons.restaurant_menu,
+              color: Colors.blue[500],
+            ),
+          ),
+          ListTile(
+            title: new Text(_cardTextAccY(),
+                style: new TextStyle(fontWeight: FontWeight.w500)),
+            leading: new Icon(
+              Icons.restaurant_menu,
+              color: Colors.blue[500],
+            ),
+          ),
+          ListTile(
+            title: new Text(_cardTextAccZ(),
+                style: new TextStyle(fontWeight: FontWeight.w500)),
+            leading: new Icon(
+              Icons.restaurant_menu,
+              color: Colors.blue[500],
+            ),
+          ),
+          RaisedButton(
+            child: _buildButtonText3(),
+            color: _determineButtonColor3(),
+            padding: const EdgeInsets.all(8.0),
+            onPressed: _readAccZ,
+          ),
+          ListTile(
+            title: new Text(_cardText(),
+                style: new TextStyle(fontWeight: FontWeight.w500)),
+            leading: new Icon(
+              Icons.restaurant_menu,
+              color: Colors.blue[500],
+            ),
+          ),
+          RaisedButton(
+            child: Text('Score'),
+            color: _determineButtonColor2(),
+            padding: const EdgeInsets.all(8.0),
+            onPressed: () {// route for the scorePage.
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context)=>Score(list:  _storeAccZFirstFilterList)
+                  )
+              );
+            },
+          ),
         ],
       ),
     );
@@ -105,13 +169,17 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       child: box,
     );
   }
-  // AccelerometerEvent acc = _accelerometerEvent.last;
-  // Position pos =  _positions.last;
+
+// pause the acc stream subscription
+  void _pauseStream() {
+    _streamSubscriptions.pause();
+  }
+
 
   /// Returns current GPS data
   /// author: Shihui QUE
-  String  _cardTextGPS() {
-    if(position != null && event != null){
+  String _cardTextGPS() {
+    if (position != null) {
       return 'GPS:  ${ position.latitude}, ${ position.longitude}';
     } else {
       return 'GPS: wait';
@@ -120,76 +188,140 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
   /// Returns current accelerometer data
   /// author: Shihui QUE
-  String  _cardTextAcc() {
-    if(position != null && event != null){
-      return 'Acc:   ${event.x}, ${event.y}, ${event.z}';
+  String _cardTextAccX() {
+    if (event != null) {
+      return 'Acc_X:   ${event.x.roundToDouble()}';
     } else {
       return 'Acc: wait';
     }
   }
 
 
-
-
-
-  bool _isListening() => !(_positionStreamSubscription == null ||
-      _positionStreamSubscription.isPaused);
-
-  /// Change color and text of button
-  Widget _buildButtonText() {
-    return Text(_isListening() ? 'Stop listening' : 'Start listening');
+  String _cardTextAccY() {
+    if (event != null) {
+      return 'Acc_Y:    ${event.y.roundToDouble()}';
+    } else {
+      return 'Acc: wait';
+    }
   }
 
-  Color _determineButtonColor() {
-    return _isListening() ? Colors.red : Colors.green;
+  String _cardTextAccZ() {
+    if (event != null) {
+      return 'Acc_Z:    ${event.z.roundToDouble()}';
+    } else {
+      return 'Acc: wait';
+    }
+  }
+
+  String _cardText() {
+
+      return 'AccZ : $_accZ';
+
+  }
+
+
+  bool _isListeningPosition() =>
+      !(_positionStreamSubscription == null ||
+          _positionStreamSubscription.isPaused);
+
+  /// Change color and text of button
+  Widget _buildButtonText0() {
+    return Text(_isListeningPosition()
+        ? 'Stop listening Position'
+        : 'Start listening Position');
+  }
+
+  Widget _buildButtonText1() {
+    return Text('Start listening Position');
+  }
+
+  Widget _buildButtonText2() {
+    return Text('Stop listening Position');
+  }
+
+  Widget _buildButtonText3() {
+    return Text('read file');
+  }
+
+
+  Color _determineButtonColor0() {
+    return _isListeningPosition() ? Colors.red : Colors.green;
+  }
+
+
+  Color _determineButtonColor1() {
+    return Colors.green;
+  }
+
+
+  Color _determineButtonColor2() {
+    return Colors.red;
+  }
+
+  Color _determineButtonColor3() {
+    return Colors.amber;
   }
 
   /// Switch of listening
-  void _toggleListening() {
+  void _toggleListeningGPS() {
     if (_positionStreamSubscription == null) {
       final positionStream = Geolocator.getPositionStream();
       _positionStreamSubscription = positionStream.handleError((error) {
         _positionStreamSubscription.cancel();
         _positionStreamSubscription = null;
-      }).listen((position) => setState((){
-        _positions.add(position);
-        this.position=position;
-      }));
+      }).listen((position) =>
+          setState(() {
+            _positions.add(position);
+            this.position = position;
+          }));
       _positionStreamSubscription.pause();
     }
-
-
-    _streamSubscriptions
-        .add(accelerometerEvents.listen((AccelerometerEvent event) {
-      setState(() {
-        this.event=event;
-        _accelerometerEvent.add(event);//
-        _storeList.add([currentMillSecond(), position.longitude, position.latitude, event.x, event.y, event.z]); //each time new piece of data generated, added to _storeList
-      });
-    }));
 
     setState(() {
       if (_positionStreamSubscription.isPaused) {
         _positionStreamSubscription.resume();
-        print(_accelerometerEvent.length);
       } else {
         _positionStreamSubscription.pause();
       }
-
-
     });
+  }
 
+  void _toggleListeningAcc() {
+    _streamSubscriptions =
+        accelerometerEvents.listen((AccelerometerEvent event) {
+          setState(() {
+            this.event = event;
+            _accelerometerEvent.add(event); //
+
+            bool firstFilterRemaining= firstFilter(event);
+            bool secondFilterRemaining= secondFilter(event);
+            if(firstFilterRemaining) {
+
+              _storeAccZFirstFilterList.add(event.z);
+
+              if (secondFilterRemaining) {
+                _storeList.add([
+                  currentMillSecond(),
+                  position.longitude,
+                  position.latitude,
+                  event.x,
+                  event.y,
+                  event.z
+                ]); //each time new piece of data generated, added to _storeList
+              }
+            }
+          });
+        });
   }
 
   /// gets current time
-  double currentMillSecond(){
+  double currentMillSecond() {
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
 
   ///find out the path of .csv
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-    //print("1");
     return directory.path;
   }
 
@@ -199,20 +331,14 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     print(path);
     return File('$path/StoreAcc.csv');
   }
-  
+
   ///store list to CSV
   Future<File> _storeListToCSV(List _targetList) async {
     String csv = const ListToCsvConverter().convert(_targetList);
-    //print(csv);
     final file = await _localFile;
     return file.writeAsString(csv);
   }
 
-  // Future<File> _storeListToTXT(String _targetString) async {
-  //   //print(csv);
-  //   final file = await _localFile;
-  //   return file.writeAsString(_targetString);
-  // }
 
 
   ///read csv file to list
@@ -220,7 +346,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     try {
       final file = await _localFile;
       String contents = await file.readAsString();
-      List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter().convert(contents);
+      List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter()
+          .convert(contents);
       print(rowsAsListOfValues);
       //print(rowsAsListOfValues.length);
       return rowsAsListOfValues;
@@ -231,10 +358,13 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
   @override
-  void initState(){
-    print("initState Now");
-    super.initState();
-  }
+
+    void initState() {
+      super.initState();
+
+
+    }
+
 
 
   @override
@@ -243,13 +373,45 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       _positionStreamSubscription.cancel();
       _positionStreamSubscription = null;
     }
-    for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
-      subscription.cancel();
-    }
+
     _storeListToCSV(_storeList); // convert double list to csv stream and store in csv file
-    //print(_accelerometerEvent2.length);
     readFromFile(); // test sentence, read form csv file
+    print(_storeAccZFirstFilterList);//test the accZ
     print("terminates");
     super.dispose();
   }
+
+
+
+  //first filter
+  bool firstFilter(AccelerometerEvent event) {
+    // if( event.z >=5.0){
+    //   return true;
+    // }
+    // else return false;
+//TODO : the method for filter1
+    return true;
+
+    }
+
+    //second filter
+  bool secondFilter(AccelerometerEvent event) {
+//TODO : the method for filter2
+    return true;
+  }
+
+
+  void _readAccZ() {
+    print(_storeAccZFirstFilterList);
+  }
 }
+
+
+
+
+
+
+
+
+
+
