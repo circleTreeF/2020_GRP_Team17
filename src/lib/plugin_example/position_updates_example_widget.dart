@@ -33,8 +33,10 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   final  _storeAccZFirstFilterList = <double> [];
 
   get storeAccZFirstFilterList => _storeAccZFirstFilterList;
-  final _storeList = <List<double>>[];
-int _accZ;
+  final _storeList = <List<double>>[]; //list after first filter
+  final _finalList = <List<double>>[]; //list after second filter
+  int _accZ;
+
   @override
   Widget build(BuildContext context) {
 
@@ -328,7 +330,7 @@ int _accZ;
   ///get .csv file as file var
   Future<File> get _localFile async {
     final path = await _localPath;
-    print(path);
+    //print(path);
     return File('$path/StoreAcc.csv');
   }
 
@@ -345,11 +347,18 @@ int _accZ;
   Future<List<dynamic>> readFromFile() async {
     try {
       final file = await _localFile;
+      // int counter = 0;
+
       String contents = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter()
           .convert(contents);
-      print(rowsAsListOfValues);
-      //print(rowsAsListOfValues.length);
+      //print(rowsAsListOfValues);
+      print(rowsAsListOfValues.length);
+
+      // for(counter = 0; counter < rowsAsListOfValues.length; counter++){
+      //   print(rowsAsListOfValues[counter]);
+      // }
+
       return rowsAsListOfValues;
     } catch (e) {
       // If encountering an error, return 0.
@@ -358,12 +367,9 @@ int _accZ;
   }
 
   @override
-
-    void initState() {
-      super.initState();
-
-
-    }
+  void initState() {
+    super.initState();
+  }
 
 
 
@@ -374,27 +380,43 @@ int _accZ;
       _positionStreamSubscription = null;
     }
 
-    _storeListToCSV(_storeList); // convert double list to csv stream and store in csv file
+    secondFilterCompact(); // second filter to compact before being stored into csv file
+    _storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
     readFromFile(); // test sentence, read form csv file
-    print(_storeAccZFirstFilterList);//test the accZ
+    //print(_storeAccZFirstFilterList);//test the accZ
     print("terminates");
     super.dispose();
   }
 
+  ///second filter to compact
+  void secondFilterCompact() async{
+    try {
+      int counter = 0;
+      const int sliceSize = 10;
 
-
-  //first filter
-  bool firstFilter(AccelerometerEvent event) {
-    // if( event.z >=5.0){
-    //   return true;
-    // }
-    // else return false;
-//TODO : the method for filter1
-    return true;
-
+      for(counter = 0; counter < _storeList.length; counter++){
+        if (counter % sliceSize == sliceSize-1){
+          _finalList.add(_storeList[counter]);
+        }
+      }
+      print(_finalList);
+      print(_finalList.length);
+    } catch (e) {
+      // If encountering an error, return 0.
+      return null;
     }
+  }
 
-    //second filter
+  ///first filter
+  bool firstFilter(AccelerometerEvent event) {
+    const double bound = 5.0;
+    if( event.z >=bound){
+      return true;
+    }
+    else return false;
+  }
+
+  ///second filter
   bool secondFilter(AccelerometerEvent event) {
 //TODO : the method for filter2
     return true;
