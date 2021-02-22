@@ -1,0 +1,23 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "18888:22"
+
+  web:
+    image: unncgrpteam17/server_web:firstAPP
+    build: .
+    command: python manage.py runserver 0.0.0.0:8866
+    volumes:
+      - .:/code
+    ports:
+      - "8866:8866"
+      - "8888:22"
+    depends_on:
+      - db
