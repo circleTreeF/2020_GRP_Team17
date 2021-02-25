@@ -3,15 +3,36 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueAMap from "vue-amap";
+import VueAMap from "vue-amap"
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import axios from 'axios'
 
 
+Vue.use(ElementUI, axios);
 Vue.config.productionTip = false
+Vue.prototype.$http = axios
+
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  render: h => h(App)
+})
+
+
+// //axios.defaults.baseURL = "https://goodlink.club/management/"
+
+
+router.beforeEach((to, from, next) => {
+  // to 表示将要访问的路径
+  // from 表示从哪里跳转来
+  // next 表示放行
+  if (to.path === '/login') return next()
+  const isLogin = sessionStorage.getItem('loginInfo')
+  if (!isLogin) return next('/login')
+  else return next()
 })
