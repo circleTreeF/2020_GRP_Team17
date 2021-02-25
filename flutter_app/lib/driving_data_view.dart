@@ -1,8 +1,11 @@
 
 import 'dart:async';
+import 'dart:io';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/score_screen.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sensors/sensors.dart';
 
 import 'UI/app_theme.dart';
@@ -31,7 +34,8 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
   final _accelerometerEvent = <AccelerometerEvent>[];
   final  _storeAccZFirstFilterList = <double> [];
   get storeAccZFirstFilterList => _storeAccZFirstFilterList;
-
+  final _storeList = <List<double>>[];
+  final _finalList = <List<double>>[];
   StreamSubscription<AccelerometerEvent> get streamSubscriptions =>
       _streamSubscriptions;
 
@@ -466,7 +470,7 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
     _controller.forward();
   }
 
-
+//TODO：display GPS data
   // String _cardTextGPS() {
   //   if (position != null) {
   //     return 'GPS:  ${ position.latitude}, ${ position.longitude}';
@@ -517,9 +521,18 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
             this.event = event;
 
             _accelerometerEvent.add(event);
-
+            bool firstFilterRemaining= firstFilter(event);
+          if(firstFilterRemaining) {
             _storeAccZFirstFilterList.add(event.z);
-
+            _storeList.add([
+              currentMillSecond(),
+              position.longitude,
+              position.latitude,
+              event.x,
+              event.y,
+              event.z
+            ]); //each time new
+          }
             }
 
 
@@ -532,6 +545,47 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
   double currentMillSecond() {
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  ///get .csv file as file var
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    //print(path);
+    return File('$path/StoreAcc.csv');
+  }
+
+  Future<File> _storeListToCSV(List _targetList) async {
+    String csv = const ListToCsvConverter().convert(_targetList);
+    final file = await _localFile;
+    return file.writeAsString(csv);
+  }
+
+  Future<List<dynamic>> readFromFile() async {
+    try {
+      final file = await _localFile;
+      // int counter = 0;
+
+      String contents = await file.readAsString();
+      List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter()
+          .convert(contents);
+      //print(rowsAsListOfValues);
+      print(rowsAsListOfValues.length);
+
+      // for(counter = 0; counter < rowsAsListOfValues.length; counter++){
+      //   print(rowsAsListOfValues[counter]);
+      // }
+
+      return rowsAsListOfValues;
+    } catch (e) {
+      // If encountering an error, return 0.
+      return null;
+    }
+  }
+
 
   void _toggleListening() {
     if(drivingCondition==0){
@@ -597,6 +651,50 @@ Future<dynamic>  _popUpScore(List<double> storeAccZFirstFilterList) {
 
 
   }
+
+  @override
+  void dispose() {
+    if (_positionStreamSubscription != null) {
+      _positionStreamSubscription.cancel();
+      _positionStreamSubscription = null;
+    }
+
+    secondFilterCompact(); // second filter to compact before being stored into csv file
+    _storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
+    readFromFile(); // test sentence, read form csv file
+    //print(_storeAccZFirstFilterList);//test the accZ
+    print("terminates");
+    super.dispose();
+  }
+
+  void secondFilterCompact() async{
+    try {
+      int counter = 0;
+      const int sliceSize = 10;
+
+      for(counter = 0; counter < _storeList.length; counter++){
+        if (counter % sliceSize == sliceSize-1){
+          _finalList.add(_storeList[counter]);
+        }
+      }
+      print(_finalList);
+      print(_finalList.length);
+    } catch (e) {
+      // If encountering an error, return 0.
+      return null;
+    }
+  }
+
+  ///first filter
+  bool firstFilter(AccelerometerEvent event) {
+    const double bound = 5.0;
+    if( event.z >=bound){
+      return true;
+    }
+    else return false;
+  }
+
+
 
 
 
