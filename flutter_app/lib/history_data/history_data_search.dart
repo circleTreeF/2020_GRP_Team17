@@ -185,7 +185,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
     );
   }
 
-  Widget getHotelViewList() {
+  Widget getHistoryViewList() {
     final List<Widget> hotelListViews = <Widget>[];
     for (int i = 0; i < historyDataList.length; i++) {
       final int count = historyDataList.length;

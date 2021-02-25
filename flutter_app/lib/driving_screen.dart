@@ -3,7 +3,6 @@ import 'package:flutter_app/UI/title_view.dart';
 import 'package:intl/intl.dart';
 
 import 'UI/app_theme.dart';
-import 'driving_data_view.dart';
 import 'driving_state_view.dart';
 
 class DrivingScreen extends StatefulWidget {
@@ -32,28 +31,7 @@ class _DrivingScreenState extends State<DrivingScreen>
             curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
     addAllListData();
 
-    scrollController.addListener(() {
-      if (scrollController.offset >= 24) {
-        if (topBarOpacity != 1.0) {
-          setState(() {
-            topBarOpacity = 1.0;
-          });
-        }
-      } else if (scrollController.offset <= 24 &&
-          scrollController.offset >= 0) {
-        if (topBarOpacity != scrollController.offset / 24) {
-          setState(() {
-            topBarOpacity = scrollController.offset / 24;
-          });
-        }
-      } else if (scrollController.offset <= 0) {
-        if (topBarOpacity != 0.0) {
-          setState(() {
-            topBarOpacity = 0.0;
-          });
-        }
-      }
-    });
+
     super.initState();
   }
 
