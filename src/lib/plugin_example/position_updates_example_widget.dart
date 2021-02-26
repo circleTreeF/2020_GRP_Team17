@@ -281,7 +281,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
   void _toggleListeningAcc() {
     double timeStamp;
-    double lastTime = -100;
+    double lastTime = 0;
 
     _streamSubscriptions =
         accelerometerEvents.listen((AccelerometerEvent event) {
@@ -292,6 +292,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
             if (_storeList.isNotEmpty) lastTime = _storeList.last.first;
             timeStamp = currentMillSecond();
             if (lastTime+100 <= timeStamp){
+              //keep the 100 millisecond time slot
               _storeList.add([
                 timeStamp,
                 position.longitude,
@@ -369,7 +370,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     }
 
     //secondFilterCompact(); // second filter to compact before being stored into csv file
-    _storeListToCSV(_storeList);
+    firstFilter(_storeList);
+    _storeListToCSV(_finalList);
     //_storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
     readFromFile(); // test sentence, read form csv file
     //print(_storeAccZFirstFilterList);//test the accZ
@@ -377,15 +379,42 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     super.dispose();
   }
 
+  ///first filter: denoise the data in _storeList
+  void firstFilter(List _targetList) async {
+    try {
+      int counter = 0;
+      double currentX = 0;
+      double currentY = 0;
+      double currentZ = 0;
+      const double thresholdForX = 10;
+      const double thresholdForY = 20;
+      const double thresholdForZ = 10;
+
+      for (counter = 0; counter < _targetList.length; counter++) {
+        currentX = _targetList[counter].elementAt(3);
+        currentY = _targetList[counter].elementAt(4);
+        currentZ = _targetList[counter].elementAt(5);
+        if ((currentX<=thresholdForX)&&(currentX>=-thresholdForX)&&
+            (currentY<=thresholdForY)&&(currentY>=-thresholdForY)&&
+            (currentZ<=thresholdForZ)&&(currentZ>=-thresholdForZ)) {
+          _finalList.add(_targetList[counter]);
+        }
+      }
+    } catch (e) {
+      // If encountering an error, return 0.
+      return null;
+    }
+  }
+
   ///second filter to compact
-  void secondFilterCompact() async {
+  void secondFilterCompact(List _targetList) async {
     try {
       int counter = 0;
       const int sliceSize = 10;
 
-      for (counter = 0; counter < _storeList.length; counter++) {
+      for (counter = 0; counter < _targetList.length; counter++) {
         if (counter % sliceSize == sliceSize - 1) {
-          _finalList.add(_storeList[counter]);
+          _finalList.add(_targetList[counter]);
         }
       }
       print(_finalList);
