@@ -30,7 +30,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   final _positions = <Position>[];
   final _accelerometerEvent = <AccelerometerEvent>[
   ]; // store the accelerometer data .
-  final  _storeAccZFirstFilterList = <double> [];
+  final _storeAccZFirstFilterList = <double>[];
 
   get storeAccZFirstFilterList => _storeAccZFirstFilterList;
   final _storeList = <List<double>>[]; //list after first filter
@@ -137,28 +137,21 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
               color: Colors.blue[500],
             ),
           ),
-          RaisedButton(
-            child: _buildButtonText3(),
-            color: _determineButtonColor3(),
-            padding: const EdgeInsets.all(8.0),
-            onPressed: _readAccZ,
-          ),
-          ListTile(
-            title: new Text(_cardText(),
-                style: new TextStyle(fontWeight: FontWeight.w500)),
-            leading: new Icon(
-              Icons.restaurant_menu,
-              color: Colors.blue[500],
-            ),
-          ),
+          // RaisedButton(
+          //   child: _buildButtonText3(),
+          //   color: _determineButtonColor3(),
+          //   padding: const EdgeInsets.all(8.0),
+          //   onPressed: _readAccZ,
+          // ),
           RaisedButton(
             child: Text('Score'),
             color: _determineButtonColor2(),
             padding: const EdgeInsets.all(8.0),
-            onPressed: () {// route for the scorePage.
+            onPressed: () { // route for the scorePage.
               Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context)=>Score(list:  _storeAccZFirstFilterList)
+                      builder: (context) =>
+                          Score(list: _storeAccZFirstFilterList)
                   )
               );
             },
@@ -216,9 +209,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
   String _cardText() {
-
-      return 'AccZ : $_accZ';
-
+    return 'AccZ : $_accZ';
   }
 
 
@@ -289,30 +280,29 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
   void _toggleListeningAcc() {
+    double timeStamp;
+    double lastTime = -100;
+
     _streamSubscriptions =
         accelerometerEvents.listen((AccelerometerEvent event) {
           setState(() {
             this.event = event;
-            _accelerometerEvent.add(event); //
+            _accelerometerEvent.add(event);
 
-            bool firstFilterRemaining= firstFilter(event);
-            bool secondFilterRemaining= secondFilter(event);
-            if(firstFilterRemaining) {
-
-              _storeAccZFirstFilterList.add(event.z);
-
-              if (secondFilterRemaining) {
-                _storeList.add([
-                  currentMillSecond(),
-                  position.longitude,
-                  position.latitude,
-                  event.x,
-                  event.y,
-                  event.z
-                ]); //each time new piece of data generated, added to _storeList
-              }
+            if (_storeList.isNotEmpty) lastTime = _storeList.last.first;
+            timeStamp = currentMillSecond();
+            if (lastTime+100 <= timeStamp){
+              _storeList.add([
+                timeStamp,
+                position.longitude,
+                position.latitude,
+                event.x,
+                event.y,
+                event.z
+              ]); //each time new piece of data generated, added to _storeList
             }
-          });
+          }
+          );
         });
   }
 
@@ -342,12 +332,11 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
 
-
   ///read csv file to list
   Future<List<dynamic>> readFromFile() async {
     try {
       final file = await _localFile;
-      // int counter = 0;
+      int counter = 0;
 
       String contents = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter()
@@ -355,9 +344,9 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       //print(rowsAsListOfValues);
       print(rowsAsListOfValues.length);
 
-      // for(counter = 0; counter < rowsAsListOfValues.length; counter++){
-      //   print(rowsAsListOfValues[counter]);
-      // }
+      for(counter = 0; counter < rowsAsListOfValues.length; counter++){
+        print(rowsAsListOfValues[counter]);
+      }
 
       return rowsAsListOfValues;
     } catch (e) {
@@ -372,7 +361,6 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
 
-
   @override
   void dispose() {
     if (_positionStreamSubscription != null) {
@@ -380,8 +368,9 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       _positionStreamSubscription = null;
     }
 
-    secondFilterCompact(); // second filter to compact before being stored into csv file
-    _storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
+    //secondFilterCompact(); // second filter to compact before being stored into csv file
+    _storeListToCSV(_storeList);
+    //_storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
     readFromFile(); // test sentence, read form csv file
     //print(_storeAccZFirstFilterList);//test the accZ
     print("terminates");
@@ -389,13 +378,13 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
   ///second filter to compact
-  void secondFilterCompact() async{
+  void secondFilterCompact() async {
     try {
       int counter = 0;
       const int sliceSize = 10;
 
-      for(counter = 0; counter < _storeList.length; counter++){
-        if (counter % sliceSize == sliceSize-1){
+      for (counter = 0; counter < _storeList.length; counter++) {
+        if (counter % sliceSize == sliceSize - 1) {
           _finalList.add(_storeList[counter]);
         }
       }
@@ -406,34 +395,4 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
       return null;
     }
   }
-
-  ///first filter
-  bool firstFilter(AccelerometerEvent event) {
-    const double bound = 5.0;
-    if( event.z >=bound){
-      return true;
-    }
-    else return false;
-  }
-
-  ///second filter
-  bool secondFilter(AccelerometerEvent event) {
-//TODO : the method for filter2
-    return true;
-  }
-
-
-  void _readAccZ() {
-    print(_storeAccZFirstFilterList);
-  }
 }
-
-
-
-
-
-
-
-
-
-
