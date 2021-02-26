@@ -7,7 +7,6 @@ import 'UI/app_theme.dart';
 import 'driving_screen.dart';
 import 'history_data/history_data_search.dart';
 import 'info_page.dart';
-import 'last_known_location_example_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

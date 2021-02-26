@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
+import 'package:http/http.dart' as http;
+import 'data_list_generator.dart';
 import 'filters_screen.dart';
 import 'history_app_theme.dart';
 import 'history_data_view.dart';
@@ -26,16 +28,38 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   AnimationController animationController;
   List<HistoryDataList> historyDataList = HistoryDataList.historyList;
   final ScrollController _scrollController = ScrollController();
-
+  DataListGenerator _dataListGenerator;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(const Duration(days: 5));
 
   @override
   void initState() {
+
+    postNet_2();
+
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     //AnimationController在给定的时间段内线性的生成从0.0到1.0（默认区间）的数字
     super.initState();
+  }
+
+
+  ///
+  /// @description: //TODO
+  /// @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  /// @date: 2021/2/26 11:27 AM
+  /// No such property: code for class: Script1
+  /// @return
+  /// @version:
+  ///
+
+  void postNet_2() async {
+    var params = Map<String, String>();
+    params["user_id"] = "4936";
+    var client = http.Client();
+    var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
+    var _content = response.body;
+    print(_content.isEmpty);
   }
 
   Future<bool> getData() async {
@@ -488,4 +512,7 @@ class ContestTabHeader extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
     return false;
   }
+
+
+
 }

@@ -595,6 +595,7 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
     else{
       _pauseStream();
       _popUpScore(_storeAccZFirstFilterList);
+      drivingCondition=0;
     }
   }
 

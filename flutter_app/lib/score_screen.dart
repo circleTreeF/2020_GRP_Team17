@@ -11,7 +11,6 @@ class Score extends StatefulWidget {
 
   Score({this.list}) ;
 
-
   @override
   _ScoreState createState() => _ScoreState();
 }
