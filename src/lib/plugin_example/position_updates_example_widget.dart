@@ -33,8 +33,8 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   final _storeAccZFirstFilterList = <double>[];
 
   get storeAccZFirstFilterList => _storeAccZFirstFilterList;
-  final _storeList = <List<double>>[]; //list after first filter
-  final _finalList = <List<double>>[]; //list after second filter
+  List<List<double>> _storeList = <List<double>>[]; //list after first filter
+  List<List<double>> _finalList = <List<double>>[]; //list after second filter
   int _accZ;
 
   @override
@@ -370,7 +370,7 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     }
 
     //secondFilterCompact(); // second filter to compact before being stored into csv file
-    firstFilter(_storeList);
+    _finalList = firstFilter(_storeList);
     _storeListToCSV(_finalList);
     //_storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
     readFromFile(); // test sentence, read form csv file
@@ -380,48 +380,46 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
   }
 
   ///first filter: denoise the data in _storeList
-  void firstFilter(List _targetList) async {
-    try {
-      int counter = 0;
-      double currentX = 0;
-      double currentY = 0;
-      double currentZ = 0;
-      const double thresholdForX = 10;
-      const double thresholdForY = 20;
-      const double thresholdForZ = 10;
+  List<List<double>> firstFilter(List _targetList) {
+    List<List<double>> _outputList = <List<double>>[];
 
-      for (counter = 0; counter < _targetList.length; counter++) {
-        currentX = _targetList[counter].elementAt(3);
-        currentY = _targetList[counter].elementAt(4);
-        currentZ = _targetList[counter].elementAt(5);
-        if ((currentX<=thresholdForX)&&(currentX>=-thresholdForX)&&
-            (currentY<=thresholdForY)&&(currentY>=-thresholdForY)&&
-            (currentZ<=thresholdForZ)&&(currentZ>=-thresholdForZ)) {
-          _finalList.add(_targetList[counter]);
-        }
+    int counter = 0;
+    int abandonLength = 30;
+
+    double currentX = 0;
+    double currentY = 0;
+    double currentZ = 0;
+    const double thresholdForX = 10;
+    const double thresholdForY = 20;
+    const double thresholdForZ = 10;
+
+    for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++) {
+      currentX = _targetList[counter].elementAt(3);
+      currentY = _targetList[counter].elementAt(4);
+      currentZ = _targetList[counter].elementAt(5);
+      if ((currentX<=thresholdForX)&&(currentX>=-thresholdForX)&&
+          (currentY<=thresholdForY)&&(currentY>=-thresholdForY)&&
+          (currentZ<=thresholdForZ)&&(currentZ>=-thresholdForZ)) {
+        _outputList.add(_targetList[counter]);
       }
-    } catch (e) {
-      // If encountering an error, return 0.
-      return null;
     }
+
+    return _outputList;
   }
 
   ///second filter to compact
-  void secondFilterCompact(List _targetList) async {
-    try {
-      int counter = 0;
-      const int sliceSize = 10;
+  List<List<double>> secondFilterCompact(List _targetList) {
+    List<List<double>> _outputList = <List<double>>[];
 
-      for (counter = 0; counter < _targetList.length; counter++) {
-        if (counter % sliceSize == sliceSize - 1) {
-          _finalList.add(_targetList[counter]);
-        }
+    int counter = 0;
+    const int sliceSize = 10;
+
+    for (counter = 0; counter < _targetList.length; counter++) {
+      if (counter % sliceSize == sliceSize - 1) {
+        _outputList.add(_targetList[counter]);
       }
-      print(_finalList);
-      print(_finalList.length);
-    } catch (e) {
-      // If encountering an error, return 0.
-      return null;
     }
+
+    return _outputList;
   }
 }
