@@ -389,17 +389,34 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
     double currentX = 0;
     double currentY = 0;
     double currentZ = 0;
-    const double thresholdForX = 10;
-    const double thresholdForY = 20;
-    const double thresholdForZ = 10;
+
+    double standardX = 0;
+    double standardY = 0;
+    double standardZ = 0;
+    double sumX = 0;
+    double sumY = 0;
+    double sumZ = 0;
+
+    const double thresholdForX = 4;
+    const double thresholdForY = 4;
+    const double thresholdForZ = 4;
+
+    for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++){
+      sumX = sumX + _targetList[counter].elementAt(3);
+      sumY = sumY + _targetList[counter].elementAt(4);
+      sumZ = sumZ + _targetList[counter].elementAt(5);
+      standardX= sumX / (counter - abandonLength);
+      standardY= sumY / (counter - abandonLength);
+      standardZ= sumZ / (counter - abandonLength);
+    }
 
     for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++) {
       currentX = _targetList[counter].elementAt(3);
       currentY = _targetList[counter].elementAt(4);
       currentZ = _targetList[counter].elementAt(5);
-      if ((currentX<=thresholdForX)&&(currentX>=-thresholdForX)&&
-          (currentY<=thresholdForY)&&(currentY>=-thresholdForY)&&
-          (currentZ<=thresholdForZ)&&(currentZ>=-thresholdForZ)) {
+      if ((currentX <= standardX + thresholdForX)&&(currentX >= standardX - thresholdForX)&&
+          (currentY <= standardY + thresholdForY)&&(currentY >= standardY - thresholdForY)&&
+          (currentZ <= standardZ + thresholdForZ)&&(currentZ >= standardZ - thresholdForZ)) {
         _outputList.add(_targetList[counter]);
       }
     }
@@ -422,4 +439,37 @@ class _PositionUpdatesExampleWidgetState extends State<PositionUpdatesExampleWid
 
     return _outputList;
   }
+
+  // int drivingGrade(List _targetList){
+  //   int mark = 0;
+  //   double varianceX = 0;
+  //   double varianceY = 0;
+  //
+  //   const double standardX = 0;
+  //   const double standardY = 0;
+  //
+  //   varianceX = varianceOfList(_targetList, 3);
+  //   varianceY = varianceOfList(_targetList, 5);
+  //
+  //   if (varianceX <= standardX){
+  //     if(varianceY <= standardY){
+  //       mark = 0;
+  //     }else{
+  //       mark = 0;
+  //     }
+  //   }else if(varianceY <= standardY){
+  //     mark = 0;
+  //   }else{
+  //     mark = 0;
+  //   }
+  //
+  //   return mark;
+  // }
+  //
+  // double varianceOfList(List _targetList, int index){
+  //   double variance = 0;
+  //
+  //   return variance;
+  // }
+
 }
