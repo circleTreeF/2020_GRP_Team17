@@ -33,14 +33,22 @@ dependencies:
   location_web: ^1.0.0
   geolocator: ^6.1.4+1
   url_launcher: ^5.7.10
+  # for serializing
+  json_annotation: 3.1.1
+
   csv: ^4.1.0
   path_provider: ^1.6.24
   permission: ^0.1.7
   location_platform_interface: ^1.0.0
-  http: ^0.12.2
+
+  http: 0.12.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # dependencies for serializing
+  build_runner: 1.11.1
+  json_serializable: 3.5.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

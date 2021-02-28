@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -34,15 +35,12 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
 
   @override
   void initState() {
-
     postNet_2();
-
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     //AnimationController在给定的时间段内线性的生成从0.0到1.0（默认区间）的数字
     super.initState();
   }
-
 
   ///
   /// @description: //TODO
@@ -56,10 +54,16 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   void postNet_2() async {
     var params = Map<String, String>();
     params["user_id"] = "4936";
+    var jsonParams = {
+      'user_id': 4936
+    };
     var client = http.Client();
-    var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
+    var response = await client
+        .post('http://10.6.2.61:8866/statistics/get_record', body: jsonParams);
     var _content = response.body;
-    print(_content.isEmpty);
+    print("Hello world");
+    json.decode(_content);
+    print(_content);
   }
 
   Future<bool> getData() async {
@@ -88,10 +92,11 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                 hoverColor: Colors.transparent,
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                },//水波纹 回调
+                },
+                //水波纹 回调
                 child: Column(
                   children: <Widget>[
-                    getAppBarUI(),//appbar
+                    getAppBarUI(), //appbar
                     Expanded(
                       child: NestedScrollView(
                         controller: _scrollController,
@@ -512,7 +517,4 @@ class ContestTabHeader extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
     return false;
   }
-
-
-
 }
