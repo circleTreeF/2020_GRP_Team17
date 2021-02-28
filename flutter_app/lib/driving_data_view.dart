@@ -664,7 +664,7 @@ Future<dynamic>  _popUpScore(List<double> storeAccZFirstFilterList) {
     _storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
     readFromFile(); // test sentence, read form csv file
     //print(_storeAccZFirstFilterList);//test the accZ
-    print("terminates");
+    //print("terminates");
     super.dispose();
   }
 
@@ -678,8 +678,8 @@ Future<dynamic>  _popUpScore(List<double> storeAccZFirstFilterList) {
           _finalList.add(_storeList[counter]);
         }
       }
-      print(_finalList);
-      print(_finalList.length);
+      // print(_finalList);
+      // print(_finalList.length);
     } catch (e) {
       // If encountering an error, return 0.
       return null;
