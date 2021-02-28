@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/User.dart';
 
 import 'package:intl/intl.dart';
 
@@ -35,12 +37,13 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   @override
   void initState() {
 
-    postNet_2();
+
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     //AnimationController在给定的时间段内线性的生成从0.0到1.0（默认区间）的数字
     super.initState();
+    postNet_2();
   }
 
 
@@ -55,12 +58,34 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
 
   void postNet_2() async {
     var params = Map<String, String>();
-    params["user_id"] = "4936";
+    params["user_id"] = "6376";
     var client = http.Client();
     var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
     var _content = response.body;
-    print(_content.isEmpty);
+    print(_content);
+    Map _userMap= jsonDecode(_content.toString());
+    User user3 = User.fromJson(_userMap);
+    user3.printMap(user3);
+    //TODO:Unhandled Exception: FormatException: Unexpected character (at character 1)
   }
+
+
+  // void postNet_2() async {
+  //   var params = Map<String, String>();
+  //   params["user_id"] = "4936";
+  //   var jsonParams = {
+  //     'user_id': 4936
+  //   };
+  //   var client = http.Client();
+  //   var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
+  //   var response = await client
+  //       .post('http://10.6.2.61:8866/statistics/get_record', body: jsonParams);
+  //   var _content = response.body;
+  //   print(_content.isEmpty);
+  //   print("Hello world");
+  //   json.decode(_content);
+  //   print(_content);
+  // }
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
