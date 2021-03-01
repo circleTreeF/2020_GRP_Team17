@@ -55,19 +55,19 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   /// @return
   /// @version:
   ///
-
-  void postNet_2() async {
-    var params = Map<String, String>();
-    params["user_id"] = "6376";
-    var client = http.Client();
-    var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
-    var _content = response.body;
-    print(_content);
-    Map _userMap= jsonDecode(_content.toString());
-    User user3 = User.fromJson(_userMap);
-    user3.printMap(user3);
-    //TODO:Unhandled Exception: FormatException: Unexpected character (at character 1)
-  }
+  //
+  // void postNet_2() async {
+  //   var params = Map<String, String>();
+  //   params["user_id"] = "6376";
+  //   var client = http.Client();
+  //   var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
+  //   var _content = response.body;
+  //   print(_content);
+  //   Map _userMap= jsonDecode(_content.toString());
+  //   User user3 = User.fromJson(_userMap);
+  //   user3.printMap(user3);
+  //   //TODO:Unhandled Exception: FormatException: Unexpected character (at character 1)
+  // }
 
 
   // void postNet_2() async {
@@ -86,6 +86,19 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   //   json.decode(_content);
   //   print(_content);
   // }
+
+  //  TODO: post request by Shihui QUE
+  void postNet_2() async {
+    Map params = {'user_id': '4936'};
+    var jsonParams = json.encode(params);
+    var httpClient = http.Client();
+    var response = await httpClient.post('http://10.6.2.61:8866/statistics/get_record', body: jsonParams);
+    var _content = response.body;
+    print("Hello response !!!!!!");
+    print(_content);
+    print("Bye response !!!!!!");
+
+  }
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
