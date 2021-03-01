@@ -9,9 +9,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 
 
+
 Vue.use(ElementUI, axios);
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+// Vue.prototype.HOST = '/api'
 
 
 /* eslint-disable no-new */
