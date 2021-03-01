@@ -9,20 +9,17 @@
         :zoom="zoom"
         class="amap-demo"
       >
-        <el-amap-circle 
-          vid="circle" 
-          :center= '[121.562236, 29.8000444]'
-          :radius= '4000'
+        <el-amap-circle v-for="(circle,index) in badPoints" 
+          :key="index" 
+          :center="circle.center" 
+          :radius="circle.radius"
           strokeColor= '#F33'
           strokeOpacity= '1'  
-          strokeWeight= '3'  
+          strokeWeight= '1'  
           fillColor= '#ee2200'
-          fillOpacity= '0.35'
-          >
+          fillOpacity= '0.35'>
         </el-amap-circle>
       </el-amap>
-      <!-- <el-amap-circle v-for="(circle,index) in badPoints" :key="index" :center="circle.center" :radius="circle.radius"> </el-amap-circle> -->
-      
     </div>
   </div>
 </template>
@@ -66,7 +63,7 @@ export default {
       //     console.log(e);
       //   }
       // }
-      // badPoints:{}
+      badPoints: []
     };
   },
 
@@ -77,12 +74,30 @@ export default {
 
   // methods
   methods: {
+    // Gets bad points and renders page
     onload: function() {
       axios
         .get("http://10.6.2.61:8866/statistics/get_bad_point")
         .then(response => {
-          console.log(response.data)
-          // this.badPoints = response.data
+          var res = response.data;
+          var badPoints = [];
+          var tempCenter = []
+          var tempCircle = {};
+
+          // Converts format
+          for (var i = 0; i < res.length; i++) {
+            tempCenter.push(res[i].point_longitude)
+            tempCenter.push(res[i].point_latitude)
+            tempCircle = {
+              'center': tempCenter,
+              'radius': res[i].point_radius
+            }
+            console.log(tempCircle)
+            badPoints.push(tempCircle)
+            tempCenter = []
+          }
+
+          this.badPoints = badPoints
         })
     }
   }
