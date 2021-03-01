@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/User.dart';
+import 'package:flutter_app/post_model.dart';
+import 'package:flutter_app/post_service.dart';
+import 'package:flutter_app/user_list.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:http/http.dart' as http;
-import 'data_list_generator.dart';
 import 'filters_screen.dart';
 import 'history_app_theme.dart';
 import 'history_data_view.dart';
@@ -30,25 +30,24 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   AnimationController animationController;
   List<HistoryDataList> historyDataList = HistoryDataList.historyList;
   final ScrollController _scrollController = ScrollController();
-  DataListGenerator _dataListGenerator;
+  //DataListGenerator _dataListGenerator;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(const Duration(days: 5));
 
   @override
   void initState() {
 
-
-
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     //AnimationController在给定的时间段内线性的生成从0.0到1.0（默认区间）的数字
     super.initState();
     postNet_2();
+
   }
 
 
   ///
-  /// @description: //TODO
+  /// @description:
   /// @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
   /// @date: 2021/2/26 11:27 AM
   /// No such property: code for class: Script1
@@ -56,47 +55,24 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   /// @version:
   ///
   //
-  // void postNet_2() async {
-  //   var params = Map<String, String>();
-  //   params["user_id"] = "6376";
-  //   var client = http.Client();
-  //   var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
-  //   var _content = response.body;
-  //   print(_content);
-  //   Map _userMap= jsonDecode(_content.toString());
-  //   User user3 = User.fromJson(_userMap);
-  //   user3.printMap(user3);
-  //   //TODO:Unhandled Exception: FormatException: Unexpected character (at character 1)
-  // }
-
-
-  // void postNet_2() async {
-  //   var params = Map<String, String>();
-  //   params["user_id"] = "4936";
-  //   var jsonParams = {
-  //     'user_id': 4936
-  //   };
-  //   var client = http.Client();
-  //   var response = await client.post('http://10.6.2.61:8866/statistics/get_record', body: params);
-  //   var response = await client
-  //       .post('http://10.6.2.61:8866/statistics/get_record', body: jsonParams);
-  //   var _content = response.body;
-  //   print(_content.isEmpty);
-  //   print("Hello world");
-  //   json.decode(_content);
-  //   print(_content);
-  // }
-
-  //  TODO: post request by Shihui QUE
   void postNet_2() async {
-    Map params = {'user_id': '4936'};
-    var jsonParams = json.encode(params);
-    var httpClient = http.Client();
-    var response = await httpClient.post('http://10.6.2.61:8866/statistics/get_record', body: jsonParams);
-    var _content = response.body;
-    print("Hello response !!!!!!");
-    print(_content);
-    print("Bye response !!!!!!");
+
+    createPost(new Post(user_id: 4936)).then((response){
+      if(response.statusCode >=200){
+        //print(response.body);
+      String _content = response.body;
+      final _userMap= jsonDecode(_content);
+      //print(_userMap);
+        UserList userList =UserList.fromJson(_userMap);
+        // print(userList.users[0].start_time);
+        // print(userList.users[1].start_time);
+        // print(userList.users[2].start_time);
+      }
+      else
+        print(response.statusCode);
+    }).catchError((error){
+      print('error : $error');
+    });
 
   }
 

@@ -8,14 +8,14 @@ part of 'User.dart';
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
-    json['startTime'] as String,
-    json['endTime'] as String,
-    (json['roundMark'] as num)?.toDouble(),
+    json['start_time'] as String,
+    json['end_time'] as String,
+    (json['round_mark'] as num)?.toDouble(),
   );
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'startTime': instance.startTime,
-      'endTime': instance.endTime,
-      'roundMark': instance.roundMark,
+      'startTime': instance.start_time,
+      'endTime': instance.end_time,
+      'roundMark': instance.round_mark,
     };

@@ -4,24 +4,23 @@ part 'User.g.dart';
 @JsonSerializable()
 class User extends Object {
 
-  final String startTime;
+  final String start_time;
 
-  User(this.startTime, this.endTime, this.roundMark);
+  User(this.start_time, this.end_time, this.round_mark);
 
-  final String endTime;
+  final String end_time;
 
-  final double roundMark;
+  final double round_mark;
 
 
 
   @override
   String toString() {
-    return 'User{start_time: $startTime, end_time: $endTime, round_mark: $roundMark}';
+    return 'User{start_time: $start_time, end_time: $end_time, round_mark: $round_mark}';
   }
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson(User instance) => _$UserToJson(instance);
   void printMap(var _user) {
     print(_user);
 }
-
 }
