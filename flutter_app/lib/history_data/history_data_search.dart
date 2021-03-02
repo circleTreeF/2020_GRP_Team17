@@ -64,9 +64,9 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
       final _userMap= jsonDecode(_content);
       //print(_userMap);
         UserList userList =UserList.fromJson(_userMap);
-        // print(userList.users[0].start_time);
-        // print(userList.users[1].start_time);
-        // print(userList.users[2].start_time);
+        print(userList.users[0].start_time);
+        print(userList.users[1].start_time);
+        print(userList.users[2].start_time);
       }
       else
         print(response.statusCode);

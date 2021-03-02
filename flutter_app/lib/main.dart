@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'UI/app_theme.dart';
-import 'navigation_home_screen.dart';
+import 'login/login.dart';
+import 'login/login_init.dart';
 
 
 void main() async {
@@ -21,9 +22,27 @@ void main() async {
 
 class MyApp extends StatelessWidget {
 
+  Route<dynamic> _getRoute(RouteSettings settings) {
+    Map<String, WidgetBuilder> routes = {
+      '/': (BuildContext context) => LoginInitPage(),
+      '/login': (BuildContext context) => LoginPage(arguments: settings.arguments),
+    };
+    var widget = routes[settings.name];
 
+    if (widget != null) {
+      return MaterialPageRoute<void>(
+        settings: settings,
+        builder: widget,
+      );
+    }
+
+    return null;
+  }
   @override
   Widget build(BuildContext context) {
+
+
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -41,7 +60,8 @@ class MyApp extends StatelessWidget {
         textTheme: AppTheme.textTheme,
         platform: TargetPlatform.iOS,
       ),
-      home: NavigationHomeScreen(),//进入程序后显示的第一个页面
+      // home: NavigationHomeScreen(),//进入程序后显示的第一个页面
+      onGenerateRoute: _getRoute,
     );
   }
 }
