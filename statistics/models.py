@@ -1,23 +1,42 @@
 from django.db import models
 
-# Create model Round as table, statistics_round in database
-class Round(models.Model):
-    user_id = models.IntegerField('User ID')
-    start_time = models.DateTimeField('Round Start Time')
-    end_time = models.DateTimeField('Round End Time')
-    round_log = models.JSONField('Round Log File')
 
-    def __str__(self):
-        return str(self.user_id)+str(self.start_time)+str(self.end_time)
+# Create model Record as table, statistics_round in database
+# class Record(models.Model):
+#     user_id = models.IntegerField('User ID')
+#     start_time = models.DateTimeField('Record Start Time')
+#     end_time = models.DateTimeField('Record End Time')
+#     round_log = models.JSONField('Record Log File')
+#     round_mark = models.FloatField('Mark of Record')
+#
+#     def __str__(self):
+#         return str(self.user_id)+str(self.start_time)+str(self.end_time)
 
 # Create model BadPoint as table, statistics_badpoint, in database
-class BadPoint(models.Model):
+# class BadPoint(models.Model):
+#     point_longitude = models.FloatField('Longitude of Point')
+#     point_latitude = models.FloatField('Latitude of Point')
+#     point_radius = models.FloatField('Radius of Point')
+#     point_time = models.DateTimeField('Time of Point')
+#
+#     def __str__(self):
+#         return str(self.point_latitude)+str(self.point_longitude)+str(self.point_radius)
+
+class Record(models.Model):
+    user_id = models.IntegerField('User ID')
+    start_time = models.DateTimeField('Record Start Time')
+    end_time = models.DateTimeField('Record End Time')
+    round_log = models.JSONField('Record Log File')
+    round_mark = models.FloatField('Mark of Record')
+
+    def __str__(self):
+        return str(self.user_id) + str(self.start_time) + str(self.end_time)
+
+
+class BadPoints(models.Model):
     point_longitude = models.FloatField('Longitude of Point')
     point_latitude = models.FloatField('Latitude of Point')
     point_radius = models.FloatField('Radius of Point')
-
-    def __str__(self):
-        return str(self.point_latitude)+str(self.point_longitude)+str(self.point_radius)
-
+    point_time = models.DateTimeField('Time of Point')
+    valid_status = models.BooleanField('If Point is Still Bad', default=True)
 # class GovUser(models.Model):
-

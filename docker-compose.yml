@@ -2,7 +2,7 @@ version: "3.9"
    
 services:
   db:
-    image: postgres
+    image: unncgrpteam17/server_db:beforeVue 
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -11,7 +11,7 @@ services:
       - "18888:22"
 
   web:
-    image: unncgrpteam17/server_web:firstAPP
+    image: unncgrpteam17/server_web:beforeVue
     build: .
     command: python manage.py runserver 0.0.0.0:8866
     volumes:

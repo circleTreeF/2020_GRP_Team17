@@ -1,3 +1,3 @@
 from django.contrib import admin
-from .models import Round, BadPoint
+from .models import Record, BadPoints
 # Register your models here.
