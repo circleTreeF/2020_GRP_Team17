@@ -86,5 +86,5 @@ def compare(collected_series, template_series):
 
 # features used in K-Mean clustering are locations, the array of longitude and  latitude, the value of acceleration in
 # x, y and z axis
-def k_mean_cluster(suspected_bad_points):
-    return km.KMeans(n_clusters=np.shape(suspected_bad_points)[0]).fit(suspected_bad_points)
+# def k_mean_cluster(suspected_bad_points):
+#     return km.KMeans(n_clusters=np.shape(suspected_bad_points)[0]).fit(suspected_bad_points)
