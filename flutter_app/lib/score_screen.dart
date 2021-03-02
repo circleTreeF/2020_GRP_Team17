@@ -3,6 +3,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:scidart/numdart.dart';
 
 class Score extends StatefulWidget {
 
@@ -17,7 +18,6 @@ class Score extends StatefulWidget {
 
 class _ScoreState extends State<Score> {
 
-  String _score;
   @override
   Widget build(BuildContext context) {
     return new AlertDialog(
@@ -26,7 +26,7 @@ class _ScoreState extends State<Score> {
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-     Text( _scoreGenerator()),
+     Text(drivingGrade().toString()),
     ],
     ),
     );
@@ -34,19 +34,51 @@ class _ScoreState extends State<Score> {
 
 
   //score method
-  String _scoreGenerator() {
-    print('${widget.list.last}');
-    if(widget.list.last>=10){
-      _score= 'A';
-      return ' $_score';
-    }
-    else
-    if(widget.list.last>=0){
-      _score= 'B';
-      return ' $_score';
-    }
-    return 'C';
-    //TODO
 
+  int drivingGrade(){
+    List _targetList=widget.list;
+    int mark = 0;
+    double varianceX = 0;
+    double varianceY = 0;
+
+    const double standardX = 0; // threshold in X axis, needs to be calculated
+    const double standardY = 0; // threshold in Y axis, needs to be calculated
+
+    varianceX = varianceOfList(_targetList, 3);
+    varianceY = varianceOfList(_targetList, 5);
+
+    if (varianceX <= standardX){
+      if(varianceY <= standardY){
+        mark = 4;
+      }else{
+        mark = 3;
+      }
+    }else if(varianceY <= standardY){
+      mark = 2;
+    }else{
+      mark = 1;
+    }
+
+    return mark;
   }
+
+
+  double varianceOfList(List _targetList, int index){
+    double varianceOfList = 0;
+    List<double> numberList = [];
+
+    int counter = 0;
+
+    for(counter = 0; counter < _targetList.length; counter++){
+      numberList.add(_targetList[counter].elementAt(index));
+    }
+    Array numberArray = Array(numberList);
+    varianceOfList = variance(numberArray);
+
+    print(varianceOfList);
+
+    return varianceOfList;
+  }
+
+
 }

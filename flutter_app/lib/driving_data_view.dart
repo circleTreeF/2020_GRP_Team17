@@ -586,7 +586,7 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
     }
   }
 
-
+//TODO: have bugs
   void _toggleListening() {
     if(drivingCondition==0){
     _toggleListeningGPS();
