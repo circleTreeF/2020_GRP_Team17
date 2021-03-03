@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class = "total-container">
+    <h1 style="color:#4682B4">Road Monitoring System</h1>
+
     <el-date-picker
+        class="date-picker"
         type="date"
         placeholder="select date"
         v-model="date"
-        style="width: 100%;"
         value-format="yyyy-MM-dd">
     </el-date-picker>
 
@@ -15,13 +17,12 @@
         :amap-manager="amapManager"
         :center="center"
         :zoom="zoom"
-        class="amap-demo"
-      >
+        class="amap-demo">
         <el-amap-circle v-for="(circle,index) in badPoints" 
           :key="index" 
           :center="circle.center" 
           :radius="circle.radius"
-          strokeColor= '#F33'
+          :strokeColor= "circle.status ? '#7B68EE' : '#ee2200'"
           strokeOpacity= '1'  
           strokeWeight= '1'  
           :fillColor= "circle.status ? '#6A5ACD' : '#ee2200'"
@@ -157,11 +158,23 @@ export default {
 </script>
 <style scoped>
 .amap-page-container {
-  width: 1440px;
-  height: 750px;
-  margin: 0px 20px;
+  width: 1300px;
+  height: 700px;
+  margin: 0px 80px;
+  bottom: 100px;
   border: rgb(170, 165, 165);
   border-style: solid;
   border-width: 5px;
+}
+
+.date-picker {
+  margin-bottom: 20px;
+  width: 40%;
+
+}
+
+.total-container{
+  /* margin: 0 60px; */
+  padding: 0 0 200px 0; 
 }
 </style>
