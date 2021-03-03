@@ -1,12 +1,7 @@
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:scidart/numdart.dart';
 
 class Score extends StatefulWidget {
-
 
   final List<double> list;
 

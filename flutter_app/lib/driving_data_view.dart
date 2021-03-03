@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'package:csv/csv.dart';
@@ -10,18 +9,16 @@ import 'package:sensors/sensors.dart';
 
 import 'UI/app_theme.dart';
 
-
-class DrivingDataView extends StatefulWidget{
-
+class DrivingDataView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return _DrivingDataViewState();
   }
-
 }
-class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProviderStateMixin {
 
+class _DrivingDataViewState extends State<DrivingDataView>
+    with SingleTickerProviderStateMixin {
   Position position;
   StreamSubscription<Position> _positionStreamSubscription;
   AccelerometerEvent event;
@@ -29,13 +26,15 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
 
   AnimationController _controller;
   Animation<double> animation;
-  int drivingCondition=0;
+  int drivingCondition = 0;
   final _positions = <Position>[];
   final _accelerometerEvent = <AccelerometerEvent>[];
-  final  _storeAccZFirstFilterList = <double> [];
+  final _storeAccZFirstFilterList = <double>[];
+
   get storeAccZFirstFilterList => _storeAccZFirstFilterList;
-  final _storeList = <List<double>>[];
-  final _finalList = <List<double>>[];
+  List<List<double>> _storeList = <List<double>>[]; //list after first filter
+  List<List<double>> _finalList = <List<double>>[]; //list after second filter
+
   StreamSubscription<AccelerometerEvent> get streamSubscriptions =>
       _streamSubscriptions;
 
@@ -43,13 +42,11 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-
-    return  new Transform(
-      transform: new Matrix4.translationValues(
-          0.0, 30 * (1.0 -0.5), 0.0),
+    return new Transform(
+      transform: new Matrix4.translationValues(0.0, 30 * (1.0 - 0.5), 0.0),
       child: Padding(
-        padding: const EdgeInsets.only(
-            left: 24, right: 24, top: 16, bottom: 18),
+        padding:
+            const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
         child: Container(
           decoration: BoxDecoration(
             color: AppTheme.white,
@@ -68,14 +65,13 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
           child: Column(
             children: <Widget>[
               Padding(
-                padding:
-                const EdgeInsets.only(top: 16, left: 16, right: 16),
+                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                 child: Row(
                   children: <Widget>[
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, top: 4),
+                        padding:
+                            const EdgeInsets.only(left: 8, right: 8, top: 4),
                         child: Column(
                           children: <Widget>[
                             Row(
@@ -84,17 +80,16 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                   height: 48,
                                   width: 2,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(4.0)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.0)),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -103,21 +98,20 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                           'Acc_X',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontFamily:
-                                            AppTheme.fontName,
+                                            fontFamily: AppTheme.fontName,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16,
                                             letterSpacing: -0.1,
-                                            color: AppTheme.grey
-                                                .withOpacity(0.5),
+                                            color:
+                                                AppTheme.grey.withOpacity(0.5),
                                           ),
                                         ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                            CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(
                                             width: 28,
@@ -126,42 +120,31 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                                 "assets/images/tab_3.png"),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 4, bottom: 3),
                                             child: Text(
                                               _cardTextAccX(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontFamily:
-                                                AppTheme
-                                                    .fontName,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 16,
-                                                color: AppTheme
-                                                    .darkerText,
+                                                color: AppTheme.darkerText,
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 4, bottom: 3),
                                             child: Text(
-                                              _cardTextAccX()
-                                              ,
+                                              _cardTextAccX(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontFamily:
-                                                AppTheme
-                                                    .fontName,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 12,
                                                 letterSpacing: -0.2,
-                                                color: AppTheme
-                                                    .grey
+                                                color: AppTheme.grey
                                                     .withOpacity(0.5),
                                               ),
                                             ),
@@ -182,17 +165,16 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                   height: 48,
                                   width: 2,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(4.0)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.0)),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -201,21 +183,20 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                           'Acc_Y',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontFamily:
-                                            AppTheme.fontName,
+                                            fontFamily: AppTheme.fontName,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16,
                                             letterSpacing: -0.1,
-                                            color: AppTheme.grey
-                                                .withOpacity(0.5),
+                                            color:
+                                                AppTheme.grey.withOpacity(0.5),
                                           ),
                                         ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                            CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(
                                             width: 28,
@@ -224,52 +205,40 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                                 "assets/images/tab_3.png"),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 4, bottom: 3),
                                             child: Text(
                                               _cardTextAccY(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontFamily:
-                                                AppTheme
-                                                    .fontName,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 16,
-                                                color: AppTheme
-                                                    .darkerText,
+                                                color: AppTheme.darkerText,
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 8, bottom: 3),
                                             child: Text(
                                               _cardTextAccY(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontFamily:
-                                                AppTheme
-                                                    .fontName,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 12,
                                                 letterSpacing: -0.2,
-                                                color: AppTheme
-                                                    .grey
+                                                color: AppTheme.grey
                                                     .withOpacity(0.5),
                                               ),
                                             ),
                                           ),
-
                                         ],
                                       )
                                     ],
                                   ),
                                 ),
-
                               ],
                             ),
                             SizedBox(
@@ -281,17 +250,16 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                   height: 48,
                                   width: 2,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(4.0)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4.0)),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -300,21 +268,20 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                           'Acc_Z',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontFamily:
-                                            AppTheme.fontName,
+                                            fontFamily: AppTheme.fontName,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16,
                                             letterSpacing: -0.1,
-                                            color: AppTheme.grey
-                                                .withOpacity(0.5),
+                                            color:
+                                                AppTheme.grey.withOpacity(0.5),
                                           ),
                                         ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                            CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(
                                             width: 28,
@@ -323,55 +290,42 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                                 "assets/images/tab_3.png"),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 4, bottom: 3),
                                             child: Text(
                                               _cardTextAccZ(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontFamily:
-                                                AppTheme
-                                                    .fontName,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 16,
-                                                color: AppTheme
-                                                    .darkerText,
+                                                color: AppTheme.darkerText,
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 8, bottom: 3),
                                             child: Text(
                                               _cardTextAccZ(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontFamily:
-                                                AppTheme
-                                                    .fontName,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 12,
                                                 letterSpacing: -0.2,
-                                                color: AppTheme
-                                                    .grey
+                                                color: AppTheme.grey
                                                     .withOpacity(0.5),
                                               ),
                                             ),
                                           ),
-
                                         ],
                                       )
                                     ],
                                   ),
                                 ),
-
                               ],
                             ),
-
                           ],
                         ),
                       ),
@@ -393,25 +347,20 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                                   ),
                                   border: new Border.all(
                                       width: 4,
-                                      color: AppTheme
-                                          .nearlyDarkBlue
+                                      color: AppTheme.nearlyDarkBlue
                                           .withOpacity(0.2)),
                                 ),
                                 child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     MaterialButton(
                                       child: _buttonText(),
                                       color: _buttonColor(),
-                                      onPressed:  _toggleListening,
+                                      onPressed: _toggleListening,
                                       padding: EdgeInsets.all(20),
                                       shape: CircleBorder(),
                                     )
-
-
                                   ],
                                 ),
                               ),
@@ -443,12 +392,10 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
                   ),
                 ),
               ),
-
             ],
           ),
         ),
       ),
-
     );
   }
 
@@ -460,12 +407,10 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
         vsync: this,
         value: 0,
         lowerBound: 0,
-        upperBound: 1
-    );
+        upperBound: 1);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: _controller,
-        curve:
-        Interval((1 / 9) * 1, 1.0, curve: Curves.fastOutSlowIn)));
+        curve: Interval((1 / 9) * 1, 1.0, curve: Curves.fastOutSlowIn)));
 
     _controller.forward();
   }
@@ -487,7 +432,6 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
     }
   }
 
-
   String _cardTextAccY() {
     if (event != null) {
       return 'Acc_Y:    ${event.y.roundToDouble()}';
@@ -504,48 +448,47 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
     }
   }
 
-
-
   void _toggleListeningGPS() {
-    _positionStreamSubscription = positionStream.listen((position) =>
-        setState(() {
-          _positions.add(position);
-          this.position = position;
-        }));
+    _positionStreamSubscription =
+        positionStream.listen((position) => setState(() {
+              _positions.add(position);
+              this.position = position;
+            }));
   }
 
   void _toggleListeningAcc() {
+    double timeStamp;
+    double lastTime = 0;
+
     _streamSubscriptions =
         accelerometerEvents.listen((AccelerometerEvent event) {
-          setState(() {
-            this.event = event;
+      setState(() {
+        this.event = event;
+        _accelerometerEvent.add(event);
 
-            _accelerometerEvent.add(event);
-            bool firstFilterRemaining= firstFilter(event);
-          if(firstFilterRemaining) {
-            _storeAccZFirstFilterList.add(event.z);
-            _storeList.add([
-              currentMillSecond(),
-              position.longitude,
-              position.latitude,
-              event.x,
-              event.y,
-              event.z
-            ]); //each time new
-          }
-            }
-
-
-          );
-        });
+        if (_storeList.isNotEmpty) lastTime = _storeList.last.first;
+        timeStamp = currentMillSecond();
+        if (lastTime + 100 <= timeStamp) {
+          //keep the 100 millisecond time slot
+          _storeList.add([
+            timeStamp,
+            position.longitude,
+            position.latitude,
+            event.x,
+            event.y,
+            event.z
+          ]); //each time new piece of data generated, added to _storeList
+        }
+      });
+    });
   }
 
-
-
+  /// gets current time
   double currentMillSecond() {
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
 
+  ///find out the path of .csv
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -554,20 +497,22 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
   ///get .csv file as file var
   Future<File> get _localFile async {
     final path = await _localPath;
-    //print(path);
     return File('$path/StoreAcc.csv');
   }
 
+  ///store list to CSV
   Future<File> _storeListToCSV(List _targetList) async {
     String csv = const ListToCsvConverter().convert(_targetList);
     final file = await _localFile;
     return file.writeAsString(csv);
   }
 
+
+  ///read csv file to list
   Future<List<dynamic>> readFromFile() async {
     try {
       final file = await _localFile;
-      // int counter = 0;
+      int counter = 0;
 
       String contents = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter()
@@ -575,9 +520,9 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
       //print(rowsAsListOfValues);
       print(rowsAsListOfValues.length);
 
-      // for(counter = 0; counter < rowsAsListOfValues.length; counter++){
-      //   print(rowsAsListOfValues[counter]);
-      // }
+      for(counter = 0; counter < rowsAsListOfValues.length; counter++){
+        print(rowsAsListOfValues[counter]);
+      }
 
       return rowsAsListOfValues;
     } catch (e) {
@@ -586,16 +531,64 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
     }
   }
 
+  ///first filter: denoise the data in _storeList
+  List<List<double>> firstFilter(List _targetList) {
+    List<List<double>> _outputList = <List<double>>[];
+
+    int counter = 0;
+    int abandonLength = 30;
+
+    double currentX = 0;
+    double currentY = 0;
+    double currentZ = 0;
+
+    double standardX = 0;
+    double standardY = 0;
+    double standardZ = 0;
+    double sumX = 0;
+    double sumY = 0;
+    double sumZ = 0;
+
+    const double thresholdForX = 4;
+    const double thresholdForY = 4;
+    const double thresholdForZ = 4;
+
+    for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++){
+      //average of each axis data
+      sumX = sumX + _targetList[counter].elementAt(3);
+      sumY = sumY + _targetList[counter].elementAt(4);
+      sumZ = sumZ + _targetList[counter].elementAt(5);
+      standardX= sumX / (counter - abandonLength);
+      standardY= sumY / (counter - abandonLength);
+      standardZ= sumZ / (counter - abandonLength);
+    }
+
+    for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++) {
+      // remove data out of the range based on the average and threshold
+      currentX = _targetList[counter].elementAt(3);
+      currentY = _targetList[counter].elementAt(4);
+      currentZ = _targetList[counter].elementAt(5);
+      if ((currentX <= standardX + thresholdForX)&&(currentX >= standardX - thresholdForX)&&
+          (currentY <= standardY + thresholdForY)&&(currentY >= standardY - thresholdForY)&&
+          (currentZ <= standardZ + thresholdForZ)&&(currentZ >= standardZ - thresholdForZ)) {
+        _outputList.add(_targetList[counter]);
+      }
+    }
+
+    return _outputList;
+  }
+
+
 //TODO: have bugs
   void _toggleListening() {
-    if(drivingCondition==0){
-    _toggleListeningGPS();
-    _toggleListeningAcc();
-    drivingCondition=1;}
-    else{
+    if (drivingCondition == 0) {
+      _toggleListeningGPS();
+      _toggleListeningAcc();
+      drivingCondition = 1;
+    } else {
       _pauseStream();
       _popUpScore(_storeAccZFirstFilterList);
-      drivingCondition=0;
+      drivingCondition = 0;
     }
   }
 
@@ -603,54 +596,41 @@ class _DrivingDataViewState extends State<DrivingDataView> with SingleTickerProv
     return _isListeningPosition() ? Colors.red : Colors.green;
   }
 
-
-  bool _isListeningPosition() =>
-      !(_positionStreamSubscription == null ||
-          _positionStreamSubscription.isPaused);
+  bool _isListeningPosition() => !(_positionStreamSubscription == null ||
+      _positionStreamSubscription.isPaused);
 
   void _pauseStream() {
-      _positionStreamSubscription.pause();
-      _streamSubscriptions.pause();
-
-    }
-
-
-  Text _buttonText() {
-    return _isListeningPosition() ? Text('stop',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily:
-          AppTheme.fontName,
-          fontWeight: FontWeight.normal,
-          fontSize: 24,
-          letterSpacing: 0.0,
-          color: AppTheme
-              .nearlyDarkBlue,
-        )
-    ) : Text('start',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily:
-          AppTheme.fontName,
-          fontWeight: FontWeight.normal,
-          fontSize: 24,
-          letterSpacing: 0.0,
-          color: AppTheme
-              .nearlyDarkBlue,
-        )
-    );
+    _positionStreamSubscription.pause();
+    _streamSubscriptions.pause();
   }
 
-Future<dynamic>  _popUpScore(List<double> storeAccZFirstFilterList) {
+  Text _buttonText() {
+    return _isListeningPosition()
+        ? Text('stop',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppTheme.fontName,
+              fontWeight: FontWeight.normal,
+              fontSize: 24,
+              letterSpacing: 0.0,
+              color: AppTheme.nearlyDarkBlue,
+            ))
+        : Text('start',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppTheme.fontName,
+              fontWeight: FontWeight.normal,
+              fontSize: 24,
+              letterSpacing: 0.0,
+              color: AppTheme.nearlyDarkBlue,
+            ));
+  }
 
-
-    return
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => Score(list:  _storeAccZFirstFilterList)
-    );
-
-
+  Future<dynamic> _popUpScore(List<double> storeAccZFirstFilterList) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            Score(list: _storeAccZFirstFilterList));
   }
 
   @override
@@ -660,43 +640,10 @@ Future<dynamic>  _popUpScore(List<double> storeAccZFirstFilterList) {
       _positionStreamSubscription = null;
     }
 
-    secondFilterCompact(); // second filter to compact before being stored into csv file
-    _storeListToCSV(_finalList); // convert double list to csv stream and store in csv file
+    _finalList = firstFilter(_storeList);
+    _storeListToCSV(_finalList);
     readFromFile(); // test sentence, read form csv file
-    //print(_storeAccZFirstFilterList);//test the accZ
     //print("terminates");
     super.dispose();
   }
-
-  void secondFilterCompact() async{
-    try {
-      int counter = 0;
-      const int sliceSize = 10;
-
-      for(counter = 0; counter < _storeList.length; counter++){
-        if (counter % sliceSize == sliceSize-1){
-          _finalList.add(_storeList[counter]);
-        }
-      }
-      // print(_finalList);
-      // print(_finalList.length);
-    } catch (e) {
-      // If encountering an error, return 0.
-      return null;
-    }
-  }
-
-  ///first filter
-  bool firstFilter(AccelerometerEvent event) {
-    const double bound = 5.0;
-    if( event.z >=bound){
-      return true;
-    }
-    else return false;
-  }
-
-
-
-
-
 }
