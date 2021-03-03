@@ -5,6 +5,7 @@ from model.models import NormalRoadTemplate, AbnormalRoadTemplate, BadPointsTemp
 from statistics.models import BadPoints, Record
 import sklearn.cluster._kmeans as km
 from datetime import datetime, timedelta
+from random import uniform
 
 num_of_features = 3
 
@@ -24,18 +25,31 @@ def update():
     for sample in round_logs:
         # select the 3 features for the further detection, the acceleration value in x, y, z axis
         collected_series = np.array((sample['acc'][3:5]))
-        if find(collected_series):
+        is_abnormal, cost_matrix = find(collected_series)
+        if is_abnormal:
             # in the format of locations, the array of longitude and  latitude, the value of acceleration in
             # x, y and z axis
-            formatted_sample = np.array((np.array(sample['acc'][1:2]), sample['acc'][3:5]))
+            # the array of min index of the cost_matrix
+            min_index_array = np.array(list(map(np.argmin, cost_matrix)))
+            most_frequent_index = np.bincount(min_index_array).argmax()
+            bad_point_longitude = sample[most_frequent_index][1]
+            bad_point_latitude = sample[most_frequent_index][2]
+            radius = uniform(1, 3)
+            # the last unix time in the round record
+            bad_point_time = datetime.fromtimestamp(sample[np.shape(sample)[0] - 1][0])
+            detected_bad_point = BadPoints(point_longitude=bad_point_longitude, point_latitude=bad_point_latitude,
+                                           point_radius=radius, point_time=bad_point_time)
+            detected_bad_point.save()
+            formatted_sample = np.array((np.array(sample['acc'][:][1:2]), sample['acc'][:][3:5]))
             suspected_bad_points[suspected_bad_points_counter] = formatted_sample
             suspected_bad_points_counter += 1
+
     # concatenate the array of suspected bad points with the pre-saved bad points in the database
-    concatenated_points = np.concatenate(suspected_bad_points, bad_points)
-    k_mean_estimator = k_mean_cluster(concatenated_points)
+    # concatenated_points = np.concatenate(suspected_bad_points, bad_points)
+    # k_mean_estimator = k_mean_cluster(concatenated_points)
     # use the label of abnormal road point to calibrate the value of label
-    template_bad_point_label = np.mean(
-        k_mean_estimator.label_[suspected_bad_points_counter, np.shape(concatenated_points)[0]]) > 0.5
+    # template_bad_point_label = np.mean(
+    # k_mean_estimator.label_[suspected_bad_points_counter, np.shape(concatenated_points)[0]]) > 0.5
 
     # for bad_point_label in k_mean_estimator.label_:
     # TODO: k means cluster the bad points into 2 label but we not sure which label is abnormal. So add the abnormal templates in. There needs the position of bad point instead of the templates of bad roads
@@ -50,15 +64,22 @@ def update():
 # def __init__(self, ):
 #
 
+
+# return true if the time series is more similar to the abnormal road, where there is abnormal road;
+# otherwise, false, where the road is normal
 def find(collected_series):
     normal_distance = np.empty(shape=(normal_road_template.count()), dtype=float)
     abnormal_distance = np.empty(shape=(abnormal_road_template.count()), dtype=float)
+    normal_cost_matrix = np.empty(shape=(normal_road_template.count()), dtype=object)
+    abnormal_cost_matrix = np.empty(shape=(abnormal_road_template.count()), dtype=object)
     index = 0
     for template in normal_road_template:
         template_dict = template.round_log
         template_list = list(template_dict.values())
         template_array = np.array(template_list)
-        np.insert(normal_distance, obj=index, value=compare(collected_series, template_array))
+        current_distance, current_cost_matrix = compare(collected_series, template_array)
+        np.insert(normal_distance, obj=index, value=current_distance)
+        np.insert(normal_cost_matrix, obj=index, value=current_cost_matrix)
         index += 1
 
     index = 0
@@ -67,13 +88,19 @@ def find(collected_series):
         abnormal_template_dict = abnormal_template.round_log
         abnormal_template_list = list(abnormal_template_dict.values())
         abnormal_template_array = np.array(abnormal_template_list)
-        np.append(abnormal_distance, compare(collected_series, abnormal_template_array))
+        current_distance, current_cost_matrix = compare(collected_series, abnormal_template_array)
+        np.insert(abnormal_distance, obj=index, value=current_distance)
+        np.insert(abnormal_cost_matrix, obj=index, value=current_cost_matrix)
+        # np.append(abnormal_distance, compare(collected_series, abnormal_template_array))
         index += 1
 
     normal_distance_avg = normal_distance.mean()
     abnormal_distance_avg = abnormal_distance.mean()
-    # the distance of collected sample is closer to abnormal than the normal templates
-    return normal_distance_avg > abnormal_distance_avg
+    if normal_distance_avg > abnormal_distance_avg:
+        # the distance of collected sample is closer to abnormal than the normal templates
+        return True, abnormal_cost_matrix
+    else:
+        return False, normal_cost_matrix
 
 
 # Find the best match between the time series of the record of one round with the manhattan distance as the element
@@ -82,7 +109,6 @@ def compare(collected_series, template_series):
     manhattan_distance = lambda x, y: np.square(x - y)
     distance, cost_matrix, acc_cost_matrix, path = dtw.dtw(collected_series, template_series, dist=manhattan_distance)
     return distance, cost_matrix
-
 
 # features used in K-Mean clustering are locations, the array of longitude and  latitude, the value of acceleration in
 # x, y and z axis
