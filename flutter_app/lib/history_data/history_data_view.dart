@@ -72,7 +72,7 @@ class HistoryDataListView extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              historyData.titleTxt,
+                                              historyData.start_time,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -86,7 +86,17 @@ class HistoryDataListView extends StatelessWidget {
                                               MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  historyData.subTxt,
+                                                  historyData.end_time,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey
+                                                          .withOpacity(0.8)),
+                                                ),
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  historyData.round_mark.toString(),
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey
@@ -96,11 +106,10 @@ class HistoryDataListView extends StatelessWidget {
                                                   width: 4,
                                                 ),
 
-
                                                 Padding(
                                                   padding: const EdgeInsets
                                                       .only(
-                                                      right: 16, top: 8),
+                                                      right: 16, top: 16),
                                                   child: Column(
                                                     mainAxisAlignment:
                                                     MainAxisAlignment.center,

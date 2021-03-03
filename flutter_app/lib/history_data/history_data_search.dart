@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/history_data/history_init.dart';
 import 'package:flutter_app/post_model.dart';
 import 'package:flutter_app/post_service.dart';
 import 'package:flutter_app/user_list.dart';
 
 import 'package:intl/intl.dart';
 
+import 'data_list_generator.dart';
 import 'filters_screen.dart';
 import 'history_app_theme.dart';
 import 'history_data_view.dart';
@@ -25,7 +27,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
     with TickerProviderStateMixin {
   final myController = TextEditingController();
 //记录输入的值；
-
+  DataListGenerator _dataListGenerator;
   var number;
   AnimationController animationController;
   List<HistoryDataList> historyDataList = HistoryDataList.historyList;
@@ -41,7 +43,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
         duration: const Duration(milliseconds: 1000), vsync: this);
     //AnimationController在给定的时间段内线性的生成从0.0到1.0（默认区间）的数字
     super.initState();
-    postNet_2();
+   postNet_2();
 
   }
 
@@ -55,18 +57,27 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   /// @version:
   ///
   //
+
   void postNet_2() async {
+
 
     createPost(new Post(user_id: 4936)).then((response){
       if(response.statusCode >=200){
         //print(response.body);
-      String _content = response.body;
-      final _userMap= jsonDecode(_content);
-      //print(_userMap);
+        String _content = response.body;
+        final _userMap= jsonDecode(_content);
+        //print(_userMap);
         UserList userList =UserList.fromJson(_userMap);
-        print(userList.users[0].start_time);
-        print(userList.users[1].start_time);
-        print(userList.users[2].start_time);
+       // print(userList.users.length);
+        for(int i=0; i<userList.users.length;i++){
+          HistoryDataList _historyDataList = new HistoryDataList();
+          _historyDataList.start_time=userList.users[i].start_time;
+          _historyDataList.end_time=userList.users[i].end_time;
+          _historyDataList.round_mark=userList.users[i].round_mark;
+          print( _historyDataList);
+          HistoryDataList.historyList.add( _historyDataList);
+        }
+
       }
       else
         print(response.statusCode);
@@ -75,6 +86,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
     });
 
   }
+
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
@@ -224,7 +236,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   }
 
   Widget getHistoryViewList() {
-    final List<Widget> hotelListViews = <Widget>[];
+    final List<Widget> ListViews = <Widget>[];
     for (int i = 0; i < historyDataList.length; i++) {
       final int count = historyDataList.length;
       final Animation<double> animation =
@@ -234,7 +246,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
           curve: Interval((1 / count) * i, 1.0, curve: Curves.fastOutSlowIn),
         ),
       );
-      hotelListViews.add(
+      ListViews.add(
         HistoryDataListView(
           callback: () {},
           historyData: historyDataList[i],
@@ -245,7 +257,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
     }
     animationController.forward();
     return Column(
-      children: hotelListViews,
+      children: ListViews,
     );
   }
 

@@ -210,7 +210,7 @@ class _DyLoginPage extends State<LoginPage> with Base {
                                 borderSide: BorderSide.none
                             ),
                             contentPadding: EdgeInsets.only(left: dp(15), top: dp(3), bottom: dp(3)),
-                            hintText: '昵称/用户名（5-30位字符）',
+                            hintText: 'nickname',
                           ),
                         ),
                       ),
