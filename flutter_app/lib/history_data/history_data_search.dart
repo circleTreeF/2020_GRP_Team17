@@ -69,6 +69,11 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
         //print(_userMap);
         UserList userList =UserList.fromJson(_userMap);
        // print(userList.users.length);
+
+        if (HistoryDataList.historyList.isNotEmpty){
+          HistoryDataList.historyList.clear();
+        }
+
         for(int i=0; i<userList.users.length;i++){
           HistoryDataList _historyDataList = new HistoryDataList();
           _historyDataList.start_time=userList.users[i].start_time;
