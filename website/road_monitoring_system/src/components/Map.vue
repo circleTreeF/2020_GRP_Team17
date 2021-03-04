@@ -176,5 +176,7 @@ export default {
 .total-container{
   /* margin: 0 60px; */
   padding: 0 0 200px 0; 
+  width: 100%;
+  height: 100%;
 }
 </style>
