@@ -2,7 +2,7 @@ library fancy_dialog;
 
 import 'package:flutter/material.dart';
 
-import 'FancyGif.dart';
+import 'UI/FancyGif.dart';
 
 
 
@@ -16,8 +16,8 @@ class FancyDialog extends StatefulWidget {
       {Key key,
       this.okFun,
       this.cancelFun,
-      this.animationType = 1,
-      this.gifPath = FancyGif.MOVE_FORWARD,
+      this.animationType = -2,
+      this.gifPath = FancyGif.PLAY_MEDIA,
       this.cancelColor = Colors.grey,
       this.okColor = Colors.pink,
       this.ok = " OK !",
@@ -228,7 +228,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
   Widget customButton(String t, Color c, Function f) {
     return 
       Container(
-        child: RawMaterialButton(
+        child: RaisedButton(
                 key: testKeys[0],
                 shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(30.0)
@@ -249,7 +249,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
   Widget flatButton(String t, Color c, Function f) {
     return 
       Container(
-        child: RawMaterialButton(
+        child: FlatButton(
                 key: testKeys[1],
                 child: Text(
                         t,

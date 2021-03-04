@@ -1,10 +1,11 @@
 
 import 'dart:convert';
-import 'package:fancy_dialog/fancy_dialog.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_app/base.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/fancy_dialog.dart';
 import 'package:flutter_app/navigation_home_screen.dart';
 import 'package:flutter_app/post_model.dart';
 import 'package:flutter_app/post_service.dart';
