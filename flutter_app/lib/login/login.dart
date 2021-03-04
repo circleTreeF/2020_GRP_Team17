@@ -1,9 +1,13 @@
 
+import 'dart:convert';
+import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/base.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/navigation_home_screen.dart';
+import 'package:flutter_app/post_model.dart';
+import 'package:flutter_app/post_service.dart';
 
 class LoginPage extends StatefulWidget {
   final arguments;
@@ -338,11 +342,22 @@ class _DyLoginPage extends State<LoginPage> with Base {
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(
-                    builder: (context)=>NavigationHomeScreen()
-                    )
-                );
+
+                checkUser();
+                //   Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //       builder: (context)=>NavigationHomeScreen()
+                //       )
+                //   );
+
+
+                // else {
+                //   showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) => FancyDialog(
+                //       )
+                //   );
+                // }
               },
               child: Center(
                 child: Text(type == 0 ? 'register' : 'login',
@@ -384,5 +399,41 @@ class _DyLoginPage extends State<LoginPage> with Base {
         ),
       ),
     );
+  }
+
+
+   void checkUser(){
+
+    print(_mobileController.text);
+    print(_passWordController.text);
+
+    createPost1(new Post1(username:_mobileController.text,password:_passWordController.text)).then((response) {
+      if (response.statusCode >= 200) {
+        var _content = response.body;
+        Map<String, dynamic> enter = jsonDecode(_content);
+        print('${enter['result']}');
+        print(enter['result']);
+        if(enter['result']==true){
+          Navigator.of(context).push(
+                  MaterialPageRoute(
+                  builder: (context)=>NavigationHomeScreen()
+                  )
+              );
+        }
+
+        else {
+          showDialog(
+                  context: context,
+                  builder: (BuildContext context) => FancyDialog()
+              );
+        }
+
+
+      }
+      else
+        print(response.statusCode);
+    } ).catchError((error){
+      print('error : $error');
+    });
   }
 }

@@ -15,7 +15,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'startTime': instance.start_time,
-      'endTime': instance.end_time,
-      'roundMark': instance.round_mark,
+      'start_time': instance.start_time,
+      'end_time': instance.end_time,
+      'round_mark': instance.round_mark,
     };
