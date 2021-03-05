@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/UI/app_theme.dart';
 import 'package:flutter_app/history_data/history_init.dart';
 import 'package:flutter_app/post_model.dart';
 import 'package:flutter_app/post_service.dart';
@@ -491,6 +492,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   }
 
   Widget getAppBarUI() {
+    num topBarOpacity = 0.0;
     return Container(
       decoration: BoxDecoration(
         color: HistoryTheme.buildLightTheme().backgroundColor,
@@ -508,9 +510,13 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
               child: Center(
                 child: Text(
                   'History',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
+                    fontFamily: AppTheme.fontName,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 22 + 6 - 6 * topBarOpacity,
+                    letterSpacing: 1.2,
+                    color: AppTheme.darkerText,
                   ),
                 ),
               ),
