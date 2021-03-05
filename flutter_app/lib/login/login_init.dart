@@ -4,6 +4,8 @@ import 'package:flutter_app/base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../navigation_home_screen.dart';
+
 class LoginInitPage  extends StatefulWidget  {
   LoginInitPage({Key key}) : super(key: key);
 
@@ -135,6 +137,39 @@ class _LoginInitPageState extends State<LoginInitPage> with Base{
                                   style: TextStyle(
                                     color: Colors.lightBlueAccent,
                                     fontSize: 19,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: dp(20), bottom: dp(15)),
+                          child: RawMaterialButton (
+                            fillColor: Colors.green,
+                            elevation: 0,
+                            highlightElevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(4)),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context)=>NavigationHomeScreen()
+                                  )
+                              );
+                            },
+                            child: Container(
+                              height: dp(50),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(4)),
+                                border: Border.all(width: dp(1), color: Colors.lightBlueAccent),
+                              ),
+                              child: Center(
+                                child: Text('Test Entrance',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 25,
                                   ),
                                 ),
                               ),
