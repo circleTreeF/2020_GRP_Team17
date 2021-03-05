@@ -6,7 +6,6 @@ import 'package:flutter_app/widgets/bottom_bar_view.dart';
 import 'UI/app_theme.dart';
 import 'driving_screen.dart';
 import 'history_data/history_data_search.dart';
-import 'info_page.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -97,8 +96,7 @@ class _HomeScreenState extends State<HomeScreen>
                   tabBody = DrivingScreen(animationController: animationController);
                 });
               });
-            }else if(index== 1){
-
+            }else {
                 animationController.reverse().then<dynamic>((data) {
                   if (!mounted) {
                     return;
@@ -108,16 +106,7 @@ class _HomeScreenState extends State<HomeScreen>
                   });
                 });
               }
-            else if (index == 2 || index == 3) {
-              animationController.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
-                }
-                setState(() {
-                  tabBody =InfoPage();
-                });
-              });
-            }
+
           },
         ),
       ],
