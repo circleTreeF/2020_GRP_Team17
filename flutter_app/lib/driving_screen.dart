@@ -38,17 +38,17 @@ class _DrivingScreenState extends State<DrivingScreen>
   void addAllListData() {
     const int count = 9;
 
-    listViews.add(
-      TitleView(
-        titleTxt: 'Data Display',
-
-        animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: widget.animationController,
-            curve:
-            Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
-        animationController: widget.animationController,
-      ),
-    );
+    // listViews.add(
+    //   TitleView(
+    //     titleTxt: 'Data Display',
+    //
+    //     animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+    //         parent: widget.animationController,
+    //         curve:
+    //         Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+    //     animationController: widget.animationController,
+    //   ),
+    // );
 
     listViews.add(
       DrivingStateView(),
@@ -163,59 +163,59 @@ class _DrivingScreenState extends State<DrivingScreen>
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 38,
-                              width: 38,
-                              child: InkWell(
-                                highlightColor: Colors.transparent,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(32.0)),
-                                onTap: () {},
-                                child: Center(
-                                  child: Icon(
-                                    Icons.keyboard_arrow_left,
-                                    color: AppTheme.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8,
-                                right: 8,
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: Icon(
-                                      Icons.calendar_today,
-                                      color: AppTheme.grey,
-                                      size: 18,
-                                    ),
-                                  ),
-
-                                  formatDate(),
-
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 38,
-                              width: 38,
-                              child: InkWell(
-                                highlightColor: Colors.transparent,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(32.0)),
-                                onTap: () {},
-                                child: Center(
-                                  child: Icon(
-                                    Icons.keyboard_arrow_right,
-                                    color: AppTheme.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // SizedBox(
+                            //   height: 38,
+                            //   width: 38,
+                            //   child: InkWell(
+                            //     highlightColor: Colors.transparent,
+                            //     borderRadius: const BorderRadius.all(
+                            //         Radius.circular(32.0)),
+                            //     onTap: () {},
+                            //     child: Center(
+                            //       child: Icon(
+                            //         Icons.keyboard_arrow_left,
+                            //         color: AppTheme.grey,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(
+                            //     left: 8,
+                            //     right: 8,
+                            //   ),
+                            //   child: Row(
+                            //     children: <Widget>[
+                            //       Padding(
+                            //         padding: const EdgeInsets.only(right: 8),
+                            //         child: Icon(
+                            //           Icons.calendar_today,
+                            //           color: AppTheme.grey,
+                            //           size: 18,
+                            //         ),
+                            //       ),
+                            //
+                            //       formatDate(),
+                            //
+                            //     ],
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   height: 38,
+                            //   width: 38,
+                            //   child: InkWell(
+                            //     highlightColor: Colors.transparent,
+                            //     borderRadius: const BorderRadius.all(
+                            //         Radius.circular(32.0)),
+                            //     onTap: () {},
+                            //     child: Center(
+                            //       child: Icon(
+                            //         Icons.keyboard_arrow_right,
+                            //         color: AppTheme.grey,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       )
