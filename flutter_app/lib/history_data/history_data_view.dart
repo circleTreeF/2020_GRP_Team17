@@ -16,7 +16,7 @@ class HistoryDataListView extends StatelessWidget {
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animationController,

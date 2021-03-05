@@ -10,7 +10,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
   return User(
     json['start_time'] as String,
     json['end_time'] as String,
-    (json['round_mark'] as num)?.toDouble(),
+    json['round_mark'] as String,
   );
 }
 

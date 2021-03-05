@@ -38,12 +38,12 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
 
   @override
   void initState() {
-
+    postNet_2();
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     //AnimationController在给定的时间段内线性的生成从0.0到1.0（默认区间）的数字
     super.initState();
-   postNet_2();
+
 
   }
 
@@ -75,6 +75,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
         }
 
         for(int i=0; i<userList.users.length;i++){
+          print(11111);
           HistoryDataList _historyDataList = new HistoryDataList();
           _historyDataList.start_time=userList.users[i].start_time;
           _historyDataList.end_time=userList.users[i].end_time;
@@ -303,7 +304,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                       ),
                     ),
                   ),
-                
+
               ],
             ),
           ),
@@ -502,7 +503,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
       ),
         child: Row(
           children: <Widget>[
-            
+
             Expanded(
               child: Center(
                 child: Text(

@@ -6,8 +6,11 @@ import 'dart:io';
 import 'package:flutter_app/post_model.dart';
 import 'package:http/http.dart' as http;
 
+import 'Data.dart';
+
 String url = 'http://10.6.2.61:8866/statistics/get_record';
 String url1= 'http://10.6.2.61:8866/statistics/user_login';
+String url2= 'http://10.6.2.61:8866/statistics/add_record';
 
 Future<List<Post>> getAllPosts() async {
   final response = await http.get(url);
@@ -52,6 +55,19 @@ Future<http.Response> createPost1(Post1 post) async{
   );
   return response;
 }
+
+
+Future<http.Response> createPost2(String data) async{
+  final response = await http.post('$url2',
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader : ''
+      },
+      body: data
+  );
+  return response;
+}
+
 
 
 

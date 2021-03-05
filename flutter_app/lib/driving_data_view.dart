@@ -26,14 +26,15 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
   AnimationController _controller;
   Animation<double> animation;
-  int drivingCondition = 0;
+  int clickTime=0;
+  bool drivingCondition = false;
   final _positions = <Position>[];
   final _accelerometerEvent = <AccelerometerEvent>[];
-  final _storeAccZFirstFilterList = <double>[];
 
-  get storeAccZFirstFilterList => _storeAccZFirstFilterList;
-  List<List<double>> _storeList = <List<double>>[]; //list after first filter
-  List<List<double>> _finalList = <List<double>>[]; //list after second filter
+
+
+  List<Map<String,double>> _storeList = <Map<String,double>>[]; //list after first filter
+  List<Map<String,double>> _finalList = <Map<String,double>>[]; //list after second filter
 
   StreamSubscription<AccelerometerEvent> get streamSubscriptions =>
       _streamSubscriptions;
@@ -354,13 +355,14 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    MaterialButton(
-                                      child: _buttonText(),
-                                      color: _buttonColor(),
-                                      onPressed: _toggleListening,
-                                      padding: EdgeInsets.all(20),
-                                      shape: CircleBorder(),
-                                    )
+                                    // ignore: deprecated_member_use
+                                MaterialButton(
+                                child: _buttonText(),
+                                color: _buttonColor(),
+                                onPressed: _toggleListening,
+                                padding: EdgeInsets.all(20),
+                                shape: CircleBorder(),
+                              )
                                   ],
                                 ),
                               ),
@@ -415,14 +417,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
     _controller.forward();
   }
 
-//TODO：display GPS data
-  // String _cardTextGPS() {
-  //   if (position != null) {
-  //     return 'GPS:  ${ position.latitude}, ${ position.longitude}';
-  //   } else {
-  //     return 'GPS: wait';
-  //   }
-  // }
 
   String _cardTextAccX() {
     if (event != null) {
@@ -462,24 +456,29 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
     _streamSubscriptions =
         accelerometerEvents.listen((AccelerometerEvent event) {
-      setState(() {
-        this.event = event;
-        _accelerometerEvent.add(event);
+          if(mounted) {
+            setState(() {
+              this.event = event;
+              _accelerometerEvent.add(event);
 
-        if (_storeList.isNotEmpty) lastTime = _storeList.last.first;
-        timeStamp = currentMillSecond();
-        if (lastTime + 100 <= timeStamp) {
-          //keep the 100 millisecond time slot
-          _storeList.add([
-            timeStamp,
-            position.longitude,
-            position.latitude,
-            event.x,
-            event.y,
-            event.z
-          ]); //each time new piece of data generated, added to _storeList
-        }
-      });
+              if (_storeList.isNotEmpty) lastTime = _storeList.last['time'];
+              timeStamp = currentMillSecond();
+              Map<String, double> _mapList = new Map<String, double>();
+              _mapList = {
+                'time': timeStamp,
+                'latitude': position.latitude,
+                'longitude': position.longitude,
+
+                'x': event.x,
+                'y': event.y,
+                'z': event.z};
+              if (lastTime + 100 <= timeStamp) {
+                //keep the 100 millisecond time slot
+                _storeList.add(
+                    _mapList); //each time new piece of data generated, added to _storeList
+              }
+            });
+          }
     });
   }
 
@@ -531,66 +530,70 @@ class _DrivingDataViewState extends State<DrivingDataView>
     }
   }
 
-  ///first filter: denoise the data in _storeList
-  List<List<double>> firstFilter(List _targetList) {
-    List<List<double>> _outputList = <List<double>>[];
-
-    int counter = 0;
-    int abandonLength = 30;
-
-    double currentX = 0;
-    double currentY = 0;
-    double currentZ = 0;
-
-    double standardX = 0;
-    double standardY = 0;
-    double standardZ = 0;
-    double sumX = 0;
-    double sumY = 0;
-    double sumZ = 0;
-
-    const double thresholdForX = 4;
-    const double thresholdForY = 4;
-    const double thresholdForZ = 4;
-
-    for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++){
-      //average of each axis data
-      sumX = sumX + _targetList[counter].elementAt(3);
-      sumY = sumY + _targetList[counter].elementAt(4);
-      sumZ = sumZ + _targetList[counter].elementAt(5);
-      standardX= sumX / (counter - abandonLength);
-      standardY= sumY / (counter - abandonLength);
-      standardZ= sumZ / (counter - abandonLength);
-    }
-
-    for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++) {
-      // remove data out of the range based on the average and threshold
-      currentX = _targetList[counter].elementAt(3);
-      currentY = _targetList[counter].elementAt(4);
-      currentZ = _targetList[counter].elementAt(5);
-      if ((currentX <= standardX + thresholdForX)&&(currentX >= standardX - thresholdForX)&&
-          (currentY <= standardY + thresholdForY)&&(currentY >= standardY - thresholdForY)&&
-          (currentZ <= standardZ + thresholdForZ)&&(currentZ >= standardZ - thresholdForZ)) {
-        _outputList.add(_targetList[counter]);
-      }
-    }
-
-    return _outputList;
-  }
+  ///first filter: diagnose the data in _storeList
+  // List<Map<String,double>> firstFilter(List _targetList) {
+  //   List<Map<String,double>> _outputList = <Map<String,double>>[];
+  //
+  //   int counter = 0;
+  //   int abandonLength = 30;
+  //
+  //   double currentX = 0;
+  //   double currentY = 0;
+  //   double currentZ = 0;
+  //
+  //   double standardX = 0;
+  //   double standardY = 0;
+  //   double standardZ = 0;
+  //   double sumX = 0;
+  //   double sumY = 0;
+  //   double sumZ = 0;
+  //
+  //   const double thresholdForX = 4;
+  //   const double thresholdForY = 4;
+  //   const double thresholdForZ = 4;
+  //
+  //   for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++){
+  //     //average of each axis data
+  //     sumX = sumX + _targetList[counter]["x"];
+  //     //print(sumX);
+  //     sumY = sumY + _targetList[counter]["y"];
+  //     sumZ = sumZ + _targetList[counter]["z"];
+  //     standardX= sumX / (counter - abandonLength);
+  //     standardY= sumY / (counter - abandonLength);
+  //     standardZ= sumZ / (counter - abandonLength);
+  //   }
+  //
+  //   for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++) {
+  //     // remove data out of the range based on the average and threshold
+  //     currentX = _targetList[counter]["x"];
+  //     currentY = _targetList[counter]["y"];
+  //     currentZ = _targetList[counter]["z"];
+  //     if ((currentX <= standardX + thresholdForX)&&(currentX >= standardX - thresholdForX)&&
+  //         (currentY <= standardY + thresholdForY)&&(currentY >= standardY - thresholdForY)&&
+  //         (currentZ <= standardZ + thresholdForZ)&&(currentZ >= standardZ - thresholdForZ)) {
+  //       _outputList.add(_targetList[counter]);
+  //     }
+  //   }
+  //
+  //   return _outputList;
+  // }
 
 
 //TODO: have bugs
   void _toggleListening() {
-    if (drivingCondition == 0) {
+
+    if (drivingCondition == false) {
       _toggleListeningGPS();
       _toggleListeningAcc();
-      drivingCondition = 1;
+      drivingCondition = true;
     } else {
+
       _pauseStream();
-      _popUpScore(_storeAccZFirstFilterList);
-      drivingCondition = 0;
+      drivingCondition = false;
     }
+
   }
+
 
   Color _buttonColor() {
     return _isListeningPosition() ? Colors.red : Colors.green;
@@ -599,51 +602,67 @@ class _DrivingDataViewState extends State<DrivingDataView>
   bool _isListeningPosition() => !(_positionStreamSubscription == null ||
       _positionStreamSubscription.isPaused);
 
-  void _pauseStream() {
+
+
+  void _pauseStream() { 
+    //_finalList = firstFilter(_storeList);
     _positionStreamSubscription.pause();
     _streamSubscriptions.pause();
+    _popUpScore(_storeList);
   }
 
   Text _buttonText() {
+
     return _isListeningPosition()
         ? Text('stop',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppTheme.fontName,
-              fontWeight: FontWeight.normal,
-              fontSize: 24,
-              letterSpacing: 0.0,
-              color: AppTheme.nearlyDarkBlue,
-            ))
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: AppTheme.fontName,
+          fontWeight: FontWeight.normal,
+          fontSize: 24,
+          letterSpacing: 0.0,
+          color: AppTheme.nearlyDarkBlue,
+        ))
         : Text('start',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppTheme.fontName,
-              fontWeight: FontWeight.normal,
-              fontSize: 24,
-              letterSpacing: 0.0,
-              color: AppTheme.nearlyDarkBlue,
-            ));
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: AppTheme.fontName,
+          fontWeight: FontWeight.normal,
+          fontSize: 24,
+          letterSpacing: 0.0,
+          color: AppTheme.nearlyDarkBlue,
+        ));
+
+
   }
 
-  Future<dynamic> _popUpScore(List<double> storeAccZFirstFilterList) {
+  Future<dynamic> _popUpScore(List<Map<String,double>> _storeList) {
     return showDialog(
         context: context,
         builder: (BuildContext context) =>
-            Score(list: _storeAccZFirstFilterList));
+            Score(list: _storeList));
   }
 
   @override
   void dispose() {
+
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription.cancel();
       _positionStreamSubscription = null;
     }
 
-    _finalList = firstFilter(_storeList);
-    _storeListToCSV(_finalList);
+    //_popUpScore(_finalList);
+
+    //_storeListToCSV(_finalList);
     readFromFile(); // test sentence, read form csv file
-    //print("terminates");
+
     super.dispose();
   }
+
+
+
+
+
+
+
 }

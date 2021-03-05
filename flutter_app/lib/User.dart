@@ -10,7 +10,7 @@ class User extends Object {
 
   final String end_time;
 
-  final double round_mark;
+  final String round_mark;
 
 
 

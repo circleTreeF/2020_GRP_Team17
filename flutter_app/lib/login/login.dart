@@ -6,6 +6,7 @@ import 'package:flutter_app/base.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/fancy_dialog.dart';
+import 'package:flutter_app/login/user_account.dart';
 import 'package:flutter_app/navigation_home_screen.dart';
 import 'package:flutter_app/post_model.dart';
 import 'package:flutter_app/post_service.dart';
@@ -19,6 +20,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _DyLoginPage extends State<LoginPage> with Base {
+ 
   final _routeProp;
   String _phoneNumber = '86';
   int type = 3; // 0:注册, 1:手机号码+密码登录, 2:手机号码+验证码登录, 3:昵称登录
@@ -405,8 +407,8 @@ class _DyLoginPage extends State<LoginPage> with Base {
 
    void checkUser(){
 
-    print(_mobileController.text);
-    print(_passWordController.text);
+    // print(_mobileController.text);
+    // print(_passWordController.text);
 
     createPost1(new Post1(username:_mobileController.text,password:_passWordController.text)).then((response) {
       if (response.statusCode >= 200) {
@@ -415,6 +417,7 @@ class _DyLoginPage extends State<LoginPage> with Base {
         print('${enter['result']}');
         print(enter['result']);
         if(enter['result']==true){
+            UserAccount().user_id=int.parse(_mobileController.text);
           Navigator.of(context).push(
                   MaterialPageRoute(
                   builder: (context)=>NavigationHomeScreen()
