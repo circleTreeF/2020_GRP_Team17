@@ -230,19 +230,4 @@ class _DrivingScreenState extends State<DrivingScreen>
     );
   }
 
-  Text formatDate(){
-    return Text(
-      DateFormat('yyyy-MM-dd').format(date),
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        fontFamily: AppTheme.fontName,
-        fontWeight: FontWeight.normal,
-        fontSize: 17,
-        letterSpacing: -0.2,
-        color: AppTheme.darkerText,
-      ),
-    );
-  }
-
-
 }
