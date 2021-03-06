@@ -134,22 +134,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4, bottom: 3),
-                                            child: Text(
-                                              _cardTextAccX(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                letterSpacing: -0.2,
-                                                color: AppTheme.grey
-                                                    .withOpacity(0.5),
-                                              ),
-                                            ),
-                                          ),
                                         ],
                                       )
                                     ],
@@ -219,22 +203,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, bottom: 3),
-                                            child: Text(
-                                              _cardTextAccY(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                letterSpacing: -0.2,
-                                                color: AppTheme.grey
-                                                    .withOpacity(0.5),
-                                              ),
-                                            ),
-                                          ),
                                         ],
                                       )
                                     ],
@@ -301,22 +269,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
                                                 color: AppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, bottom: 3),
-                                            child: Text(
-                                              _cardTextAccZ(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                letterSpacing: -0.2,
-                                                color: AppTheme.grey
-                                                    .withOpacity(0.5),
                                               ),
                                             ),
                                           ),
@@ -390,22 +342,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, bottom: 3),
-                                            child: Text(
-                                              _cardTextLong(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                letterSpacing: -0.2,
-                                                color: AppTheme.grey
-                                                    .withOpacity(0.5),
-                                              ),
-                                            ),
-                                          ),
                                         ],
                                       )
                                     ],
@@ -472,22 +408,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
                                                 color: AppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, bottom: 3),
-                                            child: Text(
-                                              _cardTextLat(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                letterSpacing: -0.2,
-                                                color: AppTheme.grey
-                                                    .withOpacity(0.5),
                                               ),
                                             ),
                                           ),
