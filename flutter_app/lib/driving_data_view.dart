@@ -321,6 +321,177 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                             ),
                                           ),
                                         ],
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  height: 48,
+                                  width: 2,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(4.0)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4, bottom: 2),
+                                        child: Text(
+                                          'Longitude',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: AppTheme.fontName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            letterSpacing: -0.1,
+                                            color:
+                                            AppTheme.grey.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 28,
+                                            height: 28,
+                                            child: Image.asset(
+                                                "assets/images/tab_3.png"),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 4, bottom: 3),
+                                            child: Text(
+                                              _cardTextLong(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                                color: AppTheme.darkerText,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, bottom: 3),
+                                            child: Text(
+                                              _cardTextLong(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12,
+                                                letterSpacing: -0.2,
+                                                color: AppTheme.grey
+                                                    .withOpacity(0.5),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  height: 48,
+                                  width: 2,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(4.0)),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4, bottom: 2),
+                                        child: Text(
+                                          'Latitude',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: AppTheme.fontName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            letterSpacing: -0.1,
+                                            color:
+                                            AppTheme.grey.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 28,
+                                            height: 28,
+                                            child: Image.asset(
+                                                "assets/images/tab_3.png"),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 4, bottom: 3),
+                                            child: Text(
+                                              _cardTextLat(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                                color: AppTheme.darkerText,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, bottom: 3),
+                                            child: Text(
+                                              _cardTextLat(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: AppTheme.fontName,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12,
+                                                letterSpacing: -0.2,
+                                                color: AppTheme.grey
+                                                    .withOpacity(0.5),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       )
                                     ],
                                   ),
@@ -439,6 +610,22 @@ class _DrivingDataViewState extends State<DrivingDataView>
       return 'Acc_Z:    ${event.z.roundToDouble()}';
     } else {
       return 'Acc: wait';
+    }
+  }
+
+  String _cardTextLong() {
+    if (event != null) {
+      return 'Longitude:    ${position.longitude.roundToDouble()}';
+    } else {
+      return 'Longitude: wait';
+    }
+  }
+
+  String _cardTextLat() {
+    if (event != null) {
+      return 'Latitude:    ${position.latitude.roundToDouble()}';
+    } else {
+      return 'Latitude: wait';
     }
   }
 
