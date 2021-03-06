@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/login/login_screen.dart';
 
 import 'UI/app_theme.dart';
-import 'login/login.dart';
-import 'login/login_init.dart';
+
 
 
 void main() async {
@@ -24,8 +24,7 @@ class MyApp extends StatelessWidget {
 
   Route<dynamic> _getRoute(RouteSettings settings) {
     Map<String, WidgetBuilder> routes = {
-      '/': (BuildContext context) => LoginInitPage(),
-      '/login': (BuildContext context) => LoginPage(arguments: settings.arguments),
+      '/': (BuildContext context) => LoginScreen(),
     };
     var widget = routes[settings.name];
 
