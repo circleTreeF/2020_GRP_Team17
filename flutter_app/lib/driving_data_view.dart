@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/driving_data_process.dart';
 import 'package:flutter_app/score_screen.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sensors/sensors.dart';
 
 import 'UI/app_theme.dart';
@@ -31,7 +29,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
   final _positions = <Position>[];
   final _accelerometerEvent = <AccelerometerEvent>[];
 
-
+  DrivingDataProcess dataProcess = new DrivingDataProcess();
 
   List<Map<String,double>> _storeList = <Map<String,double>>[]; //list after first filter
   List<Map<String,double>> _finalList = <Map<String,double>>[]; //list after second filter
@@ -589,102 +587,11 @@ class _DrivingDataViewState extends State<DrivingDataView>
     });
   }
 
+
   /// gets current time
   double currentMillSecond() {
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
-
-  ///find out the path of .csv
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  ///get .csv file as file var
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/StoreAcc.csv');
-  }
-
-  ///store list to CSV
-  Future<File> _storeListToCSV(List _targetList) async {
-    String csv = const ListToCsvConverter().convert(_targetList);
-    final file = await _localFile;
-    return file.writeAsString(csv);
-  }
-
-
-  ///read csv file to list
-  Future<List<dynamic>> readFromFile() async {
-    try {
-      final file = await _localFile;
-      int counter = 0;
-
-      String contents = await file.readAsString();
-      List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter()
-          .convert(contents);
-      //print(rowsAsListOfValues);
-      print(rowsAsListOfValues.length);
-
-      for(counter = 0; counter < rowsAsListOfValues.length; counter++){
-        print(rowsAsListOfValues[counter]);
-      }
-
-      return rowsAsListOfValues;
-    } catch (e) {
-      // If encountering an error, return 0.
-      return null;
-    }
-  }
-
-  ///first filter: diagnose the data in _storeList
-  // List<Map<String,double>> firstFilter(List _targetList) {
-  //   List<Map<String,double>> _outputList = <Map<String,double>>[];
-  //
-  //   int counter = 0;
-  //   int abandonLength = 30;
-  //
-  //   double currentX = 0;
-  //   double currentY = 0;
-  //   double currentZ = 0;
-  //
-  //   double standardX = 0;
-  //   double standardY = 0;
-  //   double standardZ = 0;
-  //   double sumX = 0;
-  //   double sumY = 0;
-  //   double sumZ = 0;
-  //
-  //   const double thresholdForX = 4;
-  //   const double thresholdForY = 4;
-  //   const double thresholdForZ = 4;
-  //
-  //   for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++){
-  //     //average of each axis data
-  //     sumX = sumX + _targetList[counter]["x"];
-  //     //print(sumX);
-  //     sumY = sumY + _targetList[counter]["y"];
-  //     sumZ = sumZ + _targetList[counter]["z"];
-  //     standardX= sumX / (counter - abandonLength);
-  //     standardY= sumY / (counter - abandonLength);
-  //     standardZ= sumZ / (counter - abandonLength);
-  //   }
-  //
-  //   for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++) {
-  //     // remove data out of the range based on the average and threshold
-  //     currentX = _targetList[counter]["x"];
-  //     currentY = _targetList[counter]["y"];
-  //     currentZ = _targetList[counter]["z"];
-  //     if ((currentX <= standardX + thresholdForX)&&(currentX >= standardX - thresholdForX)&&
-  //         (currentY <= standardY + thresholdForY)&&(currentY >= standardY - thresholdForY)&&
-  //         (currentZ <= standardZ + thresholdForZ)&&(currentZ >= standardZ - thresholdForZ)) {
-  //       _outputList.add(_targetList[counter]);
-  //     }
-  //   }
-  //
-  //   return _outputList;
-  // }
-
 
 //TODO: have bugs
   void _toggleListening() {
@@ -694,7 +601,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
       _toggleListeningAcc();
       drivingCondition = true;
     } else {
-
       _pauseStream();
       drivingCondition = false;
     }
@@ -712,10 +618,17 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
 
   void _pauseStream() { 
-    //_finalList = firstFilter(_storeList);
     _positionStreamSubscription.pause();
     _streamSubscriptions.pause();
-    _popUpScore(_storeList);
+
+    print("paused");
+
+    //processing data in DrivingDataProcess class
+    _finalList = dataProcess.firstFilter(_storeList);
+    //dataProcess.storeListToCSV(_finalList);
+    //dataProcess.readFromFile();
+
+    _popUpScore(_finalList);
   }
 
   Text _buttonText() {
@@ -757,11 +670,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
       _positionStreamSubscription.cancel();
       _positionStreamSubscription = null;
     }
-
-    //_popUpScore(_finalList);
-
-    //_storeListToCSV(_finalList);
-    readFromFile(); // test sentence, read form csv file
 
     super.dispose();
   }
