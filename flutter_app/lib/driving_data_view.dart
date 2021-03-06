@@ -498,59 +498,59 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: Center(
-                        child: Stack(
-                          children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(100.0),
-                                  ),
-                                  border: new Border.all(
-                                      width: 4,
-                                      color: AppTheme.nearlyDarkBlue
-                                          .withOpacity(0.2)),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                              padding: const EdgeInsets.only(right: 16),
+                              child: Center(
+                                child: Stack(
                                   children: <Widget>[
-                                    // ignore: deprecated_member_use
-                                MaterialButton(
-                                child: _buttonText(),
-                                color: _buttonColor(),
-                                onPressed: _toggleListening,
-                                padding: EdgeInsets.all(20),
-                                shape: CircleBorder(),
-                              )
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(100.0),
+                                          ),
+                                          border: new Border.all(
+                                              width: 4,
+                                              color: AppTheme.nearlyDarkBlue
+                                                  .withOpacity(0.2)),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            // ignore: deprecated_member_use
+                                            MaterialButton(
+                                              child: _buttonText(),
+                                              color: _buttonColor(),
+                                              onPressed: _toggleListening,
+                                              padding: EdgeInsets.all(20),
+                                              shape: CircleBorder(),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: CustomPaint(
+                                        child: SizedBox(
+                                          width: 108,
+                                          height: 108,
+                                        ),
+                                      ),
+                                    )
                                   ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: CustomPaint(
-                                child: SizedBox(
-                                  width: 108,
-                                  height: 108,
                                 ),
                               ),
                             )
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
