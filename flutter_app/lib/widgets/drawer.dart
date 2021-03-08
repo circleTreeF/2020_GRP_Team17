@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../UI/app_theme.dart';
+import '../utils/app_theme.dart';
 
 
 class HomeDrawer extends StatefulWidget {
@@ -31,8 +31,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
       ),
       DrawerList(
         index: DrawerIndex.Invite,
-        labelName: 'Friend',
-        icon: Icon(Icons.child_friendly),
+        labelName: 'About us',
+        icon: Icon(Icons.person),
       ),
     ];
   }

@@ -2,7 +2,7 @@ library fancy_dialog;
 
 import 'package:flutter/material.dart';
 
-import 'UI/FancyGif.dart';
+
 
 
 
@@ -17,7 +17,7 @@ class FancyDialog extends StatefulWidget {
       this.okFun,
       this.cancelFun,
       this.animationType = -2,
-      this.gifPath = FancyGif.PLAY_MEDIA,
+      this.gifPath = 'assets/gif3.gif',
       this.cancelColor = Colors.grey,
       this.okColor = Colors.pink,
       this.ok = " OK !",

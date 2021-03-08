@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'history_app_theme.dart';
+import '../view/history_app_theme.dart';
 
 class SliderView extends StatefulWidget {
   const SliderView({Key key, this.onChangedListValue, this.distValue})

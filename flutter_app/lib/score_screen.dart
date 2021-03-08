@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/post_service.dart';
+import 'package:flutter_app/database/controller/post_service.dart';
 import 'package:scidart/numdart.dart';
 
-import 'Data.dart';
-import 'login/user_account.dart';
+import 'database/Data.dart';
+import 'login/model/user_account.dart';
 
 class Score extends StatefulWidget {
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/fancy_dialog.dart';
 import 'package:geolocator/geolocator.dart';
 
 
-import 'driving_data_view.dart';
-import 'info_widget.dart';
+import 'driving/driving_data_view.dart';
 class DrivingStateView extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +23,7 @@ class _DrivingStateViewState extends State<DrivingStateView> {
 
     /// main
    return FutureBuilder<LocationPermission>(
+
         future: Geolocator.checkPermission(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -34,10 +35,6 @@ class _DrivingStateViewState extends State<DrivingStateView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const InfoWidget(
-                    'Request location permission',
-                    'Access to the device\'s location has been denied, please '
-                        'request permissions before continuing'),
                 RaisedButton(
                   child: const Text('Request permission'),
                   onPressed: () => Geolocator.requestPermission(),
@@ -47,10 +44,7 @@ class _DrivingStateViewState extends State<DrivingStateView> {
           }
 
           if (snapshot.data == LocationPermission.deniedForever) {
-            return const InfoWidget(
-                'Access to location permanently denied',
-                'Allow access to the location services for this App using the '
-                    'device settings.');
+            return FancyDialog();
           }
 
 

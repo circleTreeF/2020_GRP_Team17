@@ -1,6 +1,6 @@
 
 
-import 'package:flutter_app/User.dart';
+import 'package:flutter_app/database/User.dart';
 
 class UserList {
   final List<User> users;

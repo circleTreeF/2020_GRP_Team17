@@ -50,7 +50,6 @@ class _CustomTextInputState extends State<CustomTextInput> {
         decoration: InputDecoration(
           hintText: widget.hintTextString as String,
           errorText: _isValidate ? null : validationMessage,
-          counterText: '',
           border: getBorder(),
           enabledBorder: widget.enableBorder ? getBorder() : InputBorder.none,
           focusedBorder: widget.enableBorder ? getBorder() : InputBorder.none,

@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/widgets/Icon_info.dart';
-import 'package:flutter_app/widgets/bottom_bar_view.dart';
+import 'package:flutter_app/utils/Icon_info.dart';
+import 'package:flutter_app/widgets/bottom_bar.dart';
 
-import 'UI/app_theme.dart';
-import 'driving_screen.dart';
+import 'utils/app_theme.dart';
+import 'driving/driving_screen.dart';
 import 'history_data/history_data_search.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,11 +24,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    //底部菜单栏
+
     tabIconsList.forEach((IconList tab) {
       tab.isSelected = false;
     });
-    //先将第一个页面选中
+
     tabIconsList[0].isSelected = true;
 
     animationController = AnimationController(
@@ -76,14 +76,14 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
 
-  //底部菜单栏。
+
   Widget bottomBar() {
     return Column(
       children: <Widget>[
         const Expanded(
           child: SizedBox(),
         ),
-        BottomBarView(
+        BottomBar(
           tabIconsList: tabIconsList,
           addClick: () {},
           changeIndex: (int index) {

@@ -47,7 +47,7 @@ class Post1 {
 
   factory Post1.fromJson(Map<String, dynamic> json) => new Post1(
     username: json["username"],
-
+    password: json["password"]
   );
 
   Map<String, dynamic> toJson() => {

@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/fancy_dialog.dart';
-import 'package:flutter_app/login/user_account.dart';
-import 'package:flutter_app/login/widgets/UserText.dart';
-import 'package:flutter_app/post_model.dart';
-import 'package:flutter_app/post_service.dart';
+import 'package:flutter_app/database/model/post_model.dart';
+import 'package:flutter_app/database/controller/post_service.dart';
+import 'package:flutter_app/login/widgets/custom_text_input.dart';
 import 'package:flutter_app/utils/constant.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,7 +28,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final controller = ScrollController();
   double offset = 0;
 
-  UserText _userText;
+  TextEditingController nameController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  UserText(),
+                  userText(),
                   SizedBox(height: ScreenUtil.getInstance().setHeight(70)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -66,12 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                               // addUser();
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context)=>LoginScreen()
-                                    )
-                                );
+                                addUser();
                               },
                               child: Center(
                                 child: Text("Register",
@@ -123,14 +119,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void addUser() {
-    createPost1(new Post1(username:_userText.nameController.text,password:_userText.passwordController.text)).then((response) {
+    print(nameController.text);
+    print(passwordController.text);
+    createPost3(new Post1(username:nameController.text,password:passwordController.text)).then((response) {
       if (response.statusCode >= 200) {
         var _content = response.body;
-        Map<String, dynamic> enter = jsonDecode(_content);
+        print(_content);
+        Map<String, dynamic> enter = jsonDecode(_content); // print(enter);
         print('${enter['result']}');
         print(enter['result']);
         if(enter['result']==true){
-          UserAccount().user_id=int.parse(_userText.nameController.text);
+
           Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context)=>LoginScreen()
@@ -153,7 +152,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
 
-
+  Widget userText() {
+    return new Container(
+      color: Colors.transparent,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomTextInput(
+              textEditController: nameController,
+              hintTextString: 'Enter User name',
+              inputType: InputType.Default,
+              enableBorder: true,
+              themeColor: Theme
+                  .of(context)
+                  .primaryColor,
+              cornerRadius: 48.0,
+              maxLength: 24,
+              prefixIcon: Icon(Icons.person, color: Theme
+                  .of(context)
+                  .primaryColor),
+              textColor: Colors.black,
+              errorMessage: 'User name cannot be empty',
+              labelText: 'User Name',
+            ),
+            SizedBox(height: ScreenUtil.getInstance().setHeight(35),),
+            CustomTextInput(
+              textEditController: passwordController,
+              hintTextString: 'Enter Password',
+              inputType: InputType.Password,
+              enableBorder: true,
+              cornerRadius: 48.0,
+              maxLength: 16,
+              prefixIcon: Icon(Icons.lock, color: Theme.of(context).primaryColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
 
 

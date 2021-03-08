@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/driving_data_process.dart';
+import 'package:flutter_app/driving/controller/driving_data_process.dart';
 import 'package:flutter_app/score_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sensors/sensors.dart';
 
-import 'UI/app_theme.dart';
+import '../utils/app_theme.dart';
 
 class DrivingDataView extends StatefulWidget {
   @override
@@ -24,7 +24,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
   AnimationController _controller;
   Animation<double> animation;
-  int clickTime=0;
   bool drivingCondition = false;
   final _positions = <Position>[];
   final _accelerometerEvent = <AccelerometerEvent>[];
@@ -593,7 +592,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
 
-//TODO: have bugs
+
   void _toggleListening() {
 
     if (drivingCondition == false) {

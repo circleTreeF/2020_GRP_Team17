@@ -79,10 +79,6 @@ class DrivingDataProcess{
       standardZ= sumZ / (counter - abandonLength);
     }
 
-    // print(standardX);
-    // print(standardY);
-    // print(standardZ);
-
 
     for (counter = abandonLength; counter < _targetList.length - abandonLength; counter++) {
       // remove data out of the range based on the average and threshold
@@ -96,17 +92,6 @@ class DrivingDataProcess{
       }
     }
 
-    // print(_targetList.length);
-    //
-    // for (counter = 0; counter < _targetList.length; counter++){
-    //   print(_targetList[counter]);
-    // }
-    //
-    // print(_outputList.length);
-    //
-    // for (counter = 0; counter < _outputList.length; counter++){
-    //   print(_outputList[counter]);
-    // }
 
     return _outputList;
   }

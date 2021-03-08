@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'history_app_theme.dart';
+import '../view/history_app_theme.dart';
 
 class RangeSliderView extends StatefulWidget {
   const RangeSliderView({Key key, this.values, this.onChangeRangeValues})
