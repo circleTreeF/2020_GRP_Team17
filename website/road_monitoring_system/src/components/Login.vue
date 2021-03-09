@@ -32,31 +32,52 @@ export default {
   },
   methods: {
     login() {
-      if(this.form.username == "" || this.form.password == "") {
-          this.$message({
-              message: 'Username and password can not be empty',
-              type: 'warning',
-          })
-          return
-      }
+      // if(this.form.username == "" || this.form.password == "") {
+      //     this.$message({
+      //         message: 'Username and password can not be empty',
+      //         type: 'warning',
+      //     })
+      //     return
+      // }
       
-      const headerJSON = {"Content-Type": "application/json"};
-      var data = {
-        username: this.form.username,
-        password: this.form.password
-      }
-      axios({
-          method: "post",
-          url: this.url,
-          data: JSON.stringify(data),
-          header: headerJSON
-        })
-      .then(response => {
-        var res = response.data.result
-        console.log(res)
-        if (res) {
+      // const headerJSON = {"Content-Type": "application/json"};
+      // var data = {
+      //   username: this.form.username,
+      //   password: this.form.password
+      // }
+      // axios({
+      //     method: "post",
+      //     url: this.url,
+      //     data: JSON.stringify(data),
+      //     header: headerJSON
+      //   })
+      // .then(response => {
+      //   var res = response.data.result
+      //   console.log(res)
+      //   if (res) {
+      //       sessionStorage.setItem('loginInfo', true)
+      //       sessionStorage.setItem('permission', this.form.name)
+      //       this.$router.push('/components/Map');
+      //   } else{
+      //       sessionStorage.setItem('loginInfo', false)
+      //       this.$message({
+      //           message: 'ERROR! Incorrect username or password',
+      //           type: 'warning'
+      //       })
+      //   }
+      // })
+      // .catch(function (error) { // request fail
+      //   console.log(error)
+      // })
+
+
+        if(this.form.username == "admin" && this.form.password == "passwd") {
             sessionStorage.setItem('loginInfo', true)
             sessionStorage.setItem('permission', this.form.name)
+            this.$message({
+                message: '登录成功！',
+                type: 'success',
+            })
             this.$router.push('/components/Map');
         } else{
             sessionStorage.setItem('loginInfo', false)
@@ -65,27 +86,6 @@ export default {
                 type: 'warning'
             })
         }
-      })
-      .catch(function (error) { // request fail
-        console.log(error)
-      })
-
-
-        // if(this.form.username == "admin" && this.form.password == "passwd") {
-        //     sessionStorage.setItem('loginInfo', true)
-        //     sessionStorage.setItem('permission', this.form.name)
-        //     this.$message({
-        //         message: '登录成功！',
-        //         type: 'success',
-        //     })
-        //     this.$router.push('/components/Map');
-        // } else{
-        //     sessionStorage.setItem('loginInfo', false)
-        //     this.$message({
-        //         message: 'ERROR! Incorrect username or password',
-        //         type: 'warning'
-        //     })
-        // }
     }
   }
 };
