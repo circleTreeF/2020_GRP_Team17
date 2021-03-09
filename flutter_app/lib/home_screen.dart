@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/Icon_info.dart';
 import 'package:flutter_app/widgets/bottom_bar.dart';
@@ -12,8 +11,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   AnimationController animationController;
 
   List<IconList> tabIconsList = IconList.iconList;
@@ -24,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-
     tabIconsList.forEach((IconList tab) {
       tab.isSelected = false;
     });
@@ -75,8 +72,6 @@ class _HomeScreenState extends State<HomeScreen>
     return true;
   }
 
-
-
   Widget bottomBar() {
     return Column(
       children: <Widget>[
@@ -93,20 +88,20 @@ class _HomeScreenState extends State<HomeScreen>
                   return;
                 }
                 setState(() {
-                  tabBody = DrivingScreen(animationController: animationController);
+                  tabBody =
+                      DrivingScreen(animationController: animationController);
                 });
               });
-            }else {
-                animationController.reverse().then<dynamic>((data) {
-                  if (!mounted) {
-                    return;
-                  }
-                  setState(() {
-                    tabBody =  HistoryDataScreen();
-                  });
+            } else {
+              animationController.reverse().then<dynamic>((data) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {
+                  tabBody = HistoryDataScreen();
                 });
-              }
-
+              });
+            }
           },
         ),
       ],

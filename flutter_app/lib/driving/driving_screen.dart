@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../utils/app_theme.dart';
 import '../request_permission_screen.dart';
 
@@ -8,6 +7,7 @@ class DrivingScreen extends StatefulWidget {
   const DrivingScreen({Key key, this.animationController}) : super(key: key);
 
   final AnimationController animationController;
+
   @override
   _DrivingScreenState createState() => _DrivingScreenState();
 }
@@ -30,19 +30,15 @@ class _DrivingScreenState extends State<DrivingScreen>
             curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
     addAllListData();
 
-
     super.initState();
   }
 
   void addAllListData() {
     const int count = 9;
 
-
     listViews.add(
       DrivingStateView(),
     );
-
-
   }
 
   Future<bool> getData() async {
@@ -115,8 +111,7 @@ class _DrivingScreenState extends State<DrivingScreen>
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                          color: AppTheme.grey
-                              .withOpacity(0.4 * topBarOpacity),
+                          color: AppTheme.grey.withOpacity(0.4 * topBarOpacity),
                           offset: const Offset(1.1, 1.1),
                           blurRadius: 10.0),
                     ],
@@ -164,5 +159,4 @@ class _DrivingScreenState extends State<DrivingScreen>
       ],
     );
   }
-
 }

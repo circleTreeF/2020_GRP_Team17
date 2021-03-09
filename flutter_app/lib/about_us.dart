@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class AboutUs extends StatefulWidget {
@@ -13,6 +11,4 @@ class _AboutUsState extends State<AboutUs> {
     // TODO: implement build
     throw UnimplementedError();
   }
-
-
 }

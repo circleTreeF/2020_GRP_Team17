@@ -1,27 +1,20 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/login/login_screen.dart';
 
 import 'utils/app_theme.dart';
 
-
-
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   // 强制竖屏
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
   Route<dynamic> _getRoute(RouteSettings settings) {
     Map<String, WidgetBuilder> routes = {
       '/': (BuildContext context) => LoginScreen(),
@@ -37,11 +30,9 @@ class MyApp extends StatelessWidget {
 
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
-
-
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,

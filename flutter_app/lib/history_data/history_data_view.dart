@@ -4,19 +4,18 @@ import 'view/history_app_theme.dart';
 import 'model/history_list_data.dart';
 
 class HistoryDataListView extends StatelessWidget {
-  const HistoryDataListView({Key key,
+  const HistoryDataListView({
+    Key key,
     this.historyData,
     this.animationController,
     this.animation,
-  })
-      : super(key: key);
-
+  }) : super(key: key);
 
   final HistoryDataList historyData;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
- @override
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animationController,
@@ -31,9 +30,7 @@ class HistoryDataListView extends StatelessWidget {
                   left: 24, right: 24, top: 8, bottom: 16),
               child: InkWell(
                 splashColor: Colors.transparent,
-                onTap: () {
-
-                },
+                onTap: () {},
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
@@ -51,10 +48,8 @@ class HistoryDataListView extends StatelessWidget {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-
                             Container(
-                              color: HistoryTheme
-                                  .buildLightTheme()
+                              color: HistoryTheme.buildLightTheme()
                                   .backgroundColor,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -65,11 +60,11 @@ class HistoryDataListView extends StatelessWidget {
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                             left: 16, top: 8, bottom: 8),
-                                        child:
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
                                               historyData.start_time,
@@ -79,18 +74,12 @@ class HistoryDataListView extends StatelessWidget {
                                                 fontSize: 22,
                                               ),
                                             ),
-
                                           ],
-
                                         ),
-
-
-
                                       ),
                                     ),
                                   ),
                                 ],
-
                               ),
                             ),
                           ],
@@ -106,6 +95,4 @@ class HistoryDataListView extends StatelessWidget {
       },
     );
   }
-
 }
-

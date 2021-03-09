@@ -12,18 +12,9 @@ import 'package:flutter_app/database/controller/post_service.dart';
 import 'package:flutter_app/utils/constant.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-
-
-
 class LoginScreen extends StatefulWidget {
-
-
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
-
-
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -35,15 +26,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextEditingController _passwordController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+    ScreenUtil.instance =
+        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
     return Scaffold(
-      resizeToAvoidBottomInset:false,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
-
         controller: controller,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,15 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: ScreenUtil.getInstance().setWidth(600),
                           height: ScreenUtil.getInstance().setHeight(80),
                           decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              borderRadius: BorderRadius.circular(30.0),
-                             ),
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
                           child: Material(
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
                                 checkUser();
-
                               },
                               child: Center(
                                 child: Text("Login",
@@ -93,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: ScreenUtil.getInstance().setHeight(200),
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -103,19 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-
-                          Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context)=>RegisterScreen()
-                              )
-                          );//;
-
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => RegisterScreen())); //;
                         },
                         child: Text("Sign Up",
                             style: TextStyle(
                                 color: Color(0xFF5d74e3),
                                 fontFamily: "Poppins-Bold")),
-
                       )
                     ],
                   )
@@ -134,7 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
     controller.dispose();
     super.dispose();
   }
-
 
   @override
   void initState() {
@@ -155,19 +136,18 @@ class _LoginScreenState extends State<LoginScreen> {
               hintTextString: 'Enter User name',
               inputType: InputType.Default,
               enableBorder: true,
-              themeColor: Theme
-                  .of(context)
-                  .primaryColor,
+              themeColor: Theme.of(context).primaryColor,
               cornerRadius: 48.0,
               maxLength: 24,
-              prefixIcon: Icon(Icons.person, color: Theme
-                  .of(context)
-                  .primaryColor),
+              prefixIcon:
+                  Icon(Icons.person, color: Theme.of(context).primaryColor),
               textColor: Colors.black,
               errorMessage: 'User name cannot be empty',
               labelText: 'User Name',
             ),
-            SizedBox(height: ScreenUtil.getInstance().setHeight(35),),
+            SizedBox(
+              height: ScreenUtil.getInstance().setHeight(35),
+            ),
             CustomTextInput(
               textEditController: _passwordController,
               hintTextString: 'Enter Password',
@@ -175,7 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
               enableBorder: true,
               cornerRadius: 48.0,
               maxLength: 16,
-              prefixIcon: Icon(Icons.lock, color: Theme.of(context).primaryColor),
+              prefixIcon:
+                  Icon(Icons.lock, color: Theme.of(context).primaryColor),
             ),
           ],
         ),
@@ -189,48 +170,32 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-
   //TODO: split to another file
   void checkUser() {
     print(_nameController.text);
     print(_passwordController.text);
-    createPost1(new Post1(username:_nameController.text,password:_passwordController.text)).then((response) {
+    createPost1(new Post1(
+            username: _nameController.text, password: _passwordController.text))
+        .then((response) {
       if (response.statusCode >= 200) {
         var _content = response.body;
         Map<String, dynamic> enter = jsonDecode(_content);
         print('${enter['result']}');
         print(enter['result']);
-        if(enter['result']==true){
-           UserAccount().user_id=int.parse(_nameController.text);
+        if (enter['result'] == true) {
+          UserAccount().user_id = int.parse(_nameController.text);
           print(UserAccount().user_id);
           Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context)=>NavigationHomeScreen()
-              )
-          );
-        }
-        else {
+              MaterialPageRoute(builder: (context) => NavigationHomeScreen()));
+        } else {
           showDialog(
               context: context,
-              builder: (BuildContext context) => FancyDialog()
-          );
+              builder: (BuildContext context) => FancyDialog());
         }
-
-      }
-      else
+      } else
         print(response.statusCode);
-    } ).catchError((error){
+    }).catchError((error) {
       print('error : $error');
     });
   }
-
-
-
-
-
-
-
-
-
-
 }

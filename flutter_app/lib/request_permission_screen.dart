@@ -2,28 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/fancy_dialog.dart';
 import 'package:geolocator/geolocator.dart';
 
-
 import 'driving/driving_data_view.dart';
-class DrivingStateView extends StatefulWidget{
+
+class DrivingStateView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return _DrivingStateViewState();
   }
-
 }
 
 class _DrivingStateViewState extends State<DrivingStateView> {
-
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
 
     /// main
-   return FutureBuilder<LocationPermission>(
-
+    return FutureBuilder<LocationPermission>(
         future: Geolocator.checkPermission(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -47,10 +42,7 @@ class _DrivingStateViewState extends State<DrivingStateView> {
             return FancyDialog();
           }
 
-
           return DrivingDataView();
         });
   }
-
 }
-

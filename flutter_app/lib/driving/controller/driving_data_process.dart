@@ -1,7 +1,6 @@
 import 'package:scidart/numdart.dart';
 
 class DrivingDataProcess {
-
   ///first filter: diagnose the data in _storeList
   List<Map<String, double>> firstFilter(List _targetList) {
     List<Map<String, double>> _outputList = <Map<String, double>>[];

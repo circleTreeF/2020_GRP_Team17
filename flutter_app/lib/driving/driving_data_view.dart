@@ -30,8 +30,10 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
   DrivingDataProcess dataProcess = new DrivingDataProcess();
 
-  List<Map<String,double>> _storeList = <Map<String,double>>[]; //list after first filter
-  List<Map<String,double>> _finalList = <Map<String,double>>[]; //list after second filter
+  List<Map<String, double>> _storeList =
+      <Map<String, double>>[]; //list after first filter
+  List<Map<String, double>> _finalList =
+      <Map<String, double>>[]; //list after second filter
 
   StreamSubscription<AccelerometerEvent> get streamSubscriptions =>
       _streamSubscriptions;
@@ -271,7 +273,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                           ),
                                         ],
                                       ),
-
                                     ],
                                   ),
                                 ),
@@ -287,7 +288,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                   width: 2,
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(4.0)),
+                                        BorderRadius.all(Radius.circular(4.0)),
                                   ),
                                 ),
                                 Padding(
@@ -295,7 +296,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -309,15 +310,15 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                             fontSize: 16,
                                             letterSpacing: -0.1,
                                             color:
-                                            AppTheme.grey.withOpacity(0.5),
+                                                AppTheme.grey.withOpacity(0.5),
                                           ),
                                         ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                            CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(
                                             width: 28,
@@ -356,7 +357,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                   width: 2,
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(4.0)),
+                                        BorderRadius.all(Radius.circular(4.0)),
                                   ),
                                 ),
                                 Padding(
@@ -364,7 +365,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -378,15 +379,15 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                             fontSize: 16,
                                             letterSpacing: -0.1,
                                             color:
-                                            AppTheme.grey.withOpacity(0.5),
+                                                AppTheme.grey.withOpacity(0.5),
                                           ),
                                         ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                            CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(
                                             width: 28,
@@ -436,8 +437,10 @@ class _DrivingDataViewState extends State<DrivingDataView>
                                                   .withOpacity(0.2)),
                                         ),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: <Widget>[
                                             // ignore: deprecated_member_use
                                             MaterialButton(
@@ -505,7 +508,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
     _controller.forward();
   }
 
-
   String _cardTextAccX() {
     if (event != null) {
       return 'Acc_X:   ${event.x.roundToDouble()}';
@@ -560,41 +562,38 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
     _streamSubscriptions =
         accelerometerEvents.listen((AccelerometerEvent event) {
-          if(mounted) {
-            setState(() {
-              this.event = event;
-              _accelerometerEvent.add(event);
+      if (mounted) {
+        setState(() {
+          this.event = event;
+          _accelerometerEvent.add(event);
 
-              if (_storeList.isNotEmpty) lastTime = _storeList.last['time'];
-              timeStamp = currentMillSecond();
-              Map<String, double> _mapList = new Map<String, double>();
-              _mapList = {
-                'time': timeStamp,
-                'latitude': position.latitude,
-                'longitude': position.longitude,
-
-                'x': event.x,
-                'y': event.y,
-                'z': event.z};
-              if (lastTime + 100 <= timeStamp) {
-                //keep the 100 millisecond time slot
-                _storeList.add(
-                    _mapList); //each time new piece of data generated, added to _storeList
-              }
-            });
+          if (_storeList.isNotEmpty) lastTime = _storeList.last['time'];
+          timeStamp = currentMillSecond();
+          Map<String, double> _mapList = new Map<String, double>();
+          _mapList = {
+            'time': timeStamp,
+            'latitude': position.latitude,
+            'longitude': position.longitude,
+            'x': event.x,
+            'y': event.y,
+            'z': event.z
+          };
+          if (lastTime + 100 <= timeStamp) {
+            //keep the 100 millisecond time slot
+            _storeList.add(
+                _mapList); //each time new piece of data generated, added to _storeList
           }
+        });
+      }
     });
   }
-
 
   /// gets current time
   double currentMillSecond() {
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
 
-
   void _toggleListening() {
-
     if (drivingCondition == false) {
       _toggleListeningGPS();
       _toggleListeningAcc();
@@ -603,9 +602,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
       _pauseStream();
       drivingCondition = false;
     }
-
   }
-
 
   Color _buttonColor() {
     return _isListeningPosition() ? Colors.red : Colors.green;
@@ -614,9 +611,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
   bool _isListeningPosition() => !(_positionStreamSubscription == null ||
       _positionStreamSubscription.isPaused);
 
-
-
-  void _pauseStream() { 
+  void _pauseStream() {
     _positionStreamSubscription.pause();
     _streamSubscriptions.pause();
 
@@ -632,40 +627,35 @@ class _DrivingDataViewState extends State<DrivingDataView>
   }
 
   Text _buttonText() {
-
     return _isListeningPosition()
         ? Text('stop',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: AppTheme.fontName,
-          fontWeight: FontWeight.normal,
-          fontSize: 24,
-          letterSpacing: 0.0,
-          color: AppTheme.nearlyDarkBlue,
-        ))
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppTheme.fontName,
+              fontWeight: FontWeight.normal,
+              fontSize: 24,
+              letterSpacing: 0.0,
+              color: AppTheme.nearlyDarkBlue,
+            ))
         : Text('start',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: AppTheme.fontName,
-          fontWeight: FontWeight.normal,
-          fontSize: 24,
-          letterSpacing: 0.0,
-          color: AppTheme.nearlyDarkBlue,
-        ));
-
-
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppTheme.fontName,
+              fontWeight: FontWeight.normal,
+              fontSize: 24,
+              letterSpacing: 0.0,
+              color: AppTheme.nearlyDarkBlue,
+            ));
   }
 
-  Future<dynamic> _popUpScore(List<Map<String,double>> _storeList) {
+  Future<dynamic> _popUpScore(List<Map<String, double>> _storeList) {
     return showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            Score(list: _storeList));
+        builder: (BuildContext context) => Score(list: _storeList));
   }
 
   @override
   void dispose() {
-
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription.cancel();
       _positionStreamSubscription = null;
@@ -673,11 +663,4 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
     super.dispose();
   }
-
-
-
-
-
-
-
 }
