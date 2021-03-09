@@ -624,6 +624,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
     //processing data in DrivingDataProcess class
     _finalList = dataProcess.firstFilter(_storeList);
+    print(dataProcess.drivingGrade(_finalList));
     //dataProcess.storeListToCSV(_finalList);
     //dataProcess.readFromFile();
 
