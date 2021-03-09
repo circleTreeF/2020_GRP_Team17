@@ -19,12 +19,12 @@ export default new Router({
       component: Login,
     },
     {
-      path: '/components/Map',
+      path: '/Map',
       name: 'Map',
       component: Map,
-      meta:{
-        loginInfo:true 
-      }
+      // meta:{
+      //   loginInfo:true 
+      // }
     }
 
   ]
