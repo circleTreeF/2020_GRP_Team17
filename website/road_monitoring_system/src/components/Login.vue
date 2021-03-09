@@ -10,6 +10,13 @@
           <li><router-link to="/Map">Map</router-link></li>
         </ul>
       </nav>
+      <div class="fh5co-footer">
+				<p><small>
+          <span>&copy; GRP Team 17. All Rights Reserved.</span> 
+          <span>Designed by Shihui QUE </span>
+          <span>Demo Images: Pixabay</span>
+        </small></p>
+			</div>
     </aside>
 
     <div id="fh5co-main"  >
@@ -164,7 +171,7 @@ export default {
   margin: 0, auto;
   border-radius: 20px;
   width: 40%;
-  border: 3px solid #aca8a8;
+  border: 2px solid #aca8a8;
 
 }
 
@@ -306,7 +313,7 @@ export default {
 
 #fh5co-aside .fh5co-footer {
   position: absolute;
-  bottom: 40px;
+  bottom: 160px;
   font-size: 14px;
   text-align: center;
   width: 100%;
