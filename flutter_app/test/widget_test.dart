@@ -6,6 +6,8 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/home_screen.dart';
+import 'package:flutter_app/login/login_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_app/main.dart';
@@ -26,5 +28,21 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+  });
+
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final testWidget = Scaffold(backgroundColor: Colors.transparent);
+
+    await tester.pumpWidget(new HomeScreen());
+    expect(find.byWidget(testWidget), findsOneWidget);
+    await tester.pump();
+  });
+
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final testWidget = Scaffold(backgroundColor: Colors.transparent);
+
+    await tester.pumpWidget(new LoginScreen());
+    expect(find.byWidget(testWidget), findsOneWidget);
+    await tester.pump();
   });
 }
