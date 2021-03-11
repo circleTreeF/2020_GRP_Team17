@@ -7,11 +7,14 @@ class Data extends Object {
 
   final int user_id;
 
-  Data(this.user_id, this.round_log, this.round_mark);
+  Data(this.user_id,this.start_time,this.end_time ,this.round_log, this.round_mark );
 
   final List<Map<String,double>> round_log;
 
   final String round_mark;
+
+  final DateTime start_time;
+  final DateTime end_time;
 
 
 

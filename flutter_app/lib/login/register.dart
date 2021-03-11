@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/fancy_dialog.dart';
+import 'package:flutter_app/score_screen.dart';
 import 'package:flutter_app/database/model/post_model.dart';
 import 'package:flutter_app/database/controller/post_service.dart';
 import 'package:flutter_app/login/widgets/custom_text_input.dart';
@@ -124,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     createPost3(new Post1(username:nameController.text,password:passwordController.text)).then((response) {
       if (response.statusCode >= 200) {
         var _content = response.body;
-        print(_content);
+
         Map<String, dynamic> enter = jsonDecode(_content); // print(enter);
         print('${enter['result']}');
         print(enter['result']);
@@ -139,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         else {
           showDialog(
               context: context,
-              builder: (BuildContext context) => FancyDialog()
+              builder: (BuildContext context) => Score()
           );
         }
 

@@ -72,6 +72,14 @@ class HistoryDataListView extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
+                                              historyData.start_date,
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 22,
+                                              ),
+                                            ),
+                                            Text(
                                               historyData.start_time,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
@@ -79,7 +87,14 @@ class HistoryDataListView extends StatelessWidget {
                                                 fontSize: 22,
                                               ),
                                             ),
-
+                                            Text(
+                                              historyData.end_time,
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 22,
+                                              ),
+                                            ),
                                           ],
 
                                         ),

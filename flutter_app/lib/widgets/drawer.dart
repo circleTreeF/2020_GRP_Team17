@@ -34,6 +34,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
         labelName: 'About us',
         icon: Icon(Icons.person),
       ),
+      DrawerList(
+        index: DrawerIndex.Share,
+        labelName: 'Score Page',
+        icon: Icon(Icons.score),
+      ),
     ];
   }
 
@@ -75,7 +80,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             ),
                             child: ClipRRect(
                               borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-                              child: Image.asset('assets/images/tab_1.png'),
+                              child: Image.asset('assets/images/logo.png'),
                             ),
                           ),
                         ),
@@ -83,13 +88,13 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 4),
+                    padding: const EdgeInsets.only(top: 18, left: 18),
                     child: Text(
-                      'driver',
+                      ' 6376',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.grey,
-                        fontSize: 18,
+                        fontSize: 20,
                       ),
                     ),
                   ),

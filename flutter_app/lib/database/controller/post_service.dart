@@ -4,13 +4,15 @@
 import 'dart:io';
 
 import 'package:flutter_app/database/model/post_model.dart';
+import 'package:flutter_app/login/model/user_account.dart';
 import 'package:http/http.dart' as http;
 
 
+
 String url = 'http://10.6.2.61:8866/statistics/get_record';
-String url1= 'http://10.6.2.61:8866/statistics/app_user_login';
-String url2= 'http://10.6.2.61:8866/statistics/add_record';
-String url3= 'http://10.6.2.61:8866/statistics/app_user_register';
+String login= 'http://10.6.2.61:8866/statistics/app/user/login';
+String record= 'http://10.6.2.61:8866/statistics/add/record';
+String register= 'http://10.6.2.61:8866/statistics/app/user/register';
 
 Future<List<Post>> getAllPosts() async {
   final response = await http.get(url);
@@ -41,12 +43,12 @@ Future<List<Post1>> getAllPost1s() async {
 }
 
 Future<Post1> getPost1() async{
-  final response = await http.get('$url1');
+  final response = await http.get('$login');
   return post1FromJson(response.body);
 }
 
 Future<http.Response> createPost1(Post1 post) async{
-  final response = await http.post('$url1',
+  final response = await http.post('$login',
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader : ''
@@ -57,7 +59,7 @@ Future<http.Response> createPost1(Post1 post) async{
 }
 
 Future<http.Response> createPost3(Post1 post) async{
-  final response = await http.post('$url3',
+  final response = await http.post('$register',
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader : ''
@@ -70,7 +72,7 @@ Future<http.Response> createPost3(Post1 post) async{
 
 
 Future<http.Response> createPost2(String data) async{
-  final response = await http.post('$url2',
+  final response = await http.post('$record',
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader : ''
@@ -81,14 +83,7 @@ Future<http.Response> createPost2(String data) async{
 }
 
 
-Future<http.Response> createGet(var queryParameters) async{
-  var uri = '10.6.2.61:8866/statistics/get_record/$queryParameters';
-  var response = await http.get(uri, headers: {
-    HttpHeaders.authorizationHeader: ' ',
-    HttpHeaders.contentTypeHeader: 'application/json',
-  });
-  return response;
-}
+
 
 
 

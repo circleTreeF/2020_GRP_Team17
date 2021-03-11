@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -26,9 +27,12 @@ class HistoryDataScreen extends StatefulWidget {
 
 class _HistoryDataScreenState extends State<HistoryDataScreen>
     with TickerProviderStateMixin {
+
+
+
   final myController = TextEditingController();
-
-
+  Dio dio =  Dio();
+  Response response;
   var number;
   AnimationController animationController;
   List<HistoryDataList> historyDataList = HistoryDataList.historyList;
@@ -38,7 +42,6 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   @override
   void initState() {
 
-    //postNet_2();
     getHistoryList();
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
@@ -56,61 +59,35 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   ///
   //
 
+ Future<void>  getHistoryList() async {
+   response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":"all"});
 
-  getHistoryList() {
-    var queryParameters = {
-      'user_id': '${UserAccount().user_id}',
-    };
-    createGet(queryParameters).then((response) {
-      String _content = response.body;
-      final _userMap = jsonDecode(_content);
-            UserList userList = UserList.fromJson(_userMap);
-            print(userList);
-      if (HistoryDataList.historyList.isNotEmpty) {
-                HistoryDataList.historyList.clear();
-              }
-              for (int i = 0; i < userList.users.length; i++) {
-                HistoryDataList _historyDataList = new HistoryDataList();
-                _historyDataList.start_time = userList.users[i].start_time;
-                _historyDataList.end_time = userList.users[i].end_time;
-                _historyDataList.round_mark = userList.users[i].round_mark;
-                HistoryDataList.historyList.add(_historyDataList);
-              }
-    });
-  }
+   var _content = response.data;
 
-  // void postNet_2() async {
-  //   createPost(new Post(user_id: UserAccount().user_id)).then((response) {
-  //     if (response.statusCode >= 200) {
-  //       String _content = response.body;
-  //       final _userMap = jsonDecode(_content);
-  //       UserList userList = UserList.fromJson(_userMap);
-  //
-  //       if (HistoryDataList.historyList.isNotEmpty) {
-  //         HistoryDataList.historyList.clear();
-  //       }
-  //
-  //       for (int i = 0; i < userList.users.length; i++) {
-  //         HistoryDataList _historyDataList = new HistoryDataList();
-  //         _historyDataList.start_time = userList.users[i].start_time;
-  //         _historyDataList.end_time = userList.users[i].end_time;
-  //         _historyDataList.round_mark = userList.users[i].round_mark;
-  //         HistoryDataList.historyList.add(_historyDataList);
-  //       }
-  //     }
-  //     else
-  //       print(response.statusCode);
-  //   }).catchError((error) {
-  //     print('error : $error');
-  //   });
-  // }
+         UserList userList = UserList.fromJson(_content);
+
+         if (HistoryDataList.historyList.isNotEmpty) {
+           HistoryDataList.historyList.clear();
+         }
+
+         for (int i = 0; i < userList.users.length; i++) {
+           HistoryDataList _historyDataList = new HistoryDataList();
+           _historyDataList.start_date = userList.users[i].start_time.substring(0,10);
+           print(_historyDataList.start_date);
+           _historyDataList.start_time=userList.users[i].start_time.substring(12,19);
+           print(_historyDataList.start_time);
+           _historyDataList.end_date = userList.users[i].end_time.substring(0,10);
+           print(_historyDataList.end_date);
+           _historyDataList.end_time = userList.users[i].end_time.substring(12,19);
+           print(_historyDataList.end_time);
+           _historyDataList.round_mark = userList.users[i].round_mark;
+           print(_historyDataList.round_mark);
+           HistoryDataList.historyList.add(_historyDataList);
+
+         }
+ }
 
 
-
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    return true;
-  }
 
   @override
   void dispose() {
@@ -146,7 +123,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                                     children: <Widget>[
                                       SizedBox(
                                         height: ScreenUtil.getInstance()
-                                            .setHeight(50),
+                                            .setHeight(70),
                                       ),
                                       getSearchBarUI(), //search bar
                                       SizedBox(
@@ -182,6 +159,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                                           (1 / count) * index, 1.0,
                                           curve: Curves.easeInOutSine)));
                               animationController.forward();
+
                               return HistoryDataListView(
                                 historyData: historyDataList[index],
                                 animation: animation,
@@ -201,9 +179,6 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
       ),
     );
   }
-
-
-
 
 
   //search for the history data
@@ -244,7 +219,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                         .primaryColor,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'search by date ',
+                      hintText: 'search by date : 2020-11-09 ',
                     ),
                   ),
                 ),
@@ -275,8 +250,9 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                             .backgroundColor),
                     onPressed: () {
                       setState(() {
-                        print(myController.text);
-                        //searchByDate()
+                        HistoryDataList.historyList.clear();
+                        HistoryDataList.historyList= getHistoryListByDate(myController.text);
+
                         ///TODO: search data.
                       });
                     },),
@@ -289,6 +265,35 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
     );
   }
 
+  //TODO: refresh the page.
+
+    getHistoryListByDate( String date) async {
+    response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":date});
+
+    var _content = response.data;
+
+    UserList userList = UserList.fromJson(_content);
+
+    if (HistoryDataList.historyList.isNotEmpty) {
+      HistoryDataList.historyList.clear();
+    }
+
+    for (int i = 0; i < userList.users.length; i++) {
+      HistoryDataList _historyDataList = new HistoryDataList();
+      _historyDataList.start_date = userList.users[i].start_time.substring(0,10);
+      print(_historyDataList.start_date);
+      _historyDataList.start_time=userList.users[i].start_time.substring(12,19);
+      print(_historyDataList.start_time);
+      _historyDataList.end_date = userList.users[i].end_time.substring(0,10);
+      print(_historyDataList.end_date);
+      _historyDataList.end_time = userList.users[i].end_time.substring(12,19);
+      print(_historyDataList.end_time);
+      _historyDataList.round_mark = userList.users[i].round_mark;
+      print(_historyDataList.round_mark);
+      HistoryDataList.historyList.add(_historyDataList);
+
+    }
+  }
 
 
 

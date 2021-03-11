@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen>
                   tabBody = DrivingScreen(animationController: animationController);
                 });
               });
-            }else {
+            }else if(index == 1){
                 animationController.reverse().then<dynamic>((data) {
                   if (!mounted) {
                     return;

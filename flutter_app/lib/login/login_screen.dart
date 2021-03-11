@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/fancy_dialog.dart';
+import 'package:flutter_app/score_screen.dart';
 import 'package:flutter_app/login/register.dart';
 import 'package:flutter_app/login/model/user_account.dart';
 import 'package:flutter_app/login/widgets/custom_text_input.dart';
@@ -74,7 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: InkWell(
                               onTap: () {
                                 checkUser();
-
+                                // Navigator.of(context).push(
+                                //     MaterialPageRoute(
+                                //         builder: (context)=>NavigationHomeScreen()
+                                //     )
+                                // );
                               },
                               child: Center(
                                 child: Text("Login",
@@ -197,9 +201,9 @@ class _LoginScreenState extends State<LoginScreen> {
     createPost1(new Post1(username:_nameController.text,password:_passwordController.text)).then((response) {
       if (response.statusCode >= 200) {
         var _content = response.body;
-        Map<String, dynamic> enter = jsonDecode(_content);
+
+        Map<String, dynamic> enter = json.decode(_content);
         print('${enter['result']}');
-        print(enter['result']);
         if(enter['result']==true){
            UserAccount().user_id=int.parse(_nameController.text);
           print(UserAccount().user_id);
@@ -212,14 +216,15 @@ class _LoginScreenState extends State<LoginScreen> {
         else {
           showDialog(
               context: context,
-              builder: (BuildContext context) => FancyDialog()
+              builder: (BuildContext context) => Score()
           );
         }
 
       }
       else
         print(response.statusCode);
-    } ).catchError((error){
+    }
+    ).catchError((error){
       print('error : $error');
     });
   }

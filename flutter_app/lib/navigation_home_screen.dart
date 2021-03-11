@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/score_screen.dart';
 import 'package:flutter_app/widgets/drawer.dart';
 import 'package:flutter_app/widgets_controller/drawerController.dart';
 
@@ -60,6 +61,14 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
           screenView =  AboutUs();
         });
       }
+
+      if (drawerIndex == DrawerIndex.Share) {
+        setState(() {
+          screenView =  Score();
+        });
+      }
+
+
       }
 
       }
