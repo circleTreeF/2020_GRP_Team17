@@ -34,11 +34,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
         labelName: 'About us',
         icon: Icon(Icons.person),
       ),
-      DrawerList(
-        index: DrawerIndex.Share,
-        labelName: 'Score Page',
-        icon: Icon(Icons.score),
-      ),
     ];
   }
 
