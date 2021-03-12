@@ -35,19 +35,5 @@ class IconList {
       isSelected: false,
       animationController: null,
     ),
-    IconList(
-      imagePath: 'assets/images/tab_3.png',
-      selectedImagePath: 'assets/images/tab_3s.png',
-      index: 2,
-      isSelected: false,
-      animationController: null,
-    ),
-    IconList(
-      imagePath: 'assets/images/tab_4.png',
-      selectedImagePath: 'assets/images/tab_4s.png',
-      index: 3,
-      isSelected: false,
-      animationController: null,
-    ),
   ];
 }
