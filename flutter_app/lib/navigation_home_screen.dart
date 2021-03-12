@@ -62,11 +62,6 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         });
       }
 
-      if (drawerIndex == DrawerIndex.Share) {
-        setState(() {
-          screenView =  Score();
-        });
-      }
 
 
       }

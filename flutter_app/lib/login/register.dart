@@ -8,6 +8,7 @@ import 'package:flutter_app/login/widgets/custom_text_input.dart';
 import 'package:flutter_app/utils/constant.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../register_fail_page.dart';
 import 'login_screen.dart';
 
 
@@ -139,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         else {
           showDialog(
               context: context,
-              builder: (BuildContext context) => Score()
+              builder: (BuildContext context) => PopUpPageForRegisterFail()
           );
         }
 
