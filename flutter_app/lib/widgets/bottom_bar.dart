@@ -167,9 +167,9 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                           parent: widget.tabIconData.animationController,
                           curve:
                               Interval(0.1, 1.0, curve: Curves.fastOutSlowIn))),
-                  child: Image.asset(widget.tabIconData.isSelected
-                      ? widget.tabIconData.selectedImagePath
-                      : widget.tabIconData.imagePath),
+                  child: Icon(widget.tabIconData.isSelected
+                      ? widget.tabIconData.iconSeleted
+                      : widget.tabIconData.icon),
                 ),
                 Positioned(
                   top: 4,
@@ -252,7 +252,6 @@ class TabClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     final Path path = Path();
 
-    final double v = radius * 2;
     path.lineTo(0, 0);
     path.arcTo(Rect.fromLTWH(0, 0, radius, radius), degreeToRadians(180),
         degreeToRadians(90), false); //left side arc of bottom bar
