@@ -42,6 +42,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   @override
   void initState() {
 
+
     getHistoryList();
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
@@ -82,7 +83,10 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
            print(_historyDataList.end_time);
            _historyDataList.round_mark = userList.users[i].round_mark;
            print(_historyDataList.round_mark);
-           HistoryDataList.historyList.add(_historyDataList);
+
+           setState(() {
+             HistoryDataList.historyList.add(_historyDataList);
+           });
 
          }
  }
@@ -251,7 +255,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                     onPressed: () {
                       setState(() {
                         HistoryDataList.historyList.clear();
-                        HistoryDataList.historyList= getHistoryListByDate(myController.text);
+                        getHistoryListByDate(myController.text);
 
                         ///TODO: search data.
                       });
@@ -267,7 +271,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
 
   //TODO: refresh the page.
 
-    getHistoryListByDate( String date) async {
+    Future<void> getHistoryListByDate( String date) async {
     response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":date});
 
     var _content = response.data;
@@ -290,7 +294,10 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
       print(_historyDataList.end_time);
       _historyDataList.round_mark = userList.users[i].round_mark;
       print(_historyDataList.round_mark);
-      HistoryDataList.historyList.add(_historyDataList);
+      setState(() {
+        HistoryDataList.historyList.add(_historyDataList);
+
+      });
 
     }
   }

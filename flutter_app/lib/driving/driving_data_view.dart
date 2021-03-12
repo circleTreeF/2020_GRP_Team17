@@ -11,6 +11,7 @@ import 'package:sensors/sensors.dart';
 
 import '../score_screen.dart';
 import '../utils/app_theme.dart';
+import 'package:intl/intl.dart';
 
 class DrivingDataView extends StatefulWidget {
   @override
@@ -43,13 +44,14 @@ class _DrivingDataViewState extends State<DrivingDataView>
       _streamSubscriptions;
 
   final positionStream = Geolocator.getPositionStream();
-
+  DateFormat dateFormat;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     time = new Map<String,DateTime >();
+    dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
   }
 
@@ -252,13 +254,16 @@ class _DrivingDataViewState extends State<DrivingDataView>
   void _toggleListening() {
 
     if (drivingCondition == false) {
-       startTime= DateTime.now();
+      String string = dateFormat.format(DateTime.now());
+      startTime=dateFormat.parse(string);
       _toggleListeningGPS();
       _toggleListeningAcc();
       drivingCondition = true;
     } else {
+      String string = dateFormat.format(DateTime.now());
+      endTime=dateFormat.parse(string);
       _pauseStream();
-      endTime=DateTime.now();
+
       drivingCondition = false;
 
     }
@@ -266,9 +271,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
   }
 
 
-  Color _buttonColor() {
-    return _isListeningPosition() ? Colors.red : Colors.green;
-  }
 
   bool _isListeningPosition() => !(_positionStreamSubscription == null ||
       _positionStreamSubscription.isPaused);

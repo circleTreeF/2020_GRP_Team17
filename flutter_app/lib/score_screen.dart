@@ -136,7 +136,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
         imageChoose(),
         fit: BoxFit.fill,
         width: dialogWidth * 0.25, // dialogWidth will get left/right margin?
-        height: dialogHeight * 0.46,
+        height: dialogHeight * 0.36,
 
       ),
       borderRadius: BorderRadius.only(
@@ -172,7 +172,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                                 SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
                                Padding(
                                   padding: const EdgeInsets.only(left:5,top:10),                                          child: Text(
-                                                 'endTime: ',
+                                                 'endTime:   ${time["end_time"]}',
                                                   style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 15,
@@ -184,7 +184,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                                 Padding(
                                   padding: const EdgeInsets.only(left:5,top:10),
                                   child: Text(
-                                    'Ranking: ',
+                                    'Ranking:     $rank',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 15,
@@ -257,8 +257,11 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
       if (response.statusCode >= 200) {
         var _content = response.body;
         Map<String, dynamic> enter = json.decode(_content);
-        rank=enter["rank"];
-        print(rank);
+        setState(() {
+          rank=enter["rank"];
+        });
+
+       // print(rank);
 
       }
       else
