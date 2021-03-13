@@ -1,18 +1,28 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/fancy_dialog.dart';
+import 'package:flutter_app/score_screen.dart';
 import 'package:flutter_app/database/model/post_model.dart';
 import 'package:flutter_app/database/controller/post_service.dart';
 import 'package:flutter_app/login/widgets/custom_text_input.dart';
 import 'package:flutter_app/utils/constant.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../register_fail_page.dart';
 import 'login_screen.dart';
 
+
+
+
+
 class RegisterScreen extends StatefulWidget {
+
+
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
+
+
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -26,8 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
     return Scaffold(
       body: SingleChildScrollView(
         controller: controller,
@@ -78,6 +87,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(
                     height: ScreenUtil.getInstance().setHeight(200),
                   ),
+
+
                 ],
               ),
             )
@@ -93,6 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     controller.dispose();
     super.dispose();
   }
+
 
   @override
   void initState() {
@@ -110,29 +122,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void addUser() {
     print(nameController.text);
     print(passwordController.text);
-    createPost3(new Post1(
-            username: nameController.text, password: passwordController.text))
-        .then((response) {
+    createPost3(new Post1(username:nameController.text,password:passwordController.text)).then((response) {
       if (response.statusCode >= 200) {
         var _content = response.body;
-        print(_content);
+
         Map<String, dynamic> enter = jsonDecode(_content); // print(enter);
         print('${enter['result']}');
         print(enter['result']);
-        if (enter['result'] == true) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => LoginScreen()));
-        } else {
+        if(enter['result']==true){
+
+          Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context)=>LoginScreen()
+              )
+          );
+        }
+        else {
           showDialog(
               context: context,
-              builder: (BuildContext context) => FancyDialog());
+              builder: (BuildContext context) => PopUpPageForRegisterFail()
+          );
         }
-      } else
+
+      }
+      else
         print(response.statusCode);
-    }).catchError((error) {
+    } ).catchError((error){
       print('error : $error');
     });
   }
+
 
   Widget userText() {
     return new Container(
@@ -146,18 +165,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintTextString: 'Enter User name',
               inputType: InputType.Default,
               enableBorder: true,
-              themeColor: Theme.of(context).primaryColor,
+              themeColor: Theme
+                  .of(context)
+                  .primaryColor,
               cornerRadius: 48.0,
               maxLength: 24,
-              prefixIcon:
-                  Icon(Icons.person, color: Theme.of(context).primaryColor),
+              prefixIcon: Icon(Icons.person, color: Theme
+                  .of(context)
+                  .primaryColor),
               textColor: Colors.black,
               errorMessage: 'User name cannot be empty',
               labelText: 'User Name',
             ),
-            SizedBox(
-              height: ScreenUtil.getInstance().setHeight(35),
-            ),
+            SizedBox(height: ScreenUtil.getInstance().setHeight(35),),
             CustomTextInput(
               textEditController: passwordController,
               hintTextString: 'Enter Password',
@@ -165,12 +185,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               enableBorder: true,
               cornerRadius: 48.0,
               maxLength: 16,
-              prefixIcon:
-                  Icon(Icons.lock, color: Theme.of(context).primaryColor),
+              prefixIcon: Icon(Icons.lock, color: Theme.of(context).primaryColor),
             ),
           ],
         ),
       ),
     );
   }
+
+
+
+
+
+
+
 }

@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/driving/controller/driving_data_process.dart';
-import 'package:flutter_app/score_screen.dart';
+import 'package:flutter_app/driving/widgets/card.dart';
+import 'package:flutter_app/driving/widgets/card1.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sensors/sensors.dart';
 
+import '../score_screen.dart';
 import '../utils/app_theme.dart';
+import 'package:intl/intl.dart';
 
 class DrivingDataView extends StatefulWidget {
   @override
@@ -22,529 +28,179 @@ class _DrivingDataViewState extends State<DrivingDataView>
   AccelerometerEvent event;
   StreamSubscription<AccelerometerEvent> _streamSubscriptions;
 
-  AnimationController _controller;
-  Animation<double> animation;
+
   bool drivingCondition = false;
   final _positions = <Position>[];
   final _accelerometerEvent = <AccelerometerEvent>[];
-
+  Map<String,DateTime > time;
+  DateTime startTime;
+  DateTime endTime;
   DrivingDataProcess dataProcess = new DrivingDataProcess();
 
-  List<Map<String, double>> _storeList =
-      <Map<String, double>>[]; //list after first filter
-  List<Map<String, double>> _finalList =
-      <Map<String, double>>[]; //list after second filter
+  List<Map<String,double>> _storeList = <Map<String,double>>[]; //list after first filter
+  List<Map<String,double>> _finalList = <Map<String,double>>[]; //list after second filter
 
   StreamSubscription<AccelerometerEvent> get streamSubscriptions =>
       _streamSubscriptions;
 
   final positionStream = Geolocator.getPositionStream();
+  DateFormat dateFormat;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    time = new Map<String,DateTime >();
+    dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Transform(
-      transform: new Matrix4.translationValues(0.0, 30 * (1.0 - 0.5), 0.0),
-      child: Padding(
-        padding:
-            const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppTheme.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8.0),
-                bottomLeft: Radius.circular(8.0),
-                bottomRight: Radius.circular(8.0),
-                topRight: Radius.circular(8.0)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: AppTheme.grey.withOpacity(0.2),
-                  offset: Offset(1.1, 1.1),
-                  blurRadius: 10.0),
-            ],
-          ),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 8, right: 8, top: 4),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 48,
-                                  width: 2,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 2),
-                                        child: Text(
-                                          'Acc_X',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: AppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            letterSpacing: -0.1,
-                                            color:
-                                                AppTheme.grey.withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 28,
-                                            height: 28,
-                                            child: Image.asset(
-                                                "assets/images/tab_3.png"),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4, bottom: 3),
-                                            child: Text(
-                                              _cardTextAccX(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                color: AppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 48,
-                                  width: 2,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 2),
-                                        child: Text(
-                                          'Acc_Y',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: AppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            letterSpacing: -0.1,
-                                            color:
-                                                AppTheme.grey.withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 28,
-                                            height: 28,
-                                            child: Image.asset(
-                                                "assets/images/tab_3.png"),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4, bottom: 3),
-                                            child: Text(
-                                              _cardTextAccY(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                color: AppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 48,
-                                  width: 2,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 2),
-                                        child: Text(
-                                          'Acc_Z',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: AppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            letterSpacing: -0.1,
-                                            color:
-                                                AppTheme.grey.withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 28,
-                                            height: 28,
-                                            child: Image.asset(
-                                                "assets/images/tab_3.png"),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4, bottom: 3),
-                                            child: Text(
-                                              _cardTextAccZ(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                color: AppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 48,
-                                  width: 2,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 2),
-                                        child: Text(
-                                          'Longitude',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: AppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            letterSpacing: -0.1,
-                                            color:
-                                                AppTheme.grey.withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 28,
-                                            height: 28,
-                                            child: Image.asset(
-                                                "assets/images/tab_3.png"),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4, bottom: 3),
-                                            child: Text(
-                                              _cardTextLong(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                color: AppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 48,
-                                  width: 2,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4.0)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, bottom: 2),
-                                        child: Text(
-                                          'Latitude',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: AppTheme.fontName,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            letterSpacing: -0.1,
-                                            color:
-                                                AppTheme.grey.withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 28,
-                                            height: 28,
-                                            child: Image.asset(
-                                                "assets/images/tab_3.png"),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4, bottom: 3),
-                                            child: Text(
-                                              _cardTextLat(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontFamily: AppTheme.fontName,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                color: AppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 16),
-                              child: Center(
-                                child: Stack(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        width: 100,
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                          color: AppTheme.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(100.0),
-                                          ),
-                                          border: new Border.all(
-                                              width: 4,
-                                              color: AppTheme.nearlyDarkBlue
-                                                  .withOpacity(0.2)),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            // ignore: deprecated_member_use
-                                            MaterialButton(
-                                              child: _buttonText(),
-                                              color: _buttonColor(),
-                                              onPressed: _toggleListening,
-                                              padding: EdgeInsets.all(20),
-                                              shape: CircleBorder(),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: CustomPaint(
-                                        child: SizedBox(
-                                          width: 108,
-                                          height: 108,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+    return Scaffold(
+      body: SafeArea(
+
+        child: SingleChildScrollView(
+
+
+          padding: const EdgeInsets.all(16.0),
+          child: AnimationLimiter(
+            child: Column(
+              children: AnimationConfiguration.toStaggeredList(
+                duration: const Duration(milliseconds: 375),
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  horizontalOffset: MediaQuery.of(context).size.width / 2,
+                  child: FadeInAnimation(child: widget),
+                ),
+                children: [
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(200)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TitleCard(height: 35.0, width: 80.0,text: "x"),
+                        TitleCard(height: 35.0, width: 80.0,text: "y"),
+                        TitleCard(height: 35.0, width: 80.0,text: "z"),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 24, right: 24, top: 8, bottom: 8),
-                child: Container(
-                  height: 2,
-                  decoration: BoxDecoration(
-                    color: AppTheme.background,
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
                   ),
-                ),
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        EmptyCard(height: 50.0, width: 100.0,text: _cardTextAccX()),
+                        EmptyCard(height: 50.0, width: 100.0,text: _cardTextAccY()),
+                        EmptyCard(height: 50.0, width: 100.0,text: _cardTextAccZ()),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(70)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TitleCard(height: 35.0, width: 120.0,text: "longitude"),
+                        TitleCard(height: 35.0, width: 120.0,text: "latitude"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
+
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        EmptyCard(height: 50.0, width: 100.0,text: _cardTextLong()),
+                        EmptyCard(height: 50.0, width: 100.0,text: _cardTextLat()),
+                      ],
+                    ),
+                  ),
+
+
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(70)),
+
+                  Container(
+                    height: 100,
+                    child: RaisedButton(
+                      child: _buttonText(),
+                      shape: CircleBorder(
+                        side: BorderSide(color: Colors.cyanAccent),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _toggleListening();
+                        });
+
+                      },
+                    ),
+                  ),
+
+
+
+                ],
+
+
               ),
-            ],
+
+            ),
+
+
           ),
         ),
       ),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 5000),
-        vsync: this,
-        value: 0,
-        lowerBound: 0,
-        upperBound: 1);
-    animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-        parent: _controller,
-        curve: Interval((1 / 9) * 1, 1.0, curve: Curves.fastOutSlowIn)));
 
-    _controller.forward();
-  }
+
 
   String _cardTextAccX() {
-    if (event != null) {
-      return 'Acc_X:   ${event.x.roundToDouble()}';
+    if (event != null&&_isListeningPosition()) {
+      return '${event.x.roundToDouble()}';
     } else {
-      return 'Acc: wait';
+      return 'wait';
     }
   }
 
   String _cardTextAccY() {
-    if (event != null) {
-      return 'Acc_Y:    ${event.y.roundToDouble()}';
+    if (event != null&&_isListeningPosition()) {
+      return '${event.y.roundToDouble()}';
     } else {
-      return 'Acc: wait';
+      return 'wait';
     }
   }
 
   String _cardTextAccZ() {
-    if (event != null) {
-      return 'Acc_Z:    ${event.z.roundToDouble()}';
+    if (event != null&&_isListeningPosition()) {
+      return '${event.z.roundToDouble()}';
     } else {
-      return 'Acc: wait';
+      return 'wait';
     }
   }
 
   String _cardTextLong() {
-    if (event != null) {
-      return 'Longitude:    ${position.longitude.roundToDouble()}';
+    if (event != null&&_isListeningPosition()) {
+      return '${position.longitude.roundToDouble()}';
     } else {
-      return 'Longitude: wait';
+      return 'wait';
     }
   }
 
   String _cardTextLat() {
-    if (event != null) {
-      return 'Latitude:    ${position.latitude.roundToDouble()}';
+    if (event != null&&_isListeningPosition()) {
+      return '${position.latitude.roundToDouble()}';
     } else {
-      return 'Latitude: wait';
+      return 'wait';
     }
   }
 
@@ -562,100 +218,118 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
     _streamSubscriptions =
         accelerometerEvents.listen((AccelerometerEvent event) {
-      if (mounted) {
-        setState(() {
-          this.event = event;
-          _accelerometerEvent.add(event);
+          if(mounted) {
+            setState(() {
+              this.event = event;
+              _accelerometerEvent.add(event);
 
-          if (_storeList.isNotEmpty) lastTime = _storeList.last['time'];
-          timeStamp = currentMillSecond();
-          Map<String, double> _mapList = new Map<String, double>();
-          _mapList = {
-            'time': timeStamp,
-            'latitude': position.latitude,
-            'longitude': position.longitude,
-            'x': event.x,
-            'y': event.y,
-            'z': event.z
-          };
-          if (lastTime + 100 <= timeStamp) {
-            //keep the 100 millisecond time slot
-            _storeList.add(
-                _mapList); //each time new piece of data generated, added to _storeList
+              if (_storeList.isNotEmpty) lastTime = _storeList.last['time'];
+              timeStamp = currentMillSecond();
+              Map<String, double> _mapList = new Map<String, double>();
+              _mapList = {
+                'time': timeStamp,
+                'latitude': position.latitude,
+                'longitude': position.longitude,
+
+                'x': event.x,
+                'y': event.y,
+                'z': event.z};
+              if (lastTime + 100 <= timeStamp) {
+                //keep the 100 millisecond time slot
+                _storeList.add(
+                    _mapList); //each time new piece of data generated, added to _storeList
+              }
+            });
           }
-        });
-      }
     });
   }
+
 
   /// gets current time
   double currentMillSecond() {
     return new DateTime.now().millisecondsSinceEpoch.toDouble();
   }
 
+
   void _toggleListening() {
+
     if (drivingCondition == false) {
+      String string = dateFormat.format(DateTime.now());
+      startTime=dateFormat.parse(string);
       _toggleListeningGPS();
       _toggleListeningAcc();
       drivingCondition = true;
     } else {
+      String string = dateFormat.format(DateTime.now());
+      endTime=dateFormat.parse(string);
       _pauseStream();
+
       drivingCondition = false;
+
     }
+
   }
 
-  Color _buttonColor() {
-    return _isListeningPosition() ? Colors.red : Colors.green;
-  }
+
 
   bool _isListeningPosition() => !(_positionStreamSubscription == null ||
       _positionStreamSubscription.isPaused);
 
-  void _pauseStream() {
+
+
+  void _pauseStream() { 
     _positionStreamSubscription.pause();
     _streamSubscriptions.pause();
 
-    print("paused");
+ //TODO: CLICK BUTTON ,data clean.
 
     //processing data in DrivingDataProcess class
     _finalList = dataProcess.firstFilter(_storeList);
-    print(dataProcess.drivingGrade(_finalList));
-    //dataProcess.storeListToCSV(_finalList);
-    //dataProcess.readFromFile();
 
-    _popUpScore(_finalList);
+
+  time= {
+    "start_time" : startTime,
+    "end_time": endTime
+  };
+    _popUpScore(_finalList,time);
+   // _popUpScore(_storeList,time);
   }
 
   Text _buttonText() {
+
     return _isListeningPosition()
         ? Text('stop',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppTheme.fontName,
-              fontWeight: FontWeight.normal,
-              fontSize: 24,
-              letterSpacing: 0.0,
-              color: AppTheme.nearlyDarkBlue,
-            ))
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: AppTheme.fontName,
+          fontWeight: FontWeight.normal,
+          fontSize: 24,
+          letterSpacing: 0.0,
+          color: AppTheme.nearlyDarkBlue,
+        ))
         : Text('start',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppTheme.fontName,
-              fontWeight: FontWeight.normal,
-              fontSize: 24,
-              letterSpacing: 0.0,
-              color: AppTheme.nearlyDarkBlue,
-            ));
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: AppTheme.fontName,
+          fontWeight: FontWeight.normal,
+          fontSize: 24,
+          letterSpacing: 0.0,
+          color: AppTheme.nearlyDarkBlue,
+        ));
+
+
   }
 
-  Future<dynamic> _popUpScore(List<Map<String, double>> _storeList) {
+  Future<dynamic> _popUpScore(List<Map<String,double>> _storeList,Map<String,DateTime> time) {
     return showDialog(
         context: context,
-        builder: (BuildContext context) => Score(list: _storeList));
+        builder: (BuildContext context) =>
+            Score(list: _storeList,time: time));
   }
 
   @override
   void dispose() {
+
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription.cancel();
       _positionStreamSubscription = null;
@@ -663,4 +337,11 @@ class _DrivingDataViewState extends State<DrivingDataView>
 
     super.dispose();
   }
+
+
+
+
+
+
+
 }

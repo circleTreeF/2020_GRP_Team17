@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -10,39 +11,44 @@ import 'package:flutter_app/database/user_list.dart';
 import 'package:flutter_app/login/model/user_account.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
+
 import 'view/history_app_theme.dart';
 import 'history_data_view.dart';
 import 'model/history_list_data.dart';
 
 class HistoryDataScreen extends StatefulWidget {
-  const HistoryDataScreen({Key key, this.animationController})
-      : super(key: key);
+  const  HistoryDataScreen({Key key, this.animationController}) : super(key: key);
 
   final AnimationController animationController;
-
   @override
   _HistoryDataScreenState createState() => _HistoryDataScreenState();
 }
 
 class _HistoryDataScreenState extends State<HistoryDataScreen>
     with TickerProviderStateMixin {
-  final myController = TextEditingController();
 
+
+
+  final myController = TextEditingController();
+  Dio dio =  Dio();
+  Response response;
   var number;
   AnimationController animationController;
   List<HistoryDataList> historyDataList = HistoryDataList.historyList;
   final ScrollController _scrollController = ScrollController();
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(const Duration(days: 5));
-
   @override
   void initState() {
-    //postNet_2();
+
+
     getHistoryList();
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     super.initState();
   }
+
 
   ///
   /// @description:
@@ -54,58 +60,38 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
   ///
   //
 
-  getHistoryList() {
-    var queryParameters = {
-      'user_id': '${UserAccount().user_id}',
-    };
-    createGet(queryParameters).then((response) {
-      String _content = response.body;
-      final _userMap = jsonDecode(_content);
-      UserList userList = UserList.fromJson(_userMap);
-      print(userList);
-      if (HistoryDataList.historyList.isNotEmpty) {
-        HistoryDataList.historyList.clear();
-      }
-      for (int i = 0; i < userList.users.length; i++) {
-        HistoryDataList _historyDataList = new HistoryDataList();
-        _historyDataList.start_time = userList.users[i].start_time;
-        _historyDataList.end_time = userList.users[i].end_time;
-        _historyDataList.round_mark = userList.users[i].round_mark;
-        HistoryDataList.historyList.add(_historyDataList);
-      }
-    });
-  }
+ Future<void>  getHistoryList() async {
+   response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":"all"});
 
-  // void postNet_2() async {
-  //   createPost(new Post(user_id: UserAccount().user_id)).then((response) {
-  //     if (response.statusCode >= 200) {
-  //       String _content = response.body;
-  //       final _userMap = jsonDecode(_content);
-  //       UserList userList = UserList.fromJson(_userMap);
-  //
-  //       if (HistoryDataList.historyList.isNotEmpty) {
-  //         HistoryDataList.historyList.clear();
-  //       }
-  //
-  //       for (int i = 0; i < userList.users.length; i++) {
-  //         HistoryDataList _historyDataList = new HistoryDataList();
-  //         _historyDataList.start_time = userList.users[i].start_time;
-  //         _historyDataList.end_time = userList.users[i].end_time;
-  //         _historyDataList.round_mark = userList.users[i].round_mark;
-  //         HistoryDataList.historyList.add(_historyDataList);
-  //       }
-  //     }
-  //     else
-  //       print(response.statusCode);
-  //   }).catchError((error) {
-  //     print('error : $error');
-  //   });
-  // }
+   var _content = response.data;
 
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    return true;
-  }
+         UserList userList = UserList.fromJson(_content);
+
+         if (HistoryDataList.historyList.isNotEmpty) {
+           HistoryDataList.historyList.clear();
+         }
+
+         for (int i = 0; i < userList.users.length; i++) {
+           HistoryDataList _historyDataList = new HistoryDataList();
+           _historyDataList.start_date = userList.users[i].start_time.substring(0,10);
+           print(_historyDataList.start_date);
+           _historyDataList.start_time=userList.users[i].start_time.substring(12,19);
+           print(_historyDataList.start_time);
+           _historyDataList.end_date = userList.users[i].end_time.substring(0,10);
+           print(_historyDataList.end_date);
+           _historyDataList.end_time = userList.users[i].end_time.substring(12,19);
+           print(_historyDataList.end_time);
+           _historyDataList.round_mark = userList.users[i].round_mark;
+           print(_historyDataList.round_mark);
+
+           setState(() {
+             HistoryDataList.historyList.add(_historyDataList);
+           });
+
+         }
+ }
+
+
 
   @override
   void dispose() {
@@ -125,7 +111,8 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      height: ScreenUtil.getInstance().setHeight(50),
+                      height: ScreenUtil.getInstance()
+                          .setHeight(50),
                     ),
                     Expanded(
                       child: NestedScrollView(
@@ -135,40 +122,48 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                           return <Widget>[
                             SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                  (BuildContext context, int index) {
-                                return Column(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: ScreenUtil.getInstance()
-                                          .setHeight(50),
-                                    ),
-                                    getSearchBarUI(), //search bar
-                                    SizedBox(
-                                      height: ScreenUtil.getInstance()
-                                          .setHeight(30),
-                                    ),
-                                  ],
-                                );
-                              }, childCount: 1),
-                            ),
+                                    (BuildContext context, int index) {
+                                  return Column(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: ScreenUtil.getInstance()
+                                            .setHeight(70),
+                                      ),
+                                      getSearchBarUI(), //search bar
+                                      SizedBox(
+                                        height: ScreenUtil.getInstance()
+                                            .setHeight(30),
+                                      ),
+
+                                    ],
+                                  );
+                                },childCount: 1),
+
+                              ),
+
                           ];
                         },
+
                         body: Container(
-                          color: HistoryTheme.buildLightTheme().backgroundColor,
+                          color:
+                          HistoryTheme
+                              .buildLightTheme()
+                              .backgroundColor,
                           child: ListView.builder(
                             itemCount: historyDataList.length,
                             padding: const EdgeInsets.only(top: 10),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (BuildContext context, int index) {
-                              final int count = historyDataList.length;
+                              final int count =  historyDataList.length;
                               final Animation<double> animation =
-                                  Tween<double>(begin: 0.0, end: 1.0).animate(
-                                      CurvedAnimation(
-                                          parent: animationController,
-                                          curve: Interval(
-                                              (1 / count) * index, 1.0,
-                                              curve: Curves.easeInOutSine)));
+                              Tween<double>(begin: 0.0, end: 1.0).animate(
+                                  CurvedAnimation(
+                                      parent: animationController,
+                                      curve: Interval(
+                                          (1 / count) * index, 1.0,
+                                          curve: Curves.easeInOutSine)));
                               animationController.forward();
+
                               return HistoryDataListView(
                                 historyData: historyDataList[index],
                                 animation: animation,
@@ -189,6 +184,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
     );
   }
 
+
   //search for the history data
   Widget getSearchBarUI() {
     return Padding(
@@ -200,13 +196,17 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
               padding: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
               child: Container(
                 decoration: BoxDecoration(
-                  color: HistoryTheme.buildLightTheme().backgroundColor,
+                  color: HistoryTheme
+                      .buildLightTheme()
+                      .backgroundColor,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(38.0),
                   ),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.2), blurRadius: 8.0),
+                        color: Colors.grey.withOpacity(0.2),
+
+                        blurRadius: 8.0),
                   ],
                 ),
                 child: Padding(
@@ -218,10 +218,12 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
                     style: const TextStyle(
                       fontSize: 16,
                     ),
-                    cursorColor: HistoryTheme.buildLightTheme().primaryColor,
+                    cursorColor: HistoryTheme
+                        .buildLightTheme()
+                        .primaryColor,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'search by date ',
+                      hintText: 'search by date : 2020-11-09 ',
                     ),
                   ),
                 ),
@@ -230,28 +232,34 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
           ),
           Container(
             decoration: BoxDecoration(
-              color: HistoryTheme.buildLightTheme().primaryColor,
+              color: HistoryTheme
+                  .buildLightTheme()
+                  .primaryColor,
               borderRadius: const BorderRadius.all(
                 Radius.circular(38.0),
               ),
+
             ),
             child: Material(
               color: Colors.transparent,
               child: InkWell(
+
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: IconButton(
                     icon: Icon(Icons.search,
                         size: 15,
-                        color: HistoryTheme.buildLightTheme().backgroundColor),
+                        color: HistoryTheme
+                            .buildLightTheme()
+                            .backgroundColor),
                     onPressed: () {
                       setState(() {
-                        print(myController.text);
-                        //searchByDate()
+                        HistoryDataList.historyList.clear();
+                        getHistoryListByDate(myController.text);
+
                         ///TODO: search data.
                       });
-                    },
-                  ),
+                    },),
                 ),
               ),
             ),
@@ -260,4 +268,42 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
       ),
     );
   }
-}
+
+  //TODO: refresh the page.
+
+    Future<void> getHistoryListByDate( String date) async {
+    response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":date});
+
+    var _content = response.data;
+
+    UserList userList = UserList.fromJson(_content);
+
+    if (HistoryDataList.historyList.isNotEmpty) {
+      HistoryDataList.historyList.clear();
+    }
+
+    for (int i = 0; i < userList.users.length; i++) {
+      HistoryDataList _historyDataList = new HistoryDataList();
+      _historyDataList.start_date = userList.users[i].start_time.substring(0,10);
+      print(_historyDataList.start_date);
+      _historyDataList.start_time=userList.users[i].start_time.substring(12,19);
+      print(_historyDataList.start_time);
+      _historyDataList.end_date = userList.users[i].end_time.substring(0,10);
+      print(_historyDataList.end_date);
+      _historyDataList.end_time = userList.users[i].end_time.substring(12,19);
+      print(_historyDataList.end_time);
+      _historyDataList.round_mark = userList.users[i].round_mark;
+      print(_historyDataList.round_mark);
+      setState(() {
+        HistoryDataList.historyList.add(_historyDataList);
+
+      });
+
+    }
+  }
+
+
+
+
+
+  }

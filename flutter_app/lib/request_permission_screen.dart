@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/fancy_dialog.dart';
+import 'package:flutter_app/score_screen.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'driving/driving_data_view.dart';
@@ -30,7 +30,13 @@ class _DrivingStateViewState extends State<DrivingStateView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).padding.top,
+                ),
                 RaisedButton(
+                  shape: CircleBorder(
+                    side: BorderSide(color: Colors.cyanAccent),
+                  ),
                   child: const Text('Request permission'),
                   onPressed: () => Geolocator.requestPermission(),
                 ),
@@ -39,7 +45,7 @@ class _DrivingStateViewState extends State<DrivingStateView> {
           }
 
           if (snapshot.data == LocationPermission.deniedForever) {
-            return FancyDialog();
+            return Score();
           }
 
           return DrivingDataView();

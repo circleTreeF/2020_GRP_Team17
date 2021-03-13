@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app/score_screen.dart';
 import 'package:flutter_app/widgets/drawer.dart';
 import 'package:flutter_app/widgets_controller/drawerController.dart';
 
@@ -10,6 +12,7 @@ class NavigationHomeScreen extends StatefulWidget {
   @override
   _NavigationHomeScreenState createState() => _NavigationHomeScreenState();
 }
+
 
 class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   Widget screenView;
@@ -49,15 +52,20 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       drawerIndex = drawerIndexData;
       if (drawerIndex == DrawerIndex.HOME) {
         setState(() {
-          screenView = HomeScreen();
+          screenView =  HomeScreen();
         });
       }
 
       if (drawerIndex == DrawerIndex.Invite) {
         setState(() {
-          screenView = AboutUs();
+          screenView =  AboutUs();
         });
       }
+
+
+
+      }
+
+      }
     }
-  }
-}
+

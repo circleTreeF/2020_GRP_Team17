@@ -1,16 +1,19 @@
 import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
+
 
 class IconList {
   IconList({
-    this.imagePath = '',
     this.index = 0,
-    this.selectedImagePath = '',
+    this.icon,
+    this.iconSeleted,
     this.isSelected = false,
     this.animationController,
   });
 
-  String imagePath;
-  String selectedImagePath;
+   IconData icon;
+   IconData iconSeleted;
+
   bool isSelected;
   int index;
 
@@ -18,30 +21,16 @@ class IconList {
 
   static List<IconList> iconList = <IconList>[
     IconList(
-      imagePath: 'assets/images/tab_1.png',
-      selectedImagePath: 'assets/images/tab_1s.png',
+      icon:Icons.drive_eta,
+      iconSeleted: Icons.drive_eta_sharp,
       index: 0,
       isSelected: true,
       animationController: null,
     ),
     IconList(
-      imagePath: 'assets/images/tab_2.png',
-      selectedImagePath: 'assets/images/tab_2s.png',
+      icon:Icons.history,
+      iconSeleted: Icons.history_rounded,
       index: 1,
-      isSelected: false,
-      animationController: null,
-    ),
-    IconList(
-      imagePath: 'assets/images/tab_3.png',
-      selectedImagePath: 'assets/images/tab_3s.png',
-      index: 2,
-      isSelected: false,
-      animationController: null,
-    ),
-    IconList(
-      imagePath: 'assets/images/tab_4.png',
-      selectedImagePath: 'assets/images/tab_4s.png',
-      index: 3,
       isSelected: false,
       animationController: null,
     ),

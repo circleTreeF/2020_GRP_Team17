@@ -63,7 +63,8 @@ Post1 post1FromJson(String str) {
 
 String post1ToJson(Post1 data) {
   final dyn = data.toJson();
-  return json.encode(dyn);
+  final dyn1=json.encode(dyn);
+  return dyn1;
 }
 
 

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 import '../utils/app_theme.dart';
 import '../request_permission_screen.dart';
+import 'driving_data_view.dart';
 
 class DrivingScreen extends StatefulWidget {
   const DrivingScreen({Key key, this.animationController}) : super(key: key);
 
   final AnimationController animationController;
-
   @override
   _DrivingScreenState createState() => _DrivingScreenState();
 }
@@ -16,9 +18,7 @@ class _DrivingScreenState extends State<DrivingScreen>
     with TickerProviderStateMixin {
   Animation<double> topBarAnimation;
 
-  //显示内容
-  List<Widget> listViews = <Widget>[];
-  final ScrollController scrollController = ScrollController();
+
   double topBarOpacity = 0.0;
   DateTime date = DateTime.now();
 
@@ -28,18 +28,11 @@ class _DrivingScreenState extends State<DrivingScreen>
         CurvedAnimation(
             parent: widget.animationController,
             curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
-    addAllListData();
 
+    DrivingStateView();
     super.initState();
   }
 
-  void addAllListData() {
-    const int count = 9;
-
-    listViews.add(
-      DrivingStateView(),
-    );
-  }
 
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 50));
@@ -48,49 +41,24 @@ class _DrivingScreenState extends State<DrivingScreen>
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
     return Container(
       color: AppTheme.background,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
           children: <Widget>[
-            getMainListViewUI(),
             getAppBarUI(),
-            SizedBox(
-              height: MediaQuery.of(context).padding.bottom,
-            )
+            SizedBox(height: ScreenUtil.getInstance().setHeight(200)),
+            DrivingDataView(),
           ],
         ),
       ),
     );
   }
 
-  Widget getMainListViewUI() {
-    return FutureBuilder<bool>(
-      future: getData(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (!snapshot.hasData) {
-          return const SizedBox();
-        } else {
-          return ListView.builder(
-            controller: scrollController,
-            padding: EdgeInsets.only(
-              top: AppBar().preferredSize.height +
-                  MediaQuery.of(context).padding.top +
-                  24,
-              bottom: 62 + MediaQuery.of(context).padding.bottom,
-            ),
-            itemCount: listViews.length,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (BuildContext context, int index) {
-              widget.animationController.forward();
-              return listViews[index];
-            },
-          );
-        }
-      },
-    );
-  }
+
 
   Widget getAppBarUI() {
     return Column(
@@ -111,7 +79,8 @@ class _DrivingScreenState extends State<DrivingScreen>
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                          color: AppTheme.grey.withOpacity(0.4 * topBarOpacity),
+                          color: AppTheme.grey
+                              .withOpacity(0.4 * topBarOpacity),
                           offset: const Offset(1.1, 1.1),
                           blurRadius: 10.0),
                     ],
@@ -159,4 +128,5 @@ class _DrivingScreenState extends State<DrivingScreen>
       ],
     );
   }
+
 }
