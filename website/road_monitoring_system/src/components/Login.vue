@@ -2,24 +2,26 @@
   <div id="fh5co-page">
     <!-- Menu -->
     <aside id="fh5co-aside" role="complementary" class="border js-fullheight">
-      <h1 id="fh5co-logo">Road</h1>
+      <h1 id="fh5co-logo">Monitoring System</h1>
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
           <li class="fh5co-active"><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><router-link to="/Map">Map</router-link></li>
+          <!-- <li><a href="about.html">About</a></li> -->
+          <li @click="check()"><router-link to="/Map">Map</router-link></li>
         </ul>
       </nav>
       <div class="fh5co-footer">
-				<p><small>
-          <span>&copy; GRP Team 17. All Rights Reserved.</span> 
-          <span>Designed by Shihui QUE </span>
-          <span>Demo Images: Pixabay</span>
-        </small></p>
-			</div>
+        <p>
+          <small>
+            <span>&copy; GRP Team 17. All Rights Reserved.</span>
+            <span>Designed by Shihui QUE </span>
+            <span>Demo Images: Pixabay</span>
+          </small>
+        </p>
+      </div>
     </aside>
 
-    <div id="fh5co-main"  >
+    <div id="fh5co-main">
       <aside id="fh5co-hero">
         <div class="flexslider js-fullheight">
           <!-- <ul class="slides"> -->
@@ -28,30 +30,37 @@
               <div class="overlay"></div>
               <div class="container-fluid">
                 <div class="row">
-                  <div class="slider-text-inner" >
-                    <el-form ref="form" :model="form" label-width="80px" class="login-form">
+                  <div class="slider-text-inner">
+                    <h1 style="color:white;letter-spacing: 3px;font-size:50px;">
+                      {{ title }}
+                    </h1>
+                    <el-form
+                      ref="form"
+                      :model="form"
+                      label-width="80px"
+                      class="login-form"
+                    >
                       <el-form-item label="Username">
                         <el-input v-model="form.username"></el-input>
                       </el-form-item>
                       <el-form-item label="Password">
-                        <el-input v-model="form.password" type="password"></el-input>
+                        <el-input
+                          v-model="form.password"
+                          type="password"
+                        ></el-input>
                       </el-form-item>
-                        <el-button class="login-button"  @click="login">Login</el-button>
+                      <el-button class="login-button" @click="login"
+                        >{{title}}</el-button
+                      >
+                      <div class="register" v-if="title=='LOGIN'">
+                        <span>No account yet ? Go to</span>
+                        <button @click="changeView()">Register</button>
+                      </div>
+                      <div class="register" v-if="title=='REGISTER'">
+                        <span>Already have an account? Go to</span>
+                        <button @click="changeView()">Login</button>
+                      </div>
                     </el-form>
-                    <!-- <h1>
-                      Intuitive <strong></strong> is How Give We the User New
-                      Superpowers
-                    </h1>
-                    <p>
-                      <a
-                        class="btn btn-primary btn-demo popup-vimeo"
-                        href="https://vimeo.com/channels/staffpicks/93951774"
-                      >
-                        <i class="icon-monitor"></i> Live Preview</a
-                      >
-                      <a class="btn btn-primary btn-learn">Learn More<i class="icon-arrow-right3"></i>
-                        </a>
-                    </p> -->
                   </div>
                 </div>
               </div>
@@ -60,7 +69,6 @@
         </div>
       </aside>
     </div>
-
   </div>
 </template>
 <script>
@@ -69,11 +77,12 @@ import axios from "axios";
 export default {
   data() {
     return {
-      url: "http://10.6.2.61:8866/statistics/user_login",
+      url: "http://10.6.2.61:8866/statistics/web/user/",
       form: {
         username: "",
         password: ""
       },
+      title: "LOGIN"
     };
   },
   methods: {
@@ -85,6 +94,14 @@ export default {
         });
         return;
       }
+      var type = '';
+      if (this.title == "LOGIN") {
+        type = "login";
+      } else {
+        type = "register";
+      }
+      var url = this.url + type;
+      console.log(url)
 
       const headerJSON = { "Content-Type": "application/json" };
       var data = {
@@ -93,21 +110,29 @@ export default {
       };
       axios({
         method: "post",
-        url: this.url,
+        url: url,
         data: JSON.stringify(data),
         header: headerJSON
       })
         .then(response => {
-          var res = response.data.result;
+          var res = response.data;
           console.log(res);
-          if (res) {
+          if (res.result) {
+            if (this.title=="REGISTER") {
+               this.$message({
+                message: 'Registered succeccfully, please login',
+                type: 'success',
+              })
+              this.$router.go(0);
+              return;
+            }
             sessionStorage.setItem("loginInfo", true);
             sessionStorage.setItem("permission", this.form.name);
             this.$router.push("/components/Map");
           } else {
             sessionStorage.setItem("loginInfo", false);
             this.$message({
-              message: "ERROR! Incorrect username or password",
+              message: "ERROR! " + res.message,
               type: "warning"
             });
           }
@@ -134,6 +159,22 @@ export default {
       //         type: 'warning'
       //     })
       // }
+    },
+
+    changeView() {
+      // url = this.url + "login";
+      if (this.title == "LOGIN") {
+        this.title = "REGISTER";
+      } else {
+        this.title = "LOGIN";
+      }
+    },
+
+    check() {
+      var loginInfo = sessionStorage.getItem("loginInfo");
+      if (!loginInfo) {
+        return;
+      }
     }
   }
 };
@@ -142,9 +183,9 @@ export default {
 <style acoped>
 .login-form {
   width: 30vw;
-  margin: 30vh auto; /* 上下间距160px，左右自动居中*/
+  margin: 25vh auto; /* 上下间距160px，左右自动居中*/
   background-color: rgb(255, 255, 255, 0.8); /* 透明背景色 */
-  padding: 30px;
+  padding: 30px 30px 10px 30px;
   border-radius: 20px; /* 圆角 */
   /* height: (window).height(); */
 }
@@ -167,13 +208,26 @@ export default {
   background-color: rgb(241, 241, 241) ;
   color: #000;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: 700;  
+  font-weight: 700;
   margin: 0, auto;
   border-radius: 20px;
   width: 40%;
   border: 2px solid #aca8a8;
 
 }
+
+.register{
+  margin: 20px 0 0 0;
+}
+
+.register > button{
+  color: rgb(124, 185, 243);
+  border-style: none;
+  outline: none;
+  background-color: Transparent; 
+}
+
+
 
 /* ======================================================== */
 
@@ -319,7 +373,6 @@ export default {
   width: 100%;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
-  padding: 0 20px;
 }
 @media screen and (max-width: 768px) {
   #fh5co-aside .fh5co-footer {
@@ -386,7 +439,7 @@ export default {
 
 #fh5co-hero {
   /* height: 7500px; */
-  background: #fff url(../images/img_bg_1.jpg) no-repeat center fixed; 
+  background: #fff url(../images/img_bg_1.jpg) no-repeat center fixed;
   background-size: cover;
   width: 100%;
   height: 100%;
@@ -834,6 +887,6 @@ export default {
     text-align: center;
   }
 
-  
+
 }
 </style>

@@ -34,12 +34,9 @@ new Vue({
 // //axios.defaults.baseURL = "https://goodlink.club/management/"
 
 
-// router.beforeEach((to, from, next) => {
-//   // to 表示将要访问的路径
-//   // from 表示从哪里跳转来
-//   // next 表示放行
-//   if (to.path === '/login') return next()
-//   const isLogin = sessionStorage.getItem('loginInfo')
-//   if (!isLogin) return next('/login')
-//   else return next()
-// })
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') return next()
+  const isLogin = sessionStorage.getItem('loginInfo')
+  if (!isLogin) return next('/login')
+  else return next()
+})
