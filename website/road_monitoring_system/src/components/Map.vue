@@ -40,6 +40,8 @@
             :key="index" 
             :center="circle.center" 
             :radius="circle.radius"
+            :events="events"
+            ref="circle"
             :strokeColor= "circle.status ? '#7B68EE' : '#ee2200'"
             strokeOpacity= '1'  
             strokeWeight= '1'  
@@ -70,7 +72,8 @@ VueAMap.initAMapApiLoader({
     "AMap.Geocoder", 
     "AMap.Geolocation", 
     "AMap.CircleEditor"],
-  v: "1.4.4"
+  v: "1.4.4",
+
 });
 
 let Geocoder;
@@ -82,7 +85,15 @@ export default {
       zoom: 17,
       center: [121.562236, 29.8000444],
       date:'',
-      badPoints: []
+      badPoints: [],
+      events: {
+      click: e => {
+        var message = "Position : [" + e.lnglat.lat + e.lnglat.lng +"]"
+        this.$alert(message, 'Message', {
+          confirmButtonText: '确定',
+        });
+      }
+    }
     };
   },
 
@@ -130,26 +141,6 @@ export default {
           })
           console.log(error)
         })
-      // const headerJSON = {"Content-Type": "application/json"};
-      // axios({
-      //     method: "post",
-      //     url: this.url,
-      //     data: JSON.stringify({date: date}),
-      //     header: headerJSON
-      //   })
-      // .then(response => {
-      //   var res = response.data
-      //   if (res.length <= 0) {
-      //     this.$message({
-      //       type: "info",
-      //       message: "NO DATA"
-      //     });
-      //   }
-      //   this.changeFormat(res);
-      // })
-      // .catch(function (error) { // request fail
-      //   console.log(error)
-      // })
     },
 
 
@@ -171,7 +162,6 @@ export default {
         badPoints.push(tempCircle)
         tempCenter = []
       }
-
       this.badPoints = badPoints
     },
 
@@ -191,6 +181,11 @@ export default {
       }
       var  currentdate = year + seperator1 + month + seperator1 + strDate;
       return  currentdate;
+    },
+
+    showCenter: function() {
+      console.log("aaa")
+      console.log(this.$refs.circle.$$getCenter())
     }
   }
 };
