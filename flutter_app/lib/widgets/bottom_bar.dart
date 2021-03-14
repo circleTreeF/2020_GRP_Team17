@@ -5,21 +5,19 @@ import 'package:flutter/material.dart';
 import '../utils/app_theme.dart';
 import '../utils/Icon_info.dart';
 
-
 class BottomBar extends StatefulWidget {
-  const BottomBar(
-      {Key key, this.tabIconsList, this.changeIndex, this.addClick})
+  const BottomBar({Key key, this.tabIconsList, this.changeIndex, this.addClick})
       : super(key: key);
 
   final Function(int index) changeIndex;
   final Function addClick;
   final List<IconList> tabIconsList;
+
   @override
   _BottomBarState createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar>
-    with TickerProviderStateMixin {
+class _BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
   AnimationController animationController;
 
   @override
@@ -79,7 +77,6 @@ class _BottomBarState extends State<BottomBar>
                                     widget.changeIndex(1);
                                   }),
                             ),
-
                           ],
                         ),
                       ),
@@ -93,7 +90,6 @@ class _BottomBarState extends State<BottomBar>
             );
           },
         ),
-
       ],
     );
   }
@@ -117,6 +113,7 @@ class TabIcons extends StatefulWidget {
 
   final IconList tabIconData;
   final Function removeAllSelect;
+
   @override
   _TabIconsState createState() => _TabIconsState();
 }
@@ -255,7 +252,7 @@ class TabClipper extends CustomClipper<Path> {
     path.lineTo(0, 0);
     path.arcTo(Rect.fromLTWH(0, 0, radius, radius), degreeToRadians(180),
         degreeToRadians(90), false); //left side arc of bottom bar
-    
+
     path.arcTo(Rect.fromLTWH(size.width - radius, 0, radius, radius),
         degreeToRadians(270), degreeToRadians(90), false);
     path.lineTo(size.width, 0);

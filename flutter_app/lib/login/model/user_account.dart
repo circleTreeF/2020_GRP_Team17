@@ -1,11 +1,6 @@
-
-
-
-class UserAccount{
+class UserAccount {
   static final UserAccount _singleton = UserAccount._internal();
-  int user_id ;
-
-
+  int user_id;
 
   factory UserAccount() {
     return _singleton;
@@ -13,5 +8,3 @@ class UserAccount{
 
   UserAccount._internal();
 }
-
-

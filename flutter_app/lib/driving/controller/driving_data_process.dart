@@ -1,7 +1,6 @@
 import 'package:scidart/numdart.dart';
 
 class DrivingDataProcess {
-
   ///first filter: diagnose the data in _storeList
   List<Map<String, double>> firstFilter(List _targetList) {
     List<Map<String, double>> _outputList = <Map<String, double>>[];
@@ -62,8 +61,8 @@ class DrivingDataProcess {
     double varianceX = 0;
     double varianceY = 0;
 
-    const double standardX = 0; // threshold in X axis, needs to be calculated
-    const double standardY = 0; // threshold in Y axis, needs to be calculated
+    const double standardX = 0.8; // threshold in X axis, needs to be calculated
+    const double standardY = 1.2; // threshold in Y axis, needs to be calculated
 
     varianceX = varianceOfList(_targetList, "x");
     varianceY = varianceOfList(_targetList, "y");
