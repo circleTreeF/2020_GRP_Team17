@@ -90,7 +90,7 @@ export default {
       click: e => {
         var message = "Position : [" + e.lnglat.lat + e.lnglat.lng +"]"
         this.$alert(message, 'Message', {
-          confirmButtonText: '确定',
+          confirmButtonText: 'OK',
         });
       }
     }
