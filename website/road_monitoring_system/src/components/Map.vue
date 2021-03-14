@@ -3,7 +3,7 @@
   <div id="fh5co-page">
 
     <aside id="fh5co-aside" role="complementary" class="border js-fullheight">
-      <h1 id="fh5co-logo">Road</h1>
+      <h1 id="fh5co-logo">Monitoring System</h1>
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -77,7 +77,7 @@ let Geocoder;
 export default {
   data() {
     return {
-      url: "http://10.6.2.61:8866/statistics/get_bad_point",
+      url: "http://10.6.2.61:8866/statistics/get/bad/points?date=",
       amapManager,
       zoom: 17,
       center: [121.562236, 29.8000444],
@@ -110,26 +110,46 @@ export default {
 
     // Requests bad points with parameter date 
     requestData: function(date) {
-      const headerJSON = {"Content-Type": "application/json"};
-      axios({
-          method: "post",
-          url: this.url,
-          data: JSON.stringify({date: date}),
-          header: headerJSON
+      axios
+        .get(this.url + date )
+        .then(response => {
+          // console.log(response.data)
+          var res = response.data
+          if (res.length <= 0) {
+            this.$message({
+              type: "info",
+              message: "NO DATA"
+            });
+          }
+          this.changeFormat(res);
         })
-      .then(response => {
-        var res = response.data
-        if (res.length <= 0) {
+        .catch(function (error) { // 请求失败处理
           this.$message({
-            type: "info",
-            message: "NO DATA"
-          });
-        }
-        this.changeFormat(res);
-      })
-      .catch(function (error) { // request fail
-        console.log(error)
-      })
+            type: 'warning',
+            message: '操作失败，请稍后再试'
+          })
+          console.log(error)
+        })
+      // const headerJSON = {"Content-Type": "application/json"};
+      // axios({
+      //     method: "post",
+      //     url: this.url,
+      //     data: JSON.stringify({date: date}),
+      //     header: headerJSON
+      //   })
+      // .then(response => {
+      //   var res = response.data
+      //   if (res.length <= 0) {
+      //     this.$message({
+      //       type: "info",
+      //       message: "NO DATA"
+      //     });
+      //   }
+      //   this.changeFormat(res);
+      // })
+      // .catch(function (error) { // request fail
+      //   console.log(error)
+      // })
     },
 
 
