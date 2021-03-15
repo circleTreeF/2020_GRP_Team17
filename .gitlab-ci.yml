@@ -8,8 +8,11 @@ image: python:latest
 services:
   - postgres:latest
 
+
 variables:
   POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
@@ -23,7 +26,7 @@ before_script:
   - python -V  # Print out python version for debugging
   # Uncomment next line if your Django app needs a JS runtime:
   - apt-get update -q
-#  - apt-get install nodejs -yqq
+  #  - apt-get install nodejs -yqq
   - pip install -r requirements.txt
 
 # To get Django tests to work you may need to create a settings file using
@@ -46,4 +49,4 @@ test:
   variables:
     DATABASE_URL: "postgresql://db:postgres@postgres:5432/$POSTGRES_DB"
   script:
-    - python manage.py test --settings app.settings.ci
+    - python manage.py test --settings settings.ci
