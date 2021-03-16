@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/login/login_screen.dart';
+import 'package:flutter_app/login/model/user_account.dart';
 
 import '../utils/app_theme.dart';
 
@@ -85,7 +87,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Padding(
                     padding: const EdgeInsets.only(top: 18, left: 18),
                     child: Text(
-                      ' 6376',
+                      "${UserAccount().user_id}",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.grey,
@@ -135,7 +137,14 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Icons.power_settings_new,
                   color: Colors.red,
                 ),
-                onTap: () {},
+                onTap: () {
+                  UserAccount().user_id=null;
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context)=>LoginScreen()
+                      )
+                  );
+                },
               ),
               SizedBox(
                 height: MediaQuery.of(context).padding.bottom,
