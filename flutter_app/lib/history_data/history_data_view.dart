@@ -72,27 +72,20 @@ class HistoryDataListView extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              historyData.start_date,
+                                              historyData.start_date+" "+historyData.start_time+"---"+" "+historyData.end_date+" "+historyData.end_time,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 22,
+                                                fontSize: 15,
                                               ),
                                             ),
+
                                             Text(
-                                              historyData.start_time,
+                                              "round_mark: "+historyData.round_mark,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 22,
-                                              ),
-                                            ),
-                                            Text(
-                                              historyData.end_time,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 22,
+                                                fontSize: 20,
                                               ),
                                             ),
                                           ],

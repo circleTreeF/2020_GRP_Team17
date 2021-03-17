@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/score_screen.dart';
 import 'package:flutter_app/widgets/drawer.dart';
 import 'package:flutter_app/widgets_controller/drawerController.dart';
 
@@ -9,6 +8,7 @@ import 'utils/app_theme.dart';
 import 'home_screen.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
+
   @override
   _NavigationHomeScreenState createState() => _NavigationHomeScreenState();
 }

@@ -16,13 +16,19 @@ class MyHeader extends StatefulWidget {
   _MyHeaderState createState() => _MyHeaderState();
 }
 
+
 class _MyHeaderState extends State<MyHeader> {
+
+
+
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
     return ClipPath(
       clipper: MyClipper(),
       child: Container(
-        padding: EdgeInsets.only(left: 40, top: 50, right: 20),
+        padding: EdgeInsets.zero ,
         height: 350,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -36,30 +42,22 @@ class _MyHeaderState extends State<MyHeader> {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 50),
-            Expanded(
-              child: Stack(
-                children: <Widget>[
 
-                  Positioned(
-                    top: 20 - widget.offset / 2,
-                    left: 140,
-                    child: Text(
-                      " ",
-                      style: kHeadingTextStyle.copyWith(
-                        color: Colors.white,
-                      ),
+          children: <Widget>[
+            SizedBox(height: 70),
+                 Container(
+
+                child:
+                  Image.asset('assets/images/logo.png',
+
                     ),
-                  ),
-                  Container(), //
-                ],
+                   width: 200,
+                   height: 200,
+
               ),
+  ],
             ),
-          ],
-        ),
-      ),
+    ),
     );
   }
 }

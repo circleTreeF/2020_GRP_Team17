@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/score_screen.dart';
+import 'package:flutter_app/register_fail_page.dart';
 import 'package:flutter_app/login/register.dart';
 import 'package:flutter_app/login/model/user_account.dart';
 import 'package:flutter_app/login/widgets/custom_text_input.dart';
@@ -18,15 +18,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
 
-
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
-
 
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   final controller = ScrollController();
   double offset = 0;
   bool passwordInvisible = true;
@@ -74,11 +72,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: InkWell(
                               onTap: () {
                                 checkUser();
-                                // Navigator.of(context).push(
-                                //     MaterialPageRoute(
-                                //         builder: (context)=>NavigationHomeScreen()
-                                //     )
-                                // );
                               },
                               child: Center(
                                 child: Text("Login",
@@ -159,14 +152,10 @@ class _LoginScreenState extends State<LoginScreen> {
               hintTextString: 'Enter User name',
               inputType: InputType.Default,
               enableBorder: true,
-              themeColor: Theme
-                  .of(context)
-                  .primaryColor,
+              themeColor: Theme.of(context).primaryColor,
               cornerRadius: 48.0,
               maxLength: 24,
-              prefixIcon: Icon(Icons.person, color: Theme
-                  .of(context)
-                  .primaryColor),
+              prefixIcon: Icon(Icons.person, color: Theme.of(context).primaryColor),
               textColor: Colors.black,
               errorMessage: 'User name cannot be empty',
               labelText: 'User Name',
@@ -194,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 
+
   //TODO: split to another file
   void checkUser() {
     print(_nameController.text);
@@ -216,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
         else {
           showDialog(
               context: context,
-              builder: (BuildContext context) => Score()
+              builder: (BuildContext context) => PopUpPageForRegisterFail()
           );
         }
 

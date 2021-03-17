@@ -14,6 +14,9 @@ import '../utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class DrivingDataView extends StatefulWidget {
+
+
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -23,7 +26,7 @@ class DrivingDataView extends StatefulWidget {
 
 class _DrivingDataViewState extends State<DrivingDataView>
     with SingleTickerProviderStateMixin {
-  Position position;
+  Position position;///
   StreamSubscription<Position> _positionStreamSubscription;
   AccelerometerEvent event;
   StreamSubscription<AccelerometerEvent> _streamSubscriptions;
@@ -339,9 +342,6 @@ class _DrivingDataViewState extends State<DrivingDataView>
   }
 
 
-
-
-
-
-
 }
+
+

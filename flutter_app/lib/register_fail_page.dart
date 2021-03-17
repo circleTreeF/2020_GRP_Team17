@@ -1,4 +1,4 @@
-library fancy_dialog;
+
 
 
 import 'package:flutter/material.dart';

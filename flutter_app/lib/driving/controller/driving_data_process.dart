@@ -1,7 +1,8 @@
 import 'package:scidart/numdart.dart';
 
 class DrivingDataProcess {
-  ///first filter: diagnose the data in _storeList
+
+  ///first filter: diagnoses the data in _storeList
   List<Map<String, double>> firstFilter(List _targetList) {
     List<Map<String, double>> _outputList = <Map<String, double>>[];
 
@@ -55,7 +56,7 @@ class DrivingDataProcess {
     return _outputList;
   }
 
-  ///Mark for driving
+  ///creates the mark
   int drivingGrade(List<Map> _targetList) {
     int mark = 0;
     double varianceX = 0;
@@ -82,7 +83,7 @@ class DrivingDataProcess {
     return mark;
   }
 
-  ///Calculate variance for marking
+  ///calculates variance for marking
   double varianceOfList(List<Map> _targetList, String index) {
     double varianceOfList = 0;
     List<double> numberList = [];
