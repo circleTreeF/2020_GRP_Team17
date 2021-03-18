@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'j&s!8o02(0m1mix9+x@az1qwx27av@74i74u4--inr!_j_uq)j'
 DEBUG = True
 
 ALLOWED_HOSTS = ['10.6.2.61']
-
 
 # Application definition
 
@@ -40,16 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django_performance_testing',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'myServer.urls'
@@ -57,7 +59,8 @@ ROOT_URLCONF = 'myServer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'road-monitoring-system/dist')],
+        'DIRS': [os.path.join(BASE_DIR, 'road-monitoring-system/dist'),
+                 os.path.join(BASE_DIR, 'statistics/templates/statistics')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,8 +73,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'myServer.wsgi.application'
+CORS_ORIGIN_ALLOW_ALL = False
 
+WSGI_APPLICATION = 'myServer.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -86,7 +90,6 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -106,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/TEMPLATES
 
@@ -120,7 +122,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -128,8 +129,14 @@ STATIC_URL = '/static/'
 
 # Add for vue.js
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "road-monitoring-system/dist/static"),
+    os.path.join(BASE_DIR, 'statistics/templates/statistics'),
+    # os.path.join(BASE_DIR, 'road-monitoring-system/dist'),
+    # os.path.join(BASE_DIR, 'road-monitoring-system/dist/static'),
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Format string for displaying run time timestamps in the Django admin site. The default
 # just adds seconds to the standard Django format, which is useful for displaying the timestamps
@@ -146,3 +153,27 @@ APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 # that supports multiple background worker processes instead (e.g. Dramatiq, Celery, Django-RQ,
 # etc. See: https://djangopackages.org/grids/g/workers-queues-tasks/ for popular options).
 APSCHEDULER_RUN_NOW_TIMEOUT = 7200  # Seconds
+
+#
+# """
+# The below setting is for the stress testing of this project
+# """
+# PERFORMANCE_LIMITS = {
+#     'test method': {
+#         'queries': {'total': 1000},  # want to keep the tests focused
+#         'time': {'total': 0.2},  # want fast integrated tests, so aiming for 1/5 seconds
+#     },
+#     'django.test.client.Client': {
+#         'queries': {
+#             'read': 100,
+#             'write': 100,  # do not create complex object structures in the web
+#                          # process
+#         },
+#     },
+#     'Template.render': {
+#         'queries': {
+#             'write': 5,  # rendering a template should never write to the database!
+#             'read': 10,
+#         }
+#     }
+# }
