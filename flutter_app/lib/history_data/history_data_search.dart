@@ -66,7 +66,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
    var _content = response.data;
 
          UserList userList = UserList.fromJson(_content);
-
+         print(userList.users);
          if (HistoryDataList.historyList.isNotEmpty) {
            HistoryDataList.historyList.clear();
          }
@@ -75,11 +75,11 @@ class _HistoryDataScreenState extends State<HistoryDataScreen>
            HistoryDataList _historyDataList = new HistoryDataList();
            _historyDataList.start_date = userList.users[i].start_time.substring(0,10);
            print(_historyDataList.start_date);
-           _historyDataList.start_time=userList.users[i].start_time.substring(12,19);
+           _historyDataList.start_time=userList.users[i].start_time.substring(11,19);
            print(_historyDataList.start_time);
            _historyDataList.end_date = userList.users[i].end_time.substring(0,10);
            print(_historyDataList.end_date);
-           _historyDataList.end_time = userList.users[i].end_time.substring(12,19);
+           _historyDataList.end_time = userList.users[i].end_time.substring(11,19);
            print(_historyDataList.end_time);
            _historyDataList.round_mark = userList.users[i].round_mark;
            print(_historyDataList.round_mark);

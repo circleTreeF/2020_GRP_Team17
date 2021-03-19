@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'database/Data.dart';
 import 'database/controller/post_service.dart';
+import 'driving/controller/driving_data_process.dart';
 import 'login/model/user_account.dart';
 
 
@@ -62,14 +63,19 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
   String cancel;
   int theme;
   int package = 0; //0 user assets ,1 package assets
-  String mark="D";
+  String mark;
   int rank;
   Map<String,DateTime> time;
 
   @override
   void initState() {
+    DrivingDataProcess _dataProcess;
 
-
+    if(widget.list.isEmpty){
+      mark="D";
+    }else{
+    //mark= _dataProcess.drivingGrade(widget.list);
+       mark="C";}
     sendData(mapGenerator());
 
 
@@ -174,6 +180,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                                   padding: const EdgeInsets.only(left:5,top:10),                                          child: Text(
                                                  'endTime:   ${time["end_time"]}',
                                                   style: TextStyle(
+                                                      fontFamily: "Poppins-Bold",
                                                           color: Colors.black,
                                                           fontSize: 15,
                                                           fontWeight: FontWeight.bold
@@ -186,6 +193,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                                   child: Text(
                                     'Ranking:     $rank',
                                     style: TextStyle(
+                                        fontFamily: "Poppins-Bold",
                                         color: Colors.black,
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold
@@ -199,13 +207,6 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
 
                                                     children: <Widget>[
 
-                                                      customButton(cancel, cancelColor),
-
-
-                                                              SizedBox(
-                                                                width: 20,
-                                                              ),
-                                                      
 
                                                       customButton(ok, okColor),
 
@@ -229,7 +230,8 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                       ),
                 child: Text(
                         t,
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        style: TextStyle(color: Colors.blue, fontSize: 15, fontFamily: "Poppins-Bold"),
+
                       ),
                 
                 onPressed: (){
@@ -251,7 +253,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
     Map<String, dynamic> dataJson= data.toJson(data);
 
     final putData = jsonEncode(dataJson);
-   print(putData);
+     print(putData);
 
     createPost2(putData).then((response) {
       if (response.statusCode >= 200) {
@@ -260,8 +262,8 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
         setState(() {
           rank=enter["rank"];
         });
-
-       // print(rank);
+        print(enter["result"]);
+       print(enter["rank"]);
 
       }
       else

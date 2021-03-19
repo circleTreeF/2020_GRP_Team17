@@ -8,11 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sensors/sensors.dart';
-
+import 'package:timezone/timezone.dart' as tz;
 import '../score_screen.dart';
 import '../utils/app_theme.dart';
 import 'package:intl/intl.dart';
-
+import 'package:timezone/data/latest.dart' as tz;
 class DrivingDataView extends StatefulWidget {
 
 
@@ -254,15 +254,22 @@ class _DrivingDataViewState extends State<DrivingDataView>
   }
 
 
-  void _toggleListening() {
 
+///listen gps and acc
+    _toggleListening()   {
+     // tz.initializeTimeZones();
+     // var detroit = tz.getLocation('Asia/Shanghai');
+     // tz.setLocalLocation(detroit);
     if (drivingCondition == false) {
+      //String string = dateFormat.format(tz.TZDateTime.now(detroit));
       String string = dateFormat.format(DateTime.now());
+
       startTime=dateFormat.parse(string);
       _toggleListeningGPS();
       _toggleListeningAcc();
       drivingCondition = true;
     } else {
+    //  String string = dateFormat.format(tz.TZDateTime.now(detroit));
       String string = dateFormat.format(DateTime.now());
       endTime=dateFormat.parse(string);
       _pauseStream();
@@ -294,6 +301,7 @@ class _DrivingDataViewState extends State<DrivingDataView>
     "start_time" : startTime,
     "end_time": endTime
   };
+  print(_finalList);
     _popUpScore(_finalList,time);
    // _popUpScore(_storeList,time);
   }

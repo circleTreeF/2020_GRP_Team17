@@ -12,6 +12,8 @@ import 'package:flutter_app/database/controller/post_service.dart';
 import 'package:flutter_app/utils/constant.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../login_fail_page.dart';
+
 
 
 
@@ -194,9 +196,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
         Map<String, dynamic> enter = json.decode(_content);
         print('${enter['result']}');
+
+        print('${enter['data']}');
+        print('${enter['data'][0]['id']}');
         if(enter['result']==true){
-           UserAccount().user_id=int.parse(_nameController.text);
+           UserAccount().user_id=enter['data'][0]['id'];
+           UserAccount().username=enter['data'][0]['username'];
+
           print(UserAccount().user_id);
+           print(UserAccount().username);
           Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context)=>NavigationHomeScreen()
@@ -206,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
         else {
           showDialog(
               context: context,
-              builder: (BuildContext context) => PopUpPageForRegisterFail()
+              builder: (BuildContext context) => PopUpPageForLoginFail()
           );
         }
 

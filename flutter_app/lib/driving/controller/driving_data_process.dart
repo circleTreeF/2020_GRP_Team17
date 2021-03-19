@@ -57,8 +57,8 @@ class DrivingDataProcess {
   }
 
   ///creates the mark
-  int drivingGrade(List<Map> _targetList) {
-    int mark = 0;
+  String drivingGrade(List<Map<String, double>> _targetList) {
+    String mark = "D";
     double varianceX = 0;
     double varianceY = 0;
 
@@ -70,21 +70,21 @@ class DrivingDataProcess {
 
     if (varianceX <= standardX) {
       if (varianceY <= standardY) {
-        mark = 4;
+        mark = "D";
       } else {
-        mark = 3;
+        mark = "C";
       }
     } else if (varianceY <= standardY) {
-      mark = 2;
+      mark = "B";
     } else {
-      mark = 1;
+      mark = 'A';
     }
 
     return mark;
   }
 
   ///calculates variance for marking
-  double varianceOfList(List<Map> _targetList, String index) {
+  double varianceOfList(List<Map<String, double>> _targetList, String index) {
     double varianceOfList = 0;
     List<double> numberList = [];
 

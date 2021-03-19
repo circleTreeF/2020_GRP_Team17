@@ -295,7 +295,7 @@ void main() {
   group('score', () {
     DrivingDataProcess testClass = new DrivingDataProcess();
     List<Map<String, double>> _testList = <Map<String, double>>[];
-    int mark = 0;
+    String mark = "D";
     double testVariance = 0;
 
     test('drivingGrade test 1', () {
@@ -318,7 +318,7 @@ void main() {
       ];
 
       mark = testClass.drivingGrade(_testList);
-      expect(mark, 4);
+      expect(mark, "D");
     });
 
     test('drivingGrade test 2', () {
@@ -411,7 +411,7 @@ void main() {
       ];
 
       mark = testClass.drivingGrade(_testList);
-      expect(mark, 1);
+      expect(mark, "A");
     });
 
     test('drivingGrade test 3', () {
@@ -434,7 +434,7 @@ void main() {
       ];
 
       mark = testClass.drivingGrade(_testList);
-      expect(mark, 3);
+      expect(mark, "C");
     });
 
     test('drivingGrade test 4', () {
@@ -457,7 +457,7 @@ void main() {
       ];
 
       mark = testClass.drivingGrade(_testList);
-      expect(mark, 2);
+      expect(mark, "B");
     });
 
     test('varianceOfList test 1', () {

@@ -87,7 +87,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Padding(
                     padding: const EdgeInsets.only(top: 18, left: 18),
                     child: Text(
-                      "${UserAccount().user_id}",
+                      "${UserAccount().username}",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.grey,

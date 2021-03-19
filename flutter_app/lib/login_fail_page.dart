@@ -1,14 +1,12 @@
 
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
 
-class PopUpPageForRegisterFail extends StatefulWidget {
-  const PopUpPageForRegisterFail(
+class PopUpPageForLoginFail extends StatefulWidget {
+  const PopUpPageForLoginFail(
       {Key key,
         this.okFun,
         this.cancelFun,
@@ -32,12 +30,12 @@ class PopUpPageForRegisterFail extends StatefulWidget {
   final int theme; // 0:
 
   @override
-  PopUpPageForRegisterFailState createState() {
-    return PopUpPageForRegisterFailState();
+  PopUpPageForLoginFailState createState() {
+    return PopUpPageForLoginFailState();
   }
 }
 
-class PopUpPageForRegisterFailState extends State<PopUpPageForRegisterFail> with TickerProviderStateMixin {
+class PopUpPageForLoginFailState extends State<PopUpPageForLoginFail> with TickerProviderStateMixin {
   AnimationController ac;
   Animation animation;
   double width;
@@ -125,7 +123,7 @@ class PopUpPageForRegisterFailState extends State<PopUpPageForRegisterFail> with
 
     var image = ClipRRect(
       child: Image.asset(
-         "assets/images/logo.png",
+        "assets/images/logo.png",
         fit: BoxFit.fill,
         width: dialogWidth * 0.25, // dialogWidth will get left/right margin?
         height: dialogHeight * 0.36,
@@ -164,7 +162,7 @@ class PopUpPageForRegisterFailState extends State<PopUpPageForRegisterFail> with
               SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
               Padding(
                 padding: const EdgeInsets.only(left:5,top:12),                                          child: Text(
-                'Existing UserName!',
+                'UserName or password is wrong!',
                 style: TextStyle(
                     fontFamily: "Poppins-Bold",
                     color: Colors.black,
@@ -220,7 +218,7 @@ class PopUpPageForRegisterFailState extends State<PopUpPageForRegisterFail> with
 
 
 
-  }
+}
 
 
 
