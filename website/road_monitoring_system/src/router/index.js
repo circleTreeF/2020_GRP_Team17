@@ -14,16 +14,16 @@ export default new Router({
       component: Login
     },
     {
-      path: '/login',
+      path: '/Login',
       name: 'Login',
       component: Login,
     },
     {
-      path: '/components/Map',
+      path: '/Map',
       name: 'Map',
       component: Map,
       meta:{
-        loginInfo:true 
+        requireAuth:true 
       }
     }
 

@@ -35,8 +35,10 @@ new Vue({
 
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login') return next()
-  const isLogin = sessionStorage.getItem('loginInfo')
-  if (!isLogin) return next('/login')
-  else return next()
+  if (to.path === '/Login' || sessionStorage.getItem('requireAuth')) {
+    return next()
+  } else {
+    return next('/Login');
+  }
+
 })

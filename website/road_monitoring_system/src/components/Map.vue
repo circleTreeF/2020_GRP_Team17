@@ -8,13 +8,13 @@
         <ul>
           <li><a href="index.html">Home</a></li>
           <!-- <li><a href="about.html">About</a></li> -->
-          <li class="fh5co-active"><router-link to="/Map">Map</router-link></li>
+          <li class="fh5co-active"><router-link to="Map">Map</router-link></li>
         </ul>
       </nav>
       <div class="fh5co-footer">
 				<p><small>
           <span>&copy; GRP Team 17. All Rights Reserved.</span> 
-          <span>Designed by Shihui QUE </span>
+          <span>Made by Shihui QUE </span>
           <span>Demo Images: Pixabay</span>
         </small></p>
 			</div>

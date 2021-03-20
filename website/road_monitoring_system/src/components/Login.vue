@@ -7,7 +7,7 @@
         <ul>
           <li class="fh5co-active"><a href="index.html">Home</a></li>
           <!-- <li><a href="about.html">About</a></li> -->
-          <li @click="check()"><router-link to="/Map">Map</router-link></li>
+          <li><router-link to="Map">Map</router-link></li>
         </ul>
       </nav>
       <div class="fh5co-footer">
@@ -126,11 +126,10 @@ export default {
               this.$router.go(0);
               return;
             }
-            sessionStorage.setItem("loginInfo", true);
+            sessionStorage.setItem("requireAuth", false);
             sessionStorage.setItem("permission", this.form.name);
-            this.$router.push("/components/Map");
+            this.$router.push("Map");
           } else {
-            sessionStorage.setItem("loginInfo", false);
             this.$message({
               message: "ERROR! " + res.message,
               type: "warning"
@@ -167,13 +166,6 @@ export default {
         this.title = "REGISTER";
       } else {
         this.title = "LOGIN";
-      }
-    },
-
-    check() {
-      var loginInfo = sessionStorage.getItem("loginInfo");
-      if (!loginInfo) {
-        return;
       }
     }
   }
