@@ -6,7 +6,9 @@
       <h1 id="fh5co-logo">Monitoring System</h1>
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li><router-link to="Login">Home</router-link></li>
+
+          <!-- <li><a href="index.html">Home</a></li> -->
           <!-- <li><a href="about.html">About</a></li> -->
           <li class="fh5co-active"><router-link to="Map">Map</router-link></li>
         </ul>
@@ -201,7 +203,7 @@ export default {
   /* border: rgb(170, 165, 165); */
   /* border-style: solid; */
   /* border-width: 5px; */
-  background: #fff url(../images/img_bg_2.jpg) no-repeat center fixed; 
+  background: #fff url(../assets/img_bg_2.jpg) no-repeat center fixed; 
   background-size: cover;
   width: 100%;
   height: 100%;

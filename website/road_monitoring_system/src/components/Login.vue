@@ -5,7 +5,8 @@
       <h1 id="fh5co-logo">Monitoring System</h1>
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
-          <li class="fh5co-active"><a href="index.html">Home</a></li>
+          <li class="fh5co-active"><router-link to="Login">Home</router-link></li>
+          <!-- <li class="fh5co-active"><a href="index.html">Home</a></li> -->
           <!-- <li><a href="about.html">About</a></li> -->
           <li><router-link to="Map">Map</router-link></li>
         </ul>
@@ -14,7 +15,7 @@
         <p>
           <small>
             <span>&copy; GRP Team 17. All Rights Reserved.</span>
-            <span>Designed by Shihui QUE </span>
+            <span>Made by Shihui QUE </span>
             <span>Demo Images: Pixabay</span>
           </small>
         </p>
@@ -26,7 +27,7 @@
         <div class="flexslider js-fullheight">
           <!-- <ul class="slides"> -->
           <ul>
-            <li style="background-image: url(images/img_bg_1.jpg);">
+            <li style="background-image: url(../assets/img_bg_1.jpg);">
               <div class="overlay"></div>
               <div class="container-fluid">
                 <div class="row">
@@ -431,7 +432,7 @@ export default {
 
 #fh5co-hero {
   /* height: 7500px; */
-  background: #fff url(../images/img_bg_1.jpg) no-repeat center fixed;
+  background: #fff url(../assets/img_bg_1.jpg) no-repeat center fixed;
   background-size: cover;
   width: 100%;
   height: 100%;
