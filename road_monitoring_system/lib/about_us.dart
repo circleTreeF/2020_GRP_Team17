@@ -36,13 +36,14 @@ class _AboutUsState extends State<AboutUs> {
               padding: EdgeInsets.symmetric(vertical: 14),
             ),
             Text(
-              'GRP_Group17',
+              'GRP Team 2020 17',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
-            launcherButton('Find us on Gitlab', 'https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17'),
+            launcherButton('Find project on GitLab', 'https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17'),
+            launcherButton('More about us', 'http://cslinux.nottingham.edu.cn/~Team202017/'),
             Padding(
               padding: EdgeInsets.only(bottom: 60),
             ),
