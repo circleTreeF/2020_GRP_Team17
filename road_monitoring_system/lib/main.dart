@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:road_monitoring_system/register_fail_page.dart';
+import 'package:road_monitoring_system/login/register_fail_page.dart';
 
 
 import 'about_us.dart';
@@ -25,7 +25,6 @@ void main() async {
     DeviceOrientation.portraitDown
   ])  .then((_) { runApp(MyApp()); });
 
- // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,12 +40,11 @@ class MyApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/', //Start the app with the "/" named route.
 
       title: 'Road Monitoring app',
-      //Start the app with the "/" named route.
-      debugShowCheckedModeBanner: false,
-      //remove the debug label
+
+      debugShowCheckedModeBanner: false, //remove the debug label
 
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -59,6 +57,11 @@ class MyApp extends StatelessWidget {
   }
 
 
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/1/21 7:42 PM
+  *** @version:2.0
+  **/
   ///match the route with the path
   Route<dynamic> _getRoutePath(RouteSettings settings) {
     Map<String, WidgetBuilder> routes = {

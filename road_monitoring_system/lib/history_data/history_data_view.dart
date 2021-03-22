@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'view/history_app_theme.dart';
 import 'model/history_list_data.dart';
 
+
+/// A widget describes [historyData].
 class HistoryDataListView extends StatelessWidget {
   const HistoryDataListView({Key key,
     this.historyData,
@@ -12,7 +14,8 @@ class HistoryDataListView extends StatelessWidget {
       : super(key: key);
 
 
-  final HistoryDataList historyData;
+  ///The [HistoryData] of one round driving of this user.
+  final HistoryData historyData;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -72,7 +75,7 @@ class HistoryDataListView extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              historyData.start_date+" "+historyData.start_time+"---"+" "+historyData.end_date+" "+historyData.end_time,
+                                              historyData.startDate+" "+historyData.startTime+"---"+" "+historyData.endDate+" "+historyData.endTime,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -81,7 +84,7 @@ class HistoryDataListView extends StatelessWidget {
                                             ),
 
                                             Text(
-                                              "round_mark: "+historyData.round_mark,
+                                              "round_mark: "+historyData.roundMark,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,

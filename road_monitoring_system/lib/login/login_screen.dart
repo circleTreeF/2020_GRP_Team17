@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:road_monitoring_system/database/controller/post_service.dart';
-import 'package:road_monitoring_system/database/model/post_model.dart';
+import 'package:road_monitoring_system/database/controller/post.dart';
+import 'package:road_monitoring_system/database/post_login_and_register.dart';
 import 'package:road_monitoring_system/login/register.dart';
 import 'package:road_monitoring_system/login/widgets/custom_text_input.dart';
 import 'package:road_monitoring_system/login/widgets/header.dart';
 import 'package:road_monitoring_system/utils/constant.dart';
 
-import '../login_fail_page.dart';
+import 'login_fail_page.dart';
 import '../navigation_home_screen.dart';
 import 'model/user_account.dart';
 
@@ -29,11 +29,14 @@ class LoginScreenState extends State<LoginScreen> {
 
   final controller = ScrollController();
   double offset = 0;
+
+  ///The visibility of password
   bool passwordInvisible = true;
 
-  TextEditingController _nameController = TextEditingController();
-
-  TextEditingController _passwordController = TextEditingController();
+  ///The controller for the editable text field for entering the [username].
+  TextEditingController nameController = TextEditingController();
+  /// The controller for the editable text field for entering the [password].
+  TextEditingController passwordController = TextEditingController();
 
 
   @override
@@ -56,7 +59,7 @@ class LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  userText(),
+                  userText(),//text field of username and password
                   SizedBox(height: ScreenUtil.getInstance().setHeight(70)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +69,7 @@ class LoginScreenState extends State<LoginScreen> {
                           width: ScreenUtil.getInstance().setWidth(600),
                           height: ScreenUtil.getInstance().setHeight(80),
                           decoration: BoxDecoration(
-                              color: kPrimaryColor,
+                              color: defaultColor,
                               borderRadius: BorderRadius.circular(30.0),
                              ),
                           child: Material(
@@ -142,6 +145,13 @@ class LoginScreenState extends State<LoginScreen> {
     controller.addListener(onScroll);
   }
 
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/14 8:47 PM
+  *** @version:1.0
+  **/
+
+/// Returns the widget of the text field
   Widget userText() {
     return new Container(
       color: Colors.transparent,
@@ -149,10 +159,10 @@ class LoginScreenState extends State<LoginScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomTextInput(
-              textEditController: _nameController,
+            UserText(
+              textEditController: nameController,
               hintTextString: 'Enter User name',
-              inputType: InputType.Default,
+              inputType: InputType.username,
               enableBorder: true,
               themeColor: Theme.of(context).primaryColor,
               cornerRadius: 48.0,
@@ -163,8 +173,8 @@ class LoginScreenState extends State<LoginScreen> {
               labelText: 'User Name',
             ),
             SizedBox(height: ScreenUtil.getInstance().setHeight(35),),
-            CustomTextInput(
-              textEditController: _passwordController,
+            UserText(
+              textEditController: passwordController,
               hintTextString: 'Enter Password',
               inputType: InputType.Password,
               enableBorder: true,
@@ -185,26 +195,31 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
 
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/16 8:49 PM
+  *** @version:2.0
+  **/
 
-  //TODO: split to another file
+  ///Checks whether the [username] and [password] users entered are available.
+  ///
+  /// Make http [POST] request
+  /// If they are valid, update the [UserAccount] and push the page to Home page.
+  /// If they are invalid, pop up the dialog to alert the users that they have entered the wrong [username] or [password]
+  ///
   void checkUser() {
-    print(_nameController.text);
-    print(_passwordController.text);
-    createPost1(new Post1(username:_nameController.text,password:_passwordController.text)).then((response) {
+
+    createPostToLogin(new User(username:nameController.text,password:passwordController.text)).then((response) {
       if (response.statusCode >= 200) {
         var _content = response.body;
 
         Map<String, dynamic> enter = json.decode(_content);
-        print('${enter['result']}');
 
-        print('${enter['data']}');
-        print('${enter['data'][0]['id']}');
         if(enter['result']==true){
            UserAccount().user_id=enter['data'][0]['id'];
            UserAccount().username=enter['data'][0]['username'];
 
-          print(UserAccount().user_id);
-           print(UserAccount().username);
+
           Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context)=>NavigationHomeScreen()

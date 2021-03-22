@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:road_monitoring_system/database/controller/post_service.dart';
-import 'package:road_monitoring_system/database/model/post_model.dart';
+import 'package:road_monitoring_system/database/controller/post.dart';
+import 'package:road_monitoring_system/database/post_login_and_register.dart';
 import 'package:road_monitoring_system/login/widgets/custom_text_input.dart';
 import 'package:road_monitoring_system/utils/constant.dart';
 
-import '../register_fail_page.dart';
+import 'register_fail_page.dart';
 import 'login_screen.dart';
 
 
@@ -29,9 +29,12 @@ class RegisterScreenState extends State<RegisterScreen> {
   final controller = ScrollController();
   double offset = 0;
 
-  TextEditingController nameController = TextEditingController();
 
+  ///The controller for the editable text field for entering the [username].
+  TextEditingController nameController = TextEditingController();
+  /// The controller for the editable text field for entering the [password].
   TextEditingController passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           width: ScreenUtil.getInstance().setWidth(600),
                           height: ScreenUtil.getInstance().setHeight(80),
                           decoration: BoxDecoration(
-                            color: kPrimaryColor,
+                            color: defaultColor,
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Material(
@@ -119,16 +122,27 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/3/16 8:49 PM
+   *** @version:2.0
+   **/
+
+  ///Create a new account by adding the available [username] and [password] users entered to database.
+  ///
+  /// Make http [POST] request
+  /// If the username is valid, update the [UserAccount] and push the page to Home page.
+  /// If the username is existing, pop up the dialog to alert the users that they have entered the exiting [username].
+  ///
   void addUser() {
-    print(nameController.text);
-    print(passwordController.text);
-    createPost3(new Post1(username:nameController.text,password:passwordController.text)).then((response) {
+
+    createPostToRegister(new User(username:nameController.text,password:passwordController.text)).then((response) {
       if (response.statusCode >= 200) {
         var _content = response.body;
 
         Map<String, dynamic> enter = jsonDecode(_content); // print(enter);
-        print('${enter['result']}');
-        print(enter['result']);
+
         if(enter['result']==true){
 
           Navigator.of(context).push(
@@ -153,6 +167,13 @@ class RegisterScreenState extends State<RegisterScreen> {
   }
 
 
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/21 8:58 PM
+  *** @version:1.0
+  **/
+
+  /// Returns the widget of the text field
   Widget userText() {
     return new Container(
       color: Colors.transparent,
@@ -160,10 +181,10 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomTextInput(
+            UserText(
               textEditController: nameController,
               hintTextString: 'Enter User name',
-              inputType: InputType.Default,
+              inputType: InputType.username,
               enableBorder: true,
               themeColor: Theme
                   .of(context)
@@ -178,7 +199,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               labelText: 'User Name',
             ),
             SizedBox(height: ScreenUtil.getInstance().setHeight(35),),
-            CustomTextInput(
+            UserText(
               textEditController: passwordController,
               hintTextString: 'Enter Password',
               inputType: InputType.Password,

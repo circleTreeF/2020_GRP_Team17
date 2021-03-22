@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
-class CustomTextInput extends StatefulWidget {
-  const CustomTextInput(
-      {@required this.hintTextString,
+///[UserText] is a stateful widget for user to input the [username] and [password]
+class UserText extends StatefulWidget {
+  const UserText(
+      {
+      @required this.hintTextString,
       @required this.textEditController,
       @required this.inputType,
       this.enableBorder = true,
@@ -16,7 +17,7 @@ class CustomTextInput extends StatefulWidget {
       this.errorMessage,
       this.labelText});
 
-  // ignore: prefer_typing_uninitialized_variables
+
   final hintTextString;
   final TextEditingController textEditController;
   final InputType inputType;
@@ -30,17 +31,22 @@ class CustomTextInput extends StatefulWidget {
   final String labelText;
 
   @override
-  _CustomTextInputState createState() => _CustomTextInputState();
+  UserTextState createState() => UserTextState();
 }
 
-// input text state
-class _CustomTextInputState extends State<CustomTextInput> {
+/// [UserTextState] is input text state.
+class UserTextState extends State<UserText> {
   bool _isValidate = true;
   String validationMessage = '';
   bool visibility = false;
   int oldTextSize = 0;
 
-  // build method for UI rendering
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/12 2:39 PM
+  *** @version:1.2
+  **/
+  /// build method for UI rendering
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,8 +64,7 @@ class _CustomTextInputState extends State<CustomTextInput> {
           prefixIcon: widget.prefixIcon ?? getPrefixIcon(),
           suffixIcon: getSuffixIcon(),
         ),
-        // onChanged: checkValidation,
-        keyboardType: getInputType(),
+        keyboardType: TextInputType.text,
         obscureText: widget.inputType == InputType.Password && !visibility,
 
         style: TextStyle(
@@ -71,6 +76,12 @@ class _CustomTextInputState extends State<CustomTextInput> {
   }
 
 
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/3/12 2:38 PM
+   *** @version:1.0
+   **/
+  ///Return the OutlineInputBorder
   OutlineInputBorder getBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(widget.cornerRadius ?? 12.0)),
@@ -79,67 +90,29 @@ class _CustomTextInputState extends State<CustomTextInput> {
     );
   }
 
-  // formatter on basis of textinput type
 
 
-  // text style for textinput
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/3/12 2:38 PM
+   *** @version:1.0
+   **/
+  /// Return text style.
   TextStyle getTextStyle() {
     return TextStyle(color: widget.themeColor ?? Theme.of(context).primaryColor);
   }
 
-  // input validations
-  // void checkValidation(String textFieldValue) {
-  //   if (widget.inputType == InputType.Default) {
-  //     //default
-  //     _isValidate = textFieldValue.isNotEmpty;
-  //     validationMessage = widget.errorMessage ?? 'Filed cannot be empty';
-  //   } else if (widget.inputType == InputType.Password) {
-  //     //password validation
-  //     _isValidate = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$').hasMatch(textFieldValue);
-  //     validationMessage = widget.errorMessage ?? 'Password is not valid';
-  //   }
-  //   oldTextSize = textFieldValue.length;
-  //   //change value in state
-  //   setState(() {});
-  // }
 
-  // return input type for setting keyboard
-  TextInputType getInputType() {
-    switch (widget.inputType) {
-      case InputType.Default:
-        return TextInputType.text;
-        break;
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/3/12 2:38 PM
+   *** @version:1.0
+   **/
 
-
-      default:
-        return TextInputType.text;
-        break;
-    }
-  }
-
-  // get max length of text
-  int getMaxLength() {
-    switch (widget.inputType) {
-      case InputType.Default:
-        return 36;
-        break;
-
-
-      case InputType.Password:
-        return 24;
-        break;
-
-
-      default:
-        return 36;
-        break;
-    }
-  }
-
-  // get prefix Icon
+  /// Return prefix Icon
   Icon getPrefixIcon() {
     switch (widget.inputType) {
-      case InputType.Default:
+      case InputType.username:
         return Icon(
           Icons.person,
           color: widget.themeColor ?? Theme.of(context).primaryColor,
@@ -162,7 +135,12 @@ class _CustomTextInputState extends State<CustomTextInput> {
     }
   }
 
-  // get suffix icon
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/12 2:38 PM
+  *** @version:1.0
+  **/
+  /// Return suffix icon
   Widget getSuffixIcon() {
     if (widget.inputType == InputType.Password) {
       return IconButton(
@@ -181,5 +159,11 @@ class _CustomTextInputState extends State<CustomTextInput> {
   }
 }
 
-//input types
-enum InputType { Default, Password }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/01 2:37 PM
+*** @version:1.0
+**/
+/// Enums for input types
+enum InputType { username, Password }

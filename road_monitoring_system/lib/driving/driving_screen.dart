@@ -1,132 +1,466 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:road_monitoring_system/driving/widgets/data_card.dart';
+import 'package:road_monitoring_system/driving/widgets/title_card.dart';
+import 'package:sensors/sensors.dart';
+import '../score_screen.dart';
 import '../utils/app_theme.dart';
-import '../request_permission_screen.dart';
-import 'driving_data_view.dart';
+import 'package:intl/intl.dart';
 
+import 'controller/driving_data_process.dart';
+
+
+///The [DrivingScreen] displays the driving data for users.
 class DrivingScreen extends StatefulWidget {
-  const DrivingScreen({Key key, this.animationController}) : super(key: key);
 
-  final AnimationController animationController;
   @override
-  DrivingScreenState createState() => DrivingScreenState();
+  DrivingScreenState createState() {
+    // TODO: implement createState
+    return DrivingScreenState();
+  }
+
 }
 
+
 class DrivingScreenState extends State<DrivingScreen>
-    with TickerProviderStateMixin {
-  Animation<double> topBarAnimation;
+    with SingleTickerProviderStateMixin {
+  ///If the users are driving, the [drivingCondition] is true, else is false.
+  bool drivingCondition = false;
+  ///The list contains [Position].
+  final positions = <Position>[];
+  ///The list contains [AccelerometerEvent].
+  final accelerometerEvent = <AccelerometerEvent>[];
+  ///Location information collected.
+  Position position;
+  ///The event starts all location sensors on the device and will keep them
+  /// active until you cancel listening to the stream or when the application
+  /// is killed.
+  final positionStream = Geolocator.getPositionStream();
+  ///The subscription on events from a [positionStream] and holds the callbacks.
+  StreamSubscription<Position> positionStreamSubscription;
+  ///The Acceleration data collected by sensor.
+  AccelerometerEvent event;
+  ///The subscription on events from a [accelerometerEvents] and holds the callbacks.
+  StreamSubscription<AccelerometerEvent> streamSubscriptions;
 
 
-  double topBarOpacity = 0.0;
-  DateTime date = DateTime.now();
+  ///The map stores the [startTime] and [endTime].
+  Map<String,DateTime > time;
+  ///The start time of this round of driving
+  DateTime startTime;
+  ///The end time of this round of driving
+  DateTime endTime;
+  ///The instance of the [DrivingDataProcess]
+  DrivingDataProcess dataProcess = new DrivingDataProcess();
+  ///The list stores the data collected
+  List<Map<String,double>> storeList = <Map<String,double>>[];
+  ///The list stores the data filtered.
+  List<Map<String,double>> finalList = <Map<String,double>>[]; //list after second filter
+  /// The new DateFormat
+  DateFormat dateFormat;
+
+
 
   @override
   void initState() {
-    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-            parent: widget.animationController,
-            curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
-
-    DrivingStateView();
+    // TODO: implement initState
     super.initState();
+    time=new Map<String,DateTime >();
+    dateFormat=DateFormat("yyyy-MM-dd HH:mm:ss");
   }
 
 
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 50));
-    return true;
-  }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
-    return Container(
-      color: AppTheme.background,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: <Widget>[
-            getAppBarUI(),
-            SizedBox(height: ScreenUtil.getInstance().setHeight(200)),
-            DrivingDataView(),
-          ],
+    return Scaffold(
+      body: SafeArea(
+
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: AnimationLimiter(
+            child: Column(
+              children: AnimationConfiguration.toStaggeredList(
+                duration: const Duration(milliseconds: 375),
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  horizontalOffset: MediaQuery.of(context).size.width / 2,
+                  child: FadeInAnimation(child: widget),
+                ),
+                children: [
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(200)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TitleCard(height: 35.0, width: 80.0,text: "x"),
+                        TitleCard(height: 35.0, width: 80.0,text: "y"),
+                        TitleCard(height: 35.0, width: 80.0,text: "z"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DataCard(height: 50.0, width: 100.0,text: cardTextAccX()),
+                        DataCard(height: 50.0, width: 100.0,text: cardTextAccY()),
+                        DataCard(height: 50.0, width: 100.0,text: cardTextAccZ()),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(70)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TitleCard(height: 35.0, width: 120.0,text: "longitude"),
+                        TitleCard(height: 35.0, width: 120.0,text: "latitude"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
+
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DataCard(height: 50.0, width: 100.0,text: cardTextLong()),
+                        DataCard(height: 50.0, width: 100.0,text: cardTextLat()),
+                      ],
+                    ),
+                  ),
+
+
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(70)),
+
+                  Container(
+                    height: 100,
+                    // ignore: deprecated_member_use
+                    child: RaisedButton(
+                      child: buttonText(),
+                      shape: CircleBorder(
+                        side: BorderSide(color: Colors.cyanAccent),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          toggleListening();
+                        });
+
+                      },
+                    ),
+                  ),
+
+                ],
+
+              ),
+
+            ),
+
+
+          ),
         ),
       ),
     );
   }
 
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/2/15 3:12 PM
+   *** @version:1.2
+   **/
 
-
-  Widget getAppBarUI() {
-    return Column(
-      children: <Widget>[
-        AnimatedBuilder(
-          animation: widget.animationController,
-          builder: (BuildContext context, Widget child) {
-            return FadeTransition(
-              opacity: topBarAnimation,
-              child: Transform(
-                transform: Matrix4.translationValues(
-                    0.0, 30 * (1.0 - topBarAnimation.value), 0.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppTheme.white.withOpacity(topBarOpacity),
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(32.0),
-                    ),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: AppTheme.grey
-                              .withOpacity(0.4 * topBarOpacity),
-                          offset: const Offset(1.1, 1.1),
-                          blurRadius: 10.0),
-                    ],
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: MediaQuery.of(context).padding.top,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 16,
-                            right: 16,
-                            top: 16 - 8.0 * topBarOpacity,
-                            bottom: 12 - 8.0 * topBarOpacity),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text(
-                                  'Driving',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: AppTheme.fontName,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 22 + 6 - 6 * topBarOpacity,
-                                    letterSpacing: 1.2,
-                                    color: AppTheme.darkerText,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        )
-      ],
-    );
+  ///Return the content of [Text] contains the Acceleration force along the x axis (including gravity) measured in m/s^2
+  String cardTextAccX() {
+    if (event != null&&isListeningPosition()) {
+      return '${event.x.roundToDouble()}';
+    } else {
+      return 'wait';
+    }
   }
 
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/2/15 3:12 PM
+   *** @version:1.2
+   **/
+  
+  ///Return the content of [Text] contains the Acceleration force along the y axis (including gravity) measured in m/s^2
+  String cardTextAccY() {
+    if (event != null&&isListeningPosition()) {
+      return '${event.y.roundToDouble()}';
+    } else {
+      return 'wait';
+    }
+  }
+
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/2/15 3:12 PM
+   *** @version:1.2
+   **/
+ 
+  ///Return the content of [Text] contains the Acceleration force along the z axis (including gravity) measured in m/s^2
+  String cardTextAccZ() {
+    if (event != null&&isListeningPosition()) {
+      return '${event.z.roundToDouble()}';
+    } else {
+      return 'wait';
+    }
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/2/15 3:12 PM
+*** @version:1.2
+**/
+
+  ///Return the content of [Text] contains the longitude of this position in degrees normalized to the interval -90.0
+  String cardTextLong() {
+    if (event != null&&isListeningPosition()) {
+      return '${position.longitude.roundToDouble()}';
+    } else {
+      return 'wait';
+    }
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/21 7:14 PM
+*** @version:
+**/
+  ///Return the content of [Text] contains the latitude of this position in degrees normalized to the interval -90.0
+  String cardTextLat() {
+    if (event != null&&isListeningPosition()) {
+      return '${position.latitude.roundToDouble()}';
+    } else {
+      return 'wait';
+    }
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/1/11 7:30 PM
+*** @version:2.1
+**/
+
+  ///Listens GPS
+  void toggleListeningGPS() {
+    positionStreamSubscription =
+        positionStream.listen((position) => setState(() {
+          positions.add(position);
+          this.position = position;
+        }));
+  }
+
+
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/1/11 7:30 PM
+  *** @version:2.1
+  **/
+
+  ///Listens Acceleration force
+  void toggleListeningAcc() {
+
+    streamSubscriptions =
+        accelerometerEvents.listen((AccelerometerEvent event) {
+          if(mounted) {
+            setState(() {
+              this.event = event;
+              accelerometerEvent.add(event);
+            });
+          }
+        });
+  }
+
+
+
+  /// Gets current time
+  double currentMillSecond() {
+    return new DateTime.now().millisecondsSinceEpoch.toDouble();
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/1 7:27 PM
+*** @version:3.1
+**/
+
+  
+
+  ///Called when clicking the button on this screen.
+  ///
+  ///if [drivingCondition] is false, go to listen and store GPS and Acceleration force data.
+  ///if [drivingCondition] is true, pause the listening stream.
+  toggleListening()   {
+
+    if (drivingCondition == false) {
+
+      String string = dateFormat.format(DateTime.now());//converts the dataTime to certain format
+      startTime=dateFormat.parse(string);// parses the inputString into the dateFormat
+      toggleListeningGPS();
+      toggleListeningAcc();
+      if(position!=null&&event!=null){ addToList(); }
+      drivingCondition = true;
+
+    } else {
+      String string = dateFormat.format(DateTime.now());
+      endTime=dateFormat.parse(string);
+      pauseStream();
+      drivingCondition = false;
+
+    }
+
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/1/17 5:35 PM
+*** @version:1.2
+**/
+
+  ///Returns the condition of collecting GPS data.
+  ///
+  ///Returns [True] if the app has started to listen to position
+  ///Returns [False] if the app has not started to listen to position
+  bool isListeningPosition() => !(positionStreamSubscription == null ||
+      positionStreamSubscription.isPaused);
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/7 11:27 AM
+*** @version:1.3
+**/
+  
+
+  /// Pauses the [positionStreamSubscription] and [streamSubscriptions].
+  ///
+  /// Filters the data and pop up the score screen.
+  void pauseStream() {
+    positionStreamSubscription.pause();
+    streamSubscriptions.pause();
+
+    finalList = dataProcess.firstFilter(storeList);//filter the data
+
+    time= {
+      "start_time" : startTime,
+      "end_time": endTime
+    };// the map of time
+    popUpScorePage(finalList,time);
+  }
+
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/21 7:27 PM
+  *** @version:2.2
+  **/
+  
+  /// Returns [Text] on the button
+  ///
+  /// if users press this [button] to start driving, the [Text] will be 'stop';
+  /// if users are not driving, the [Text] will be 'start;
+  Text buttonText() {
+
+    return isListeningPosition()
+        ? Text('stop',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: AppTheme.fontName,
+          fontWeight: FontWeight.normal,
+          fontSize: 24,
+          letterSpacing: 0.0,
+          color: AppTheme.nearlyDarkBlue,
+        ))
+        : Text('start',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: AppTheme.fontName,
+          fontWeight: FontWeight.normal,
+          fontSize: 24,
+          letterSpacing: 0.0,
+          color: AppTheme.nearlyDarkBlue,
+        ));
+
+
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/10 4:11 PM
+*** @version:2.3
+**/
+
+  ///Adds data required of [event] and [position] to the list
+  void addToList(){
+    double timeStamp;
+    double lastTime = 0;
+    if (storeList.isNotEmpty) lastTime = storeList.last['time'];
+    timeStamp = currentMillSecond();
+    Map<String, double> _mapList = new Map<String, double>();
+    _mapList = {
+      'time': timeStamp,
+      'latitude': position.latitude,
+      'longitude': position.longitude,
+
+      'x': event.x,
+      'y': event.y,
+      'z': event.z};
+    if (lastTime + 100 <= timeStamp) {
+      //keep the 100 millisecond time slot
+      storeList.add(
+          _mapList); //each time new piece of data generated, added to _storeList
+    }
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/2/21 7:27 PM
+*** @version:2.1
+**/
+
+  ///Pops up the score page
+  ///
+  ///Sends [finalList] the list of data and [time] to score page.
+  Future<dynamic> popUpScorePage(List<Map<String,double>> finalList,Map<String,DateTime> time) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            Score(list: finalList,time: time));
+  }
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/1/11 3:27 PM
+*** @version:1.2
+**/
+
+  @override
+  ///Called when leaving from this page and cancels the subscription
+  void dispose() {
+
+    if (positionStreamSubscription != null) {
+      positionStreamSubscription.cancel();
+      positionStreamSubscription = null;
+    }
+
+    super.dispose();
+  }
+
+
 }
+

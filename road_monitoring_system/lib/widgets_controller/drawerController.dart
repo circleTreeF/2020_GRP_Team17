@@ -4,31 +4,34 @@ import 'package:road_monitoring_system/widgets/drawer.dart';
 
 import '../utils/app_theme.dart';
 
-class DrawerUserController extends StatefulWidget {
-  const DrawerUserController({
+class DrawerWidgetController extends StatefulWidget {
+  const DrawerWidgetController({
     Key key,
     this.drawerWidth = 250,
     this.onDrawerCall,
-    this.screenView,
+    this.screen,
     this.animatedIconData = AnimatedIcons.arrow_menu,
     this.menuView,
-    this.drawerIsOpen,
-    this.screenIndex,
+    this.isOpen,
+    this.index,
   }) : super(key: key);
 
+  ///The width of the drawer
   final double drawerWidth;
+  ///call the draw index
   final Function(DrawerIndex) onDrawerCall;
-  final Widget screenView;
-  final Function(bool) drawerIsOpen;
+  ///Each drawer index can navigate to one certain [screen].
+  final Widget screen;
+  final Function(bool) isOpen;
   final AnimatedIconData animatedIconData;
   final Widget menuView;
-  final DrawerIndex screenIndex;
+  final DrawerIndex index;
 
   @override
-  _DrawerUserControllerState createState() => _DrawerUserControllerState();
+  DrawerWidgetControllerState createState() => DrawerWidgetControllerState();
 }
 
-class _DrawerUserControllerState extends State<DrawerUserController>
+class DrawerWidgetControllerState extends State<DrawerWidgetController>
     with TickerProviderStateMixin {
   ScrollController scrollController;
   AnimationController iconAnimationController;
@@ -55,7 +58,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             setState(() {
               scrolloffset = 1.0;
               try {
-                widget.drawerIsOpen(true);
+                widget.isOpen(true);
               } catch (_) {}
             });
           }
@@ -73,7 +76,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             setState(() {
               scrolloffset = 0.0;
               try {
-                widget.drawerIsOpen(false);
+                widget.isOpen(false);
               } catch (_) {}
             });
           }
@@ -119,11 +122,11 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                       transform: Matrix4.translationValues(
                           scrollController.offset, 0.0, 0.0),
                       child: HomeDrawer(
-                        screenIndex: widget.screenIndex == null
+                        index: widget.index == null
                             ? DrawerIndex.HOME
-                            : widget.screenIndex,
+                            : widget.index,
                         iconAnimationController: iconAnimationController,
-                        callBackIndex: (DrawerIndex indexType) {
+                        navigateIndex: (DrawerIndex indexType) {
                           onDrawerClick();
                           try {
                             widget.onDrawerCall(indexType);
@@ -152,7 +155,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                       //this IgnorePointer we use as touch(user Interface) widget.screen View, for example scrolloffset == 1 means drawer is close we just allow touching all widget.screen View
                       IgnorePointer(
                         ignoring: scrolloffset == 1 || false,
-                        child: widget.screenView,
+                        child: widget.screen,
                       ),
                       //alternative touch(user Interface) for widget.screen, for example, drawer is close we need to tap on a few home screen area and close the drawer
                       if (scrolloffset == 1.0)
@@ -204,6 +207,13 @@ class _DrawerUserControllerState extends State<DrawerUserController>
     );
   }
 
+
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/2/18 7:12 PM
+  *** @version:1.0
+  **/
+  ///Called when the user click the drawer.
   void onDrawerClick() {
     if (scrollController.offset != 0.0) {
       scrollController.animateTo(

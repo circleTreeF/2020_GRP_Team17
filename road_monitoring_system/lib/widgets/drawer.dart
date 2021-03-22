@@ -1,43 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:road_monitoring_system/login/login_screen.dart';
 import 'package:road_monitoring_system/login/model/user_account.dart';
+import 'package:road_monitoring_system/utils/constant.dart';
 
 
 import '../utils/app_theme.dart';
 
+///[HomeDrawer] contains the user profile and two drawers [HOME] : the driving screen and [ABOUT] : the about us screen.
 
 class HomeDrawer extends StatefulWidget {
-  const HomeDrawer({Key key, this.screenIndex, this.iconAnimationController, this.callBackIndex}) : super(key: key);
-
+  const HomeDrawer({Key key, this.index, this.iconAnimationController, this.navigateIndex}) : super(key: key);
+///The controller for an animation of the icon.
   final AnimationController iconAnimationController;
-  final DrawerIndex screenIndex;
-  final Function(DrawerIndex) callBackIndex;
+  ///The index of drawer
+  final DrawerIndex index;
+
+  
+  final Function(DrawerIndex) navigateIndex;
 
   @override
-  _HomeDrawerState createState() => _HomeDrawerState();
+  HomeDrawerState createState() => HomeDrawerState();
 }
 
-class _HomeDrawerState extends State<HomeDrawer> {
-  List<DrawerList> drawerList;
+class HomeDrawerState extends State<HomeDrawer> {
+  ///The list of the contents of the drawer index
+  List<DrawerIndexContents> drawerIndexList;
   @override
   void initState() {
-    setDrawerListArray();
+    setDrawerList();
     super.initState();
-  }
-
-  void setDrawerListArray() {
-    drawerList = <DrawerList>[
-      DrawerList(
-        index: DrawerIndex.HOME,
-        labelName: 'Home',
-        icon: Icon(Icons.home),
-      ),
-      DrawerList(
-        index: DrawerIndex.Invite,
-        labelName: 'About us',
-        icon: Icon(Icons.person),
-      ),
-    ];
   }
 
   @override
@@ -89,11 +80,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                     padding: const EdgeInsets.only(top: 18, left: 18),
                     child: Text(
                       "${UserAccount().username}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.grey,
-                        fontSize: 20,
-                      ),
+                      style: userNameTextStyle,
                     ),
                   ),
                 ],
@@ -111,9 +98,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(0.0),
-              itemCount: drawerList.length,
+              itemCount: drawerIndexList.length,
               itemBuilder: (BuildContext context, int index) {
-                return inkwell(drawerList[index]);
+                return inkwell(drawerIndexList[index]);
               },
             ),
           ),
@@ -126,12 +113,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
               ListTile(
                 title: Text(
                   'Sign Out',
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontName,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: AppTheme.darkText,
-                  ),
+                  style: signOutTextStyle,
                   textAlign: TextAlign.left,
                 ),
                 trailing: Icon(
@@ -157,14 +139,14 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
-  Widget inkwell(DrawerList listData) {
+  Widget inkwell(DrawerIndexContents drawerList) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         splashColor: Colors.grey.withOpacity(0.1),
         highlightColor: Colors.transparent,
         onTap: () {
-          navigationToScreen(listData.index);
+          goToScreen(drawerList.index);
         },
         child: Stack(
           children: <Widget>[
@@ -179,29 +161,23 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   const Padding(
                     padding: EdgeInsets.all(4.0),
                   ),
-                  listData.isAssetsImage
-                      ? Container(
-                    width: 24,
-                    height: 24,
-                    child: Image.asset(listData.imageName, color: widget.screenIndex == listData.index ? Colors.blue : AppTheme.nearlyBlack),
-                  )
-                      : Icon(listData.icon.icon, color: widget.screenIndex == listData.index ? Colors.blue : AppTheme.nearlyBlack),
+                  Icon(drawerList.icon.icon, color: widget.index == drawerList.index ? Colors.blue : AppTheme.nearlyBlack),
                   const Padding(
                     padding: EdgeInsets.all(4.0),
                   ),
                   Text(
-                    listData.labelName,
+                    drawerList.labelName,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
-                      color: widget.screenIndex == listData.index ? Colors.blue : AppTheme.nearlyBlack,
+                      color: widget.index == drawerList.index ? Colors.blue : AppTheme.nearlyBlack,
                     ),
                     textAlign: TextAlign.left,
                   ),
                 ],
               ),
             ),
-            widget.screenIndex == listData.index
+            widget.index == drawerList.index
                 ? AnimatedBuilder(
               animation: widget.iconAnimationController,
               builder: (BuildContext context, Widget child) {
@@ -234,35 +210,75 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
-  Future<void> navigationToScreen(DrawerIndex indexScreen) async {
-    widget.callBackIndex(indexScreen);
+  
+  /** 
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/12 6:10 PM
+  *** @version:1.0
+  **/
+  ///Navigates to the screen that the index represents.
+  Future<void> goToScreen(DrawerIndex index) async {
+    widget.navigateIndex(index);
+  }
+
+
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/3 5:55 PM
+  *** @version:1.0
+  **/
+  ///Sets the list of drawer's index.
+  void setDrawerList() {
+    drawerIndexList = <DrawerIndexContents>[
+      DrawerIndexContents(
+        index: DrawerIndex.HOME,
+        labelName: 'Home',
+        icon: Icon(Icons.home),
+      ),
+      DrawerIndexContents(
+        index: DrawerIndex.ABOUT,
+        labelName: 'About us',
+        icon: Icon(Icons.person),
+      ),
+    ];
   }
 }
 
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/3 5:55 PM
+*** @version:1.0
+**/
+
+///Enums of the drawerIndex
 enum DrawerIndex {
   HOME,
-  FeedBack,
-  Help,
-  Share,
-  About,
-  Invite,
-  Testing,
-  History
+  ABOUT,
 }
 
-class DrawerList {
-  DrawerList({
-    this.isAssetsImage = false,
+
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/3 5:55 PM
+*** @version:1.0
+**/
+
+///[DrawerIndexContents] describes the contents of one index of the drawer.
+class DrawerIndexContents {
+  DrawerIndexContents({
     this.labelName = '',
     this.icon,
     this.index,
-    this.imageName = '',
   });
 
+  ///The name labelled on this drawer index
   String labelName;
+  ///The icon of this drawer index
   Icon icon;
-  bool isAssetsImage;
-  String imageName;
+  ///The drawer index
   DrawerIndex index;
 }
+
+
 

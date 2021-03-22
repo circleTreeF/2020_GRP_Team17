@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-/// The widget which defines the info page.
+/// [AboutUs] defines the info page.
 class AboutUs extends StatefulWidget {
   /// Constructs the [AboutUs] widget
   AboutUs({Key key}) : super(key: key);
@@ -42,7 +42,7 @@ class _AboutUsState extends State<AboutUs> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
-            _launcherRaisedButton('Find us on Gitlab', 'https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17'),
+            launcherButton('Find us on Gitlab', 'https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17'),
             Padding(
               padding: EdgeInsets.only(bottom: 60),
             ),
@@ -50,7 +50,8 @@ class _AboutUsState extends State<AboutUs> {
     );
   }
 
-  Widget _launcherRaisedButton(String text, String url) {
+  ///Returns the button used to launcher the url.
+  Widget launcherButton(String text, String url) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
@@ -63,13 +64,15 @@ class _AboutUsState extends State<AboutUs> {
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           padding: EdgeInsets.all(8),
           child: Text(text),
-          onPressed: () => _launchURL(url),
+          onPressed: () => launchURL(url),
         ),
       ),
     );
   }
 
-  _launchURL(String url) async {
+
+  ///launch the url.
+  launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {

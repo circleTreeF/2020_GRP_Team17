@@ -1,22 +1,26 @@
 
-
-class HistoryDataList {
-  HistoryDataList({
-    this.start_time = "",
-    this.end_time = "",
-    this.round_mark="",
-    this.start_date = "",
-    this.end_date = "",
+///[HistoryData] describes contents of the history record of one round driving.
+class HistoryData {
+  HistoryData({
+    this.startTime = "",
+    this.endTime = "",
+    this.roundMark="",
+    this.startDate = "",
+    this.endDate = "",
   });
 
+  ///The start time of this round of driving
+  String startTime;
+  ///The end time of this round of driving
+  String endTime;
+  ///The round mark of this round of driving
+  String roundMark;
+  ///The start date of this round of driving
+  String startDate;
+  ///The end date of this round of driving
+  String endDate;
 
-  String start_time;
-  String end_time;
-  String round_mark;
-  String start_date;
-  String end_date;
 
-
-
-  static List<HistoryDataList> historyList = <HistoryDataList>[];
+ ///The list of history data of this user.
+  static List<HistoryData> historyList = <HistoryData>[];
 }

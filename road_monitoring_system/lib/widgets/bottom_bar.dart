@@ -3,21 +3,26 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../utils/app_theme.dart';
-import '../utils/Icon_info.dart';
+import '../utils/bottom_bar_icon.dart';
 
+
+///[BottomBar] describes the stateful bottom navigation bar.
 class BottomBar extends StatefulWidget {
-  const BottomBar({Key key, this.tabIconsList, this.changeIndex, this.addClick})
+  const BottomBar({Key key, this.bottomBarIconList, this.changeIndex})
       : super(key: key);
 
+  ///Change the index of the icon.
   final Function(int index) changeIndex;
-  final Function addClick;
-  final List<IconList> tabIconsList;
+  ///The list of the icons on bottom bar.
+  final List<BottomBarIcon> bottomBarIconList;
 
   @override
-  _BottomBarState createState() => _BottomBarState();
+  BottomBarState createState() => BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
+
+
+class BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
   AnimationController animationController;
 
   @override
@@ -60,20 +65,20 @@ class _BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: TabIcons(
-                                  tabIconData: widget.tabIconsList[0],
+                              child: BottomBarIcons(
+                                  bottomBarIcon: widget.bottomBarIconList[0],
                                   removeAllSelect: () {
                                     setRemoveAllSelection(
-                                        widget.tabIconsList[0]);
+                                        widget.bottomBarIconList[0]);
                                     widget.changeIndex(0);
                                   }),
                             ),
                             Expanded(
-                              child: TabIcons(
-                                  tabIconData: widget.tabIconsList[1],
+                              child: BottomBarIcons(
+                                  bottomBarIcon: widget.bottomBarIconList[1],
                                   removeAllSelect: () {
                                     setRemoveAllSelection(
-                                        widget.tabIconsList[1]);
+                                        widget.bottomBarIconList[1]);
                                     widget.changeIndex(1);
                                   }),
                             ),
@@ -94,48 +99,52 @@ class _BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
     );
   }
 
-  void setRemoveAllSelection(IconList tabIconData) {
+  
+  void setRemoveAllSelection(BottomBarIcon bottomBarIcon) {
     if (!mounted) return;
     setState(() {
-      widget.tabIconsList.forEach((IconList tab) {
-        tab.isSelected = false;
-        if (tabIconData.index == tab.index) {
-          tab.isSelected = true;
+      widget.bottomBarIconList.forEach((BottomBarIcon icon) {
+        icon.isSelected = false;
+        if (bottomBarIcon.index == icon.index) {
+          icon.isSelected = true;
         }
       });
     });
   }
 }
 
-class TabIcons extends StatefulWidget {
-  const TabIcons({Key key, this.tabIconData, this.removeAllSelect})
+
+///[BottomBarIcons] describe the icons on the bottom bar.
+class BottomBarIcons extends StatefulWidget {
+  const BottomBarIcons({Key key, this.bottomBarIcon, this.removeAllSelect})
       : super(key: key);
 
-  final IconList tabIconData;
+  final BottomBarIcon bottomBarIcon;
   final Function removeAllSelect;
 
   @override
-  _TabIconsState createState() => _TabIconsState();
+  BottomBarIconsState createState() => BottomBarIconsState();
 }
 
-class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
+///[BottomBarIconsState] is the state of the icons on the bottom bar.
+class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderStateMixin {
   @override
   void initState() {
-    widget.tabIconData.animationController = AnimationController(
+    widget.bottomBarIcon.animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
     )..addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
           if (!mounted) return;
           widget.removeAllSelect();
-          widget.tabIconData.animationController.reverse();
+          widget.bottomBarIcon.animationController.reverse();
         }
       });
     super.initState();
   }
 
   void setAnimation() {
-    widget.tabIconData.animationController.forward();
+    widget.bottomBarIcon.animationController.forward();
   }
 
   @override
@@ -149,7 +158,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
           highlightColor: Colors.transparent,
           hoverColor: Colors.transparent,
           onTap: () {
-            if (!widget.tabIconData.isSelected) {
+            if (!widget.bottomBarIcon.isSelected) {
               setAnimation();
             }
           },
@@ -161,12 +170,12 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                   alignment: Alignment.center,
                   scale: Tween<double>(begin: 0.88, end: 1.0).animate(
                       CurvedAnimation(
-                          parent: widget.tabIconData.animationController,
+                          parent: widget.bottomBarIcon.animationController,
                           curve:
                               Interval(0.1, 1.0, curve: Curves.fastOutSlowIn))),
-                  child: Icon(widget.tabIconData.isSelected
-                      ? widget.tabIconData.iconSeleted
-                      : widget.tabIconData.icon),
+                  child: Icon(widget.bottomBarIcon.isSelected
+                      ? widget.bottomBarIcon.iconIsSelected
+                      : widget.bottomBarIcon.icon),
                 ),
                 Positioned(
                   top: 4,
@@ -176,7 +185,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                     alignment: Alignment.center,
                     scale: Tween<double>(begin: 0.0, end: 1.0).animate(
                         CurvedAnimation(
-                            parent: widget.tabIconData.animationController,
+                            parent: widget.bottomBarIcon.animationController,
                             curve: Interval(0.2, 1.0,
                                 curve: Curves.fastOutSlowIn))),
                     child: Container(
@@ -197,7 +206,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                     alignment: Alignment.center,
                     scale: Tween<double>(begin: 0.0, end: 1.0).animate(
                         CurvedAnimation(
-                            parent: widget.tabIconData.animationController,
+                            parent: widget.bottomBarIcon.animationController,
                             curve: Interval(0.5, 0.8,
                                 curve: Curves.fastOutSlowIn))),
                     child: Container(
@@ -218,7 +227,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                     alignment: Alignment.center,
                     scale: Tween<double>(begin: 0.0, end: 1.0).animate(
                         CurvedAnimation(
-                            parent: widget.tabIconData.animationController,
+                            parent: widget.bottomBarIcon.animationController,
                             curve: Interval(0.5, 0.6,
                                 curve: Curves.fastOutSlowIn))),
                     child: Container(

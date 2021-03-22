@@ -1,21 +1,19 @@
-import 'dart:convert';
 import 'dart:ui';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:road_monitoring_system/database/user_list.dart';
+import 'package:road_monitoring_system/database/record_list.dart';
 import 'package:road_monitoring_system/login/model/user_account.dart';
-
 
 
 import 'view/history_app_theme.dart';
 import 'history_data_view.dart';
 import 'model/history_list_data.dart';
 
+///[HistoryDataScreen] describes the screen displayed the history data.
 class HistoryDataScreen extends StatefulWidget {
   const  HistoryDataScreen({Key key, this.animationController}) : super(key: key);
 
@@ -24,71 +22,30 @@ class HistoryDataScreen extends StatefulWidget {
   HistoryDataScreenState createState() => HistoryDataScreenState();
 }
 
+
 class HistoryDataScreenState extends State<HistoryDataScreen>
     with TickerProviderStateMixin {
 
-
-
+  /// The controller for the editable text field for entering date.
   final myController = TextEditingController();
+  ///Creates a dio instance
   Dio dio =  Dio();
+  /// Http response information.
   Response response;
-  var number;
+  ///The controller controls the animation.
   AnimationController animationController;
-  List<HistoryDataList> historyDataList = HistoryDataList.historyList;
+  ///The static list of history data of the [HistoryData].
+  List<HistoryData> historyDataList = HistoryData.historyList;
+  ///The controller controls the scrollable widget.
   final ScrollController _scrollController = ScrollController();
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now().add(const Duration(days: 5));
+
   @override
   void initState() {
-
-
     getHistoryList();
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     super.initState();
   }
-
-
-  ///
-  /// @description:
-  /// @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
-  /// @date: 2021/2/26 11:27 AM
-  /// No such property: code for class: Script1
-  /// @return
-  /// @version:
-  ///
-  //
-
- Future<void>  getHistoryList() async {
-   response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":"all"});
-
-   var _content = response.data;
-
-         UserList userList = UserList.fromJson(_content);
-         print(userList.users);
-         if (HistoryDataList.historyList.isNotEmpty) {
-           HistoryDataList.historyList.clear();
-         }
-
-         for (int i = 0; i < userList.users.length; i++) {
-           HistoryDataList _historyDataList = new HistoryDataList();
-           _historyDataList.start_date = userList.users[i].start_time.substring(0,10);
-           print(_historyDataList.start_date);
-           _historyDataList.start_time=userList.users[i].start_time.substring(11,19);
-           print(_historyDataList.start_time);
-           _historyDataList.end_date = userList.users[i].end_time.substring(0,10);
-           print(_historyDataList.end_date);
-           _historyDataList.end_time = userList.users[i].end_time.substring(11,19);
-           print(_historyDataList.end_time);
-           _historyDataList.round_mark = userList.users[i].round_mark;
-           print(_historyDataList.round_mark);
-
-           setState(() {
-             HistoryDataList.historyList.add(_historyDataList);
-           });
-
-         }
- }
 
 
 
@@ -106,8 +63,7 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
         child: Scaffold(
           body: Stack(
             children: <Widget>[
-              InkWell(
-                child: Column(
+               Column(
                   children: <Widget>[
                     SizedBox(
                       height: ScreenUtil.getInstance()
@@ -133,11 +89,9 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                                         height: ScreenUtil.getInstance()
                                             .setHeight(30),
                                       ),
-
                                     ],
                                   );
                                 },childCount: 1),
-
                               ),
 
                           ];
@@ -175,7 +129,6 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                     )
                   ],
                 ),
-              ),
             ],
           ),
         ),
@@ -183,8 +136,13 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
     );
   }
 
+  /**
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/3/15 8:34 PM
+  *** @version:1.2
+  **/
 
-  //search for the history data
+  ///Returns the widget of searching for the history data
   Widget getSearchBarUI() {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -242,7 +200,6 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: IconButton(
@@ -253,10 +210,8 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                             .backgroundColor),
                     onPressed: () {
                       setState(() {
-                        HistoryDataList.historyList.clear();
+                        HistoryData.historyList.clear();
                         getHistoryListByDate(myController.text);
-
-                        ///TODO: search data.
                       });
                     },),
                 ),
@@ -268,40 +223,87 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
     );
   }
 
-  //TODO: refresh the page.
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/21 8:06 PM
+*** @version:2.0
+**/
 
-    Future<void> getHistoryListByDate( String date) async {
+
+/// Gets history data from database and adds the data filtered by the certain date to the list
+  ///
+  ///Use [Dio] to make http [GET] request 
+  Future<void> getHistoryListByDate( String date) async {
     response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":date});
 
     var _content = response.data;
 
-    UserList userList = UserList.fromJson(_content);
+    RecordList recordList = RecordList.fromJson(_content);
 
-    if (HistoryDataList.historyList.isNotEmpty) {
-      HistoryDataList.historyList.clear();
+    if (HistoryData.historyList.isNotEmpty) {
+      HistoryData.historyList.clear();
     }
 
-    for (int i = 0; i < userList.users.length; i++) {
-      HistoryDataList _historyDataList = new HistoryDataList();
-      _historyDataList.start_date = userList.users[i].start_time.substring(0,10);
-      print(_historyDataList.start_date);
-      _historyDataList.start_time=userList.users[i].start_time.substring(12,19);
-      print(_historyDataList.start_time);
-      _historyDataList.end_date = userList.users[i].end_time.substring(0,10);
-      print(_historyDataList.end_date);
-      _historyDataList.end_time = userList.users[i].end_time.substring(12,19);
-      print(_historyDataList.end_time);
-      _historyDataList.round_mark = userList.users[i].round_mark;
-      print(_historyDataList.round_mark);
-      setState(() {
-        HistoryDataList.historyList.add(_historyDataList);
+    for (int i = 0; i < recordList.records.length; i++) {
+      HistoryData _historyDataList = new HistoryData();
+      _historyDataList.startDate = recordList.records[i].startTime.substring(0,10);
+      print(_historyDataList.startDate);
+      _historyDataList.startTime=recordList.records[i].startTime.substring(12,19);
+      print(_historyDataList.startTime);
+      _historyDataList.endDate = recordList.records[i].endTime.substring(0,10);
+      print(_historyDataList.endDate);
+      _historyDataList.endTime = recordList.records[i].endTime.substring(12,19);
+      print(_historyDataList.endTime);
+      _historyDataList.roundMark = recordList.records[i].roundMark;
+      print(_historyDataList.roundMark);
 
+      setState(() {
+        HistoryData.historyList.add(_historyDataList);//Notify the [HistoryDataListView] that the state of this object has changed.
       });
 
     }
   }
 
+/**
+*** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+*** @date: 2021/3/21 8:06 PM
+*** @version:1.0
+**/
 
+  ///Gets history data from database and adds them to the list
+  ///
+  /// Use [Dio] to make http [GET] request
+  ///
+  Future<void>  getHistoryList() async {
+    response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":"all"});
+
+    var _content = response.data;
+
+    RecordList recordList = RecordList.fromJson(_content);
+    print(recordList.records);
+    if (HistoryData.historyList.isNotEmpty) {
+      HistoryData.historyList.clear();
+    }
+
+    for (int i = 0; i < recordList.records.length; i++) {
+      HistoryData _historyDataList = new HistoryData();
+      _historyDataList.startDate = recordList.records[i].startTime.substring(0,10);
+      print(_historyDataList.startDate);
+      _historyDataList.startTime=recordList.records[i].startTime.substring(11,19);
+      print(_historyDataList.startTime);
+      _historyDataList.endDate = recordList.records[i].endTime.substring(0,10);
+      print(_historyDataList.endDate);
+      _historyDataList.endTime = recordList.records[i].endTime.substring(11,19);
+      print(_historyDataList.endTime);
+      _historyDataList.roundMark = recordList.records[i].roundMark;
+      print(_historyDataList.roundMark);
+
+      setState(() {
+        HistoryData.historyList.add(_historyDataList);
+      });
+
+    }
+  }
 
 
 

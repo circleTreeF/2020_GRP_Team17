@@ -1,12 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:road_monitoring_system/utils/Icon_info.dart';
+import 'package:road_monitoring_system/request_permission_screen.dart';
+import 'package:road_monitoring_system/utils/bottom_bar_icon.dart';
 import 'package:road_monitoring_system/widgets/bottom_bar.dart';
 
 
 import 'utils/app_theme.dart';
 import 'driving/driving_screen.dart';
 import 'history_data/history_data_search.dart';
+
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,25 +24,27 @@ class HomeScreenState extends State<HomeScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;
 
-  List<IconList> tabIconsList = IconList.iconList;
+  ///The list of icon on the bottom bar
+  List<BottomBarIcon> bottomIconsList = BottomBarIcon.iconList;
 
-  Widget tabBody = Container(
+  ///The body of this screen
+  Widget screenBody = Container(
     color: AppTheme.background,
   );
 
   @override
   void initState() {
 
-    tabIconsList.forEach((IconList tab) {
-      tab.isSelected = false;
-    });
+    bottomIconsList.forEach((BottomBarIcon icon) {
+      icon.isSelected = false;
+    });//initializes all the bottom icon is not being selected.
 
-    tabIconsList[0].isSelected = true;
+    //bottomIconsList[0].isSelected = true;
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
 
-    tabBody = DrivingScreen(animationController: animationController);
+    screenBody = DrivingStateView();//initializes the body of this homeScreen as the screen used to ask for permission.
 
     super.initState();
   }
@@ -64,7 +69,7 @@ class HomeScreenState extends State<HomeScreen>
             } else {
               return Stack(
                 children: <Widget>[
-                  tabBody,
+                  screenBody,
                   bottomBar(),
                 ],
               );
@@ -81,7 +86,16 @@ class HomeScreenState extends State<HomeScreen>
   }
 
 
+  /** 
+  *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+  *** @date: 2021/2/16 6:30 PM
+  *** @version:1.2
+  **/
 
+  ///Returns the bottom bar that contains two icons.
+  ///
+  /// if index equals to 0, the body of this [HomeScreen] is [DrivingScreen];
+  /// if index equals to 1, the body of this [HomeScreen] is [HistoryDataScreen];
   Widget bottomBar() {
     return Column(
       children: <Widget>[
@@ -89,8 +103,7 @@ class HomeScreenState extends State<HomeScreen>
           child: SizedBox(),
         ),
         BottomBar(
-          tabIconsList: tabIconsList,
-          addClick: () {},
+          bottomBarIconList: bottomIconsList,
           changeIndex: (int index) {
             if (index == 0) {
               animationController.reverse().then<dynamic>((data) {
@@ -98,7 +111,7 @@ class HomeScreenState extends State<HomeScreen>
                   return;
                 }
                 setState(() {
-                  tabBody = DrivingScreen(animationController: animationController);
+                  screenBody = DrivingScreen();
                 });
               });
             }else if(index == 1){
@@ -107,7 +120,7 @@ class HomeScreenState extends State<HomeScreen>
                     return;
                   }
                   setState(() {
-                    tabBody =  HistoryDataScreen();
+                    screenBody =  HistoryDataScreen();
                   });
                 });
               }

@@ -1,8 +1,10 @@
 import 'package:scidart/numdart.dart';
 
+
+///This class contains the methods used during the driving process
 class DrivingDataProcess {
 
-  ///first filter: diagnoses the data in _storeList
+  ///Diagnoses and filter the data in [_targetList].
   List<Map<String, double>> firstFilter(List _targetList) {
     List<Map<String, double>> _outputList = <Map<String, double>>[];
 
@@ -56,7 +58,7 @@ class DrivingDataProcess {
     return _outputList;
   }
 
-  ///creates the mark
+  ///Creates the mark of this round of driving
   String drivingGrade(List<Map<String, double>> _targetList) {
     String mark = "D";
     double varianceX = 0;
@@ -83,7 +85,7 @@ class DrivingDataProcess {
     return mark;
   }
 
-  ///calculates variance for marking
+  ///Calculates variance for marking
   double varianceOfList(List<Map<String, double>> _targetList, String index) {
     double varianceOfList = 0;
     List<double> numberList = [];

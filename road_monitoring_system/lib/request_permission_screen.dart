@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:road_monitoring_system/score_screen.dart';
 
-import 'driving/driving_data_view.dart';
+import 'driving/driving_screen.dart';
 
 class DrivingStateView extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class DrivingStateViewState extends State<DrivingStateView> {
             return Score();
           }
 
-          return DrivingDataView();
+          return DrivingScreen();
         });
   }
 }
