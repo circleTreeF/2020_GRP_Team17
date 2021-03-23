@@ -1,4 +1,7 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:road_monitoring_system/score_screen.dart';
@@ -28,22 +31,35 @@ class DrivingStateViewState extends State<DrivingStateView> {
           }
 
           if (snapshot.data == LocationPermission.denied) {
-            return Column(
+            return
+              Column(
+                  children: <Widget>[
+              SizedBox(height: ScreenUtil.getInstance().setHeight(300)),
+              Container(
+                child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).padding.top,
-                ),
                 RaisedButton(
-                  shape: CircleBorder(
-                    side: BorderSide(color: Colors.cyanAccent),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.black),
                   ),
-                  child: const Text('Request permission'),
-                  onPressed: () => Geolocator.requestPermission(),
+                  child: const Text('Request permission',
+                    style: TextStyle(color: Colors.blue, fontSize: 20),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      DrivingScreen();
+                      Geolocator.requestPermission();
+
+                    });
+                    }
                 ),
               ],
-            );
+            ),
+              ),
+                  ],
+          );
           }
 
           if (snapshot.data == LocationPermission.deniedForever) {
@@ -52,5 +68,6 @@ class DrivingStateViewState extends State<DrivingStateView> {
 
           return DrivingScreen();
         });
+
   }
 }

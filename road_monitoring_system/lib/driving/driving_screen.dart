@@ -231,7 +231,7 @@ class DrivingScreenState extends State<DrivingScreen>
 
   ///Return the content of [Text] contains the longitude of this position in degrees normalized to the interval -90.0
   String cardTextLong() {
-    if (event != null&&isListeningPosition()) {
+    if (position != null&&isListeningPosition()) {
       return '${position.longitude.roundToDouble()}';
     } else {
       return 'wait';
@@ -245,7 +245,7 @@ class DrivingScreenState extends State<DrivingScreen>
 **/
   ///Return the content of [Text] contains the latitude of this position in degrees normalized to the interval -90.0
   String cardTextLat() {
-    if (event != null&&isListeningPosition()) {
+    if (position != null&&isListeningPosition()) {
       return '${position.latitude.roundToDouble()}';
     } else {
       return 'wait';

@@ -44,7 +44,7 @@ class HomeScreenState extends State<HomeScreen>
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
 
-    screenBody = DrivingStateView();//initializes the body of this homeScreen as the screen used to ask for permission.
+    screenBody = DrivingScreen();//initializes the body of this homeScreen as the screen used to ask for permission.
 
     super.initState();
   }

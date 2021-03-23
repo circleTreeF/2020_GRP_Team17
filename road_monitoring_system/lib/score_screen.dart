@@ -99,14 +99,13 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
     var dialogWidth = 0.8 * height;
     ///the height of this dialog
     var dialogHeight = 0.8 * width;
-    
 
-  
-    
+
+
     ///Creates a rounded-rectangular clip to contain the image
     var image = ClipRRect(
-        child: Image.asset(
-          imageChoose(),
+        child: Image(
+          image: AssetImage(imageChoose()),
           fit: BoxFit.fill,
           width: dialogWidth * 0.25,
           height: dialogHeight * 0.45,
@@ -139,9 +138,9 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                               image,
+                                image,
                                 SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
-                               Padding(
+                                Padding(
                                   padding: const EdgeInsets.only(left:5,top:10),                                          child: Text(
                                                  'End Time:   ${time["end_time"]}',
                                                   style: TextStyle(
@@ -267,16 +266,20 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
   String imageChoose() {
 
     if(mark=="A") {
-      return  "assets/images/A.psd";
+      print(1);
+      return  "assets/images/A.png";
     }
     if(mark=="B") {
-      return  "assets/images/B.psd";
+      print(2);
+      return  "assets/images/B.png";
     }
     if(mark=="C") {
-      return  "assets/images/C.psd";
+      print(3);
+      return  "assets/images/C.png";
     }
    if(mark=="D") {
-      return "assets/images/D.psd";
+     print(4);
+      return  "assets/images/D.png";
     }
 
 
