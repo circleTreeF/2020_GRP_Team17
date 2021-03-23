@@ -54,7 +54,7 @@ class _AboutUsState extends State<AboutUs> {
   ///Returns the button used to launcher the url.
   Widget launcherButton(String text, String url) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width / 1.5,
       height: 50,
       margin: const EdgeInsets.only(top: 24.0),
       alignment: Alignment.center,
