@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:road_monitoring_system/utils/constant.dart';
 
 import 'database/Data.dart';
 import 'database/controller/post.dart';
@@ -103,16 +104,16 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
 
 
     ///Creates a rounded-rectangular clip to contain the image
-    var image = ClipRRect(
-        child: Image(
-          image: AssetImage(imageChoose()),
-          fit: BoxFit.fill,
-          width: dialogWidth * 0.25,
-          height: dialogHeight * 0.45,
-        ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),)
-    );
+    // var image = ClipRRect(
+    //     child: Image(
+    //       image: AssetImage(imageChoose()),
+    //       fit: BoxFit.fill,
+    //       width: dialogWidth * 0.25,
+    //       height: dialogHeight * 0.45,
+    //     ),
+    //     borderRadius: BorderRadius.all(
+    //       Radius.circular(15),)
+    // );
 
     return GestureDetector(
       onTap: (){Navigator.of(context).pop();},
@@ -138,7 +139,13 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                image,
+
+                      Padding(
+                      padding: const EdgeInsets.only(left:5,top:12),                                          child: Text(
+                textChoose(),
+                style: scoreTextStyle,
+              ),
+                      ),
                                 SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
                                 Padding(
                                   padding: const EdgeInsets.only(left:5,top:10),                                          child: Text(
@@ -261,28 +268,26 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
   *** @date: 2021/3/9 3:38 PM
   *** @version:2.0
   **/
-  ///Return the image path to represent the [mark]
+  ///Return the string to represent the [mark]
   // ignore: missing_return
-  String imageChoose() {
+  String textChoose() {
 
     if(mark=="A") {
-      print(1);
-      return  "assets/images/A.png";
+
+      return  'A';
     }
     if(mark=="B") {
-      print(2);
-      return  "assets/images/B.png";
+
+      return  'B';
     }
     if(mark=="C") {
-      print(3);
-      return  "assets/images/C.png";
+
+      return  'C';
     }
    if(mark=="D") {
-     print(4);
-      return  "assets/images/D.png";
+
+      return  'D';
     }
-
-
 
   }
 

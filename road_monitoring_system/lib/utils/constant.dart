@@ -39,3 +39,10 @@ const wrongUsernameOrPassword =TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold
 );
+
+const scoreTextStyle =TextStyle(
+    fontFamily: "Poppins-Bold",
+    color: Colors.black,
+    fontSize: 80,
+    fontWeight: FontWeight.bold
+);
