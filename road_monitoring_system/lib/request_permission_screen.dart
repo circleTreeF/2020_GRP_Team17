@@ -51,7 +51,6 @@ class DrivingStateViewState extends State<DrivingStateView> {
                     setState(() {
                       DrivingScreen();
                       Geolocator.requestPermission();
-
                     });
                     }
                 ),

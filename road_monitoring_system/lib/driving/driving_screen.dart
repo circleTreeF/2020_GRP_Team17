@@ -94,7 +94,17 @@ class DrivingScreenState extends State<DrivingScreen>
                   child: FadeInAnimation(child: widget),
                 ),
                 children: [
-                  SizedBox(height: ScreenUtil.getInstance().setHeight(200)),
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(150)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TitleCard(height: 35.0, width: 200.0,text: "Acceleration force"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Row(
@@ -315,7 +325,7 @@ class DrivingScreenState extends State<DrivingScreen>
       startTime=dateFormat.parse(string);// parses the inputString into the dateFormat
       toggleListeningGPS();
       toggleListeningAcc();
-      if(position!=null&&event!=null){ addToList(); }
+      if(position!=null&&event!=null){ addToList(); }//add the data to list in order to send to database.
       drivingCondition = true;
 
     } else {
@@ -361,7 +371,7 @@ class DrivingScreenState extends State<DrivingScreen>
       "start_time" : startTime,
       "end_time": endTime
     };// the map of time
-    popUpScorePage(finalList,time);
+    popUpScorePage(finalList,time);//pop up the score page.
   }
 
   /**

@@ -9,7 +9,7 @@ const defaultColor = Color(0xFF3382CC);
 
 
 // Text Style
-///signOut Text Style
+///The signOut Text Style
 const signOutTextStyle =TextStyle(
   fontFamily: AppTheme.fontName,
   fontWeight: FontWeight.w600,
@@ -40,9 +40,10 @@ const wrongUsernameOrPassword =TextStyle(
     fontWeight: FontWeight.bold
 );
 
+///score Text Style
 const scoreTextStyle =TextStyle(
     fontFamily: "Poppins-Bold",
-    color: Colors.black,
+    color: Colors.indigoAccent,
     fontSize: 80,
     fontWeight: FontWeight.bold
 );

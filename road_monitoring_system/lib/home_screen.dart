@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:road_monitoring_system/request_permission_screen.dart';
 import 'package:road_monitoring_system/utils/bottom_bar_icon.dart';
 import 'package:road_monitoring_system/widgets/bottom_bar.dart';
 
