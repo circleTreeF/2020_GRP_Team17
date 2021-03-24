@@ -50,6 +50,7 @@
                         ></el-input>
                       </el-form-item>
                       <el-form-item label="Verify">
+                        <!-- test key 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI -->
                           <vue-recaptcha ref="recaptcha"
                             @verify="onVerify" sitekey="6LdXOosaAAAAAOL854r3D_YqfpDxBXHR49q9lIKe">
                           </vue-recaptcha>
