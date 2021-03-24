@@ -6,8 +6,6 @@
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
           <li class="fh5co-active"><router-link to="Login">Home</router-link></li>
-          <!-- <li class="fh5co-active"><a href="index.html">Home</a></li> -->
-          <!-- <li><a href="about.html">About</a></li> -->
           <li><router-link to="Map">Map</router-link></li>
         </ul>
       </nav>
@@ -35,6 +33,7 @@
                     <h1 style="color:white;letter-spacing: 3px;font-size:50px;">
                       {{ title }}
                     </h1>
+                    
                     <el-form
                       ref="form"
                       :model="form"
@@ -50,17 +49,23 @@
                           type="password"
                         ></el-input>
                       </el-form-item>
-                      <el-button class="login-button" @click="login"
-                        >{{title}}</el-button
-                      >
-                      <div class="register" v-if="title=='LOGIN'">
-                        <span>No account yet ? Go to</span>
-                        <button @click="changeView()">Register</button>
-                      </div>
-                      <div class="register" v-if="title=='REGISTER'">
-                        <span>Already have an account? Go to</span>
-                        <button @click="changeView()">Login</button>
-                      </div>
+                      <el-form-item label="Verify">
+                          <vue-recaptcha ref="recaptcha"
+                            @verify="onVerify" sitekey="6LdXOosaAAAAAOL854r3D_YqfpDxBXHR49q9lIKe">
+                          </vue-recaptcha>
+                      </el-form-item>
+                        <el-button class="login-button" @click="login">{{title}}</el-button>
+                        <div class="register" v-if="title=='LOGIN'">
+                          <span>No account yet ? Go to</span>
+                          <button @click="changeView()">Register</button>
+                        </div>
+                        <div class="register" v-if="title=='REGISTER'">
+                          <span>Already have an account? Go to</span>
+                          <button @click="changeView()">Login</button>
+                        </div>
+                      <!-- <vue-recaptcha sitekey="6LdXOosaAAAAAOL854r3D_YqfpDxBXHR49q9lIKe">
+                        <button>Click me</button>
+                      </vue-recaptcha> -->
                     </el-form>
                   </div>
                 </div>
@@ -74,14 +79,17 @@
 </template>
 <script>
 import axios from "axios";
+import VueRecaptcha from "vue-recaptcha";
 
 export default {
+  components: { VueRecaptcha },
   data() {
     return {
       url: "http://10.6.2.61:8866/statistics/web/user/",
       form: {
         username: "",
-        password: ""
+        password: "",
+        robot:false
       },
       title: "LOGIN"
     };
@@ -91,6 +99,14 @@ export default {
       if (this.form.username == "" || this.form.password == "") {
         this.$message({
           message: "Username and password can not be empty",
+          type: "warning"
+        });
+        return;
+      }
+
+      if (!this.form.robot) {
+        this.$message({
+          message: "Please check the verification box",
           type: "warning"
         });
         return;
@@ -167,6 +183,11 @@ export default {
         this.title = "REGISTER";
       } else {
         this.title = "LOGIN";
+      }
+    },
+    onVerify(response) {
+      if (response) {
+        this.form.robot = true;
       }
     }
   }
@@ -451,10 +472,6 @@ export default {
   margin-bottom: 0;
   height: 800px;
   width: 100%;
-}
-#fh5co-hero .flexslider .slides {
-  /* position: relative;
-  overflow: hidden; */
 }
 #fh5co-hero .flexslider .slides .overlay {
   position: absolute;

@@ -8,10 +8,11 @@ import VueAMap from 'vue-amap'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
+import VueGrecaptcha from "vue-recaptcha";
 
 
 
-Vue.use(ElementUI, axios, VueRouter);
+Vue.use(ElementUI, axios, VueRouter, VueGrecaptcha);
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 // Vue.prototype.HOST = '/api'

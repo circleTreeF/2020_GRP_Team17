@@ -7,9 +7,6 @@
       <nav id="fh5co-main-menu" role="navigation">
         <ul>
           <li><router-link to="Login">Home</router-link></li>
-
-          <!-- <li><a href="index.html">Home</a></li> -->
-          <!-- <li><a href="about.html">About</a></li> -->
           <li class="fh5co-active"><router-link to="Map">Map</router-link></li>
         </ul>
       </nav>
