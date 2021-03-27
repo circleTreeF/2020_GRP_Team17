@@ -52,7 +52,7 @@
                       <el-form-item label="Verify">
                         <!-- test 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI -->
                           <vue-recaptcha ref="recaptcha"
-                            @verify="onVerify" sitekey="6LdXOosaAAAAAOL854r3D_YqfpDxBXHR49q9lIKe">
+                            @verify="onVerify" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI">
                           </vue-recaptcha>
                       </el-form-item>
                         <el-button class="login-button" @click="login">{{title}}</el-button>
@@ -64,9 +64,6 @@
                           <span>Already have an account? Go to</span>
                           <button @click="changeView()">Login</button>
                         </div>
-                      <!-- <vue-recaptcha sitekey="6LdXOosaAAAAAOL854r3D_YqfpDxBXHR49q9lIKe">
-                        <button>Click me</button>
-                      </vue-recaptcha> -->
                     </el-form>
                   </div>
                 </div>
