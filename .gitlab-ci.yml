@@ -47,6 +47,6 @@ before_script:
 
 test:
   variables:
-    DATABASE_URL: "postgresql://db:postgres@postgres:5432/$POSTGRES_DB"
+    DATABASE_URL: "jdbc:postgresql://db:5432/postgres"
   script:
     - python manage.py test  --settings myServer.settings
