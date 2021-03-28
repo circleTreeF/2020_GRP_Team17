@@ -11,3 +11,5 @@ django_apscheduler~=0.5.2
 django-cors-headers~=3.7.0
 
 whitenoise~=5.2.0
+
+pytz~=2020.5
