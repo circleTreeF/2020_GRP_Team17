@@ -14,10 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('statistics/', include('statistics.urls')),
+    path('', lambda req:  redirect('/statistics/')),
+    path('statistics/', include('statistics.urls', namespace='statistics')),
     path('admin/', admin.site.urls),
-    # path('comm/', include('mobileComm.urls'))
+    # path('docs/', get_swagger_view(title='API Documentation'))
+    # path('website/',TemplateView.as_view(template_name="index.html")),
+    # path('website/', include('road-monitoring-system.urls')),
 ]
+
