@@ -51,6 +51,7 @@
                       </el-form-item>
                       <el-form-item label="Verify">
                         <!-- test 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI -->
+                        <!-- real 6LdXOosaAAAAAOL854r3D_YqfpDxBXHR49q9lIKe -->
                           <vue-recaptcha ref="recaptcha"
                             @verify="onVerify" sitekey="6LdXOosaAAAAAOL854r3D_YqfpDxBXHR49q9lIKe">
                           </vue-recaptcha>

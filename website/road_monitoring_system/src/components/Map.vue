@@ -27,12 +27,12 @@
         v-model="date"
         value-format="yyyy-MM-dd">
       </el-date-picker>
-
+  
+      <!-- map language :lang= "language" -->
       <div class="amap-page-container">
         <el-amap
           ref="map"
           vid="amapDemo"
-          :lang= "language"
           :amap-manager="amapManager"
           :center="center"
           :zoom="zoom">
