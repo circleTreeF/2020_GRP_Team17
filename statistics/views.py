@@ -1,26 +1,18 @@
-import datetime
-import time
 import json
-import pytz
-
 from django.db import transaction
 from django.shortcuts import render
-from django.template import loader
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate
-
-from myServer import settings
 from statistics.models import Record, BadPoints, Ranking  # 引入模型
 from django.utils import timezone  # 引入timezone模块
-from datetime import datetime, timezone, timedelta
+from datetime import timezone, timedelta
+
+"""Create your views here"""
 
 
-
-# Create your views here.
 def index(request):
-    # template = loader.get_template('statistics/index.html')
     return render(request, 'statistics/index.html')
 
 
@@ -74,6 +66,8 @@ def app_user_register(request):
 
 
 """App client user login authenticate"""
+
+
 def app_user_login(request):
     if request.method == "POST":
         # RXD
@@ -103,7 +97,6 @@ def app_user_login(request):
 @transaction.atomic
 def add_record(request):
     if request.method == "POST":
-        timezone_interpreter = pytz.timezone(settings.TIME_ZONE)
         print(timezone)
         # RXD
         params = json.loads(request.body)
@@ -112,19 +105,6 @@ def add_record(request):
         round_mark = params['round_mark']
         start_time = params['start_time']
         end_time = params['end_time']
-
-        # now = int(time.time())
-        # now2 = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(now))
-        # print(now)
-        # print(now2)
-        # start_time = now2
-
-        # start_time = time.localtime(int(start_time))
-        # start_time = time.strftime("%Y-%m-%d %H:%M:%S", start_time)
-        # end_time = time.localtime(int(end_time))
-        # end_time = time.strftime("%Y-%m-%d %H:%M:%S", end_time)
-        # print("start")
-        # print(start_time)
 
         Record.objects.create(user_id=user_id,
                               round_log=round_log,
@@ -177,7 +157,8 @@ def get_record(request):
             records = Record.objects.filter(user_id=user_id).values('start_time', 'end_time',
                                                                     'round_mark')  # query data
         else:
-            records = Record.objects.filter(user_id=user_id, end_time__date=date).values('start_time', 'end_time',                                                                                         'round_mark')  # query data
+            records = Record.objects.filter(user_id=user_id, end_time__date=date).values('start_time', 'end_time',
+                                                                                         'round_mark')  # query data
         data = list(records)
 
         # Converts time from UTC to CST
@@ -218,8 +199,6 @@ def get_bad_points(request):
     if request.method == "GET":
         # RXD
         date = request.GET['date']
-
-        # date = datetime.date(2021, 2, 28)
         points = BadPoints.objects.filter(point_time__date=date).values('point_longitude', 'point_latitude',
                                                                         'point_radius', 'valid_status')  # query data
         data = list(points)
@@ -227,8 +206,6 @@ def get_bad_points(request):
         return res
     else:
         return HttpResponse('Wrong request type')
-
-
 
 
 def modify_points(request):
