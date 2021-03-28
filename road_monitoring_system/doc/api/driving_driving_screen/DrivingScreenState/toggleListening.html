@@ -148,7 +148,7 @@ if <a href="../../driving_driving_screen/DrivingScreenState/drivingCondition.htm
     startTime=dateFormat.parse(string);&#47;&#47; parses the inputString into the dateFormat
     toggleListeningGPS();
     toggleListeningAcc();
-    if(position!=null&amp;&amp;event!=null){ addToList(); }
+    if(position!=null&amp;&amp;event!=null){ addToList(); }&#47;&#47;add the data to list in order to send to database.
     drivingCondition = true;
 
   } else {

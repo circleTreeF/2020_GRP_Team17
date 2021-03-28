@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:road_monitoring_system/utils/constant.dart';
 
-import 'database/Data.dart';
-import 'database/controller/post.dart';
-import 'driving/controller/driving_data_process.dart';
-import 'login/model/user_account.dart';
+import '../../database/model/Data.dart';
+import '../../database/controller/post.dart';
+import '../controller/driving_data_process.dart';
+import '../../login/model/user_account.dart';
 
 
 ///[Score] shows a dialog containing [mark] and [rank].

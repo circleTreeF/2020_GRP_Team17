@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:road_monitoring_system/login/login_screen.dart';
+import 'package:road_monitoring_system/login/view/login_screen.dart';
 import 'package:road_monitoring_system/login/model/user_account.dart';
+import 'package:road_monitoring_system/utils/app_theme.dart';
 import 'package:road_monitoring_system/utils/constant.dart';
 
 
-import '../utils/app_theme.dart';
 
 ///[HomeDrawer] contains the user profile and two drawers [HOME] : the driving screen and [ABOUT] : the about us screen.
 

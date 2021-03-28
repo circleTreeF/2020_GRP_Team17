@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:road_monitoring_system/widgets/drawer.dart';
-import 'package:road_monitoring_system/widgets_controller/drawerController.dart';
+import 'package:road_monitoring_system/home/widgets/drawer.dart';
+import 'package:road_monitoring_system/home/widgets_controller/drawerController.dart';
 
 
-import 'about_us.dart';
-import 'utils/app_theme.dart';
+import '../about_us/about_us.dart';
+import '../utils/app_theme.dart';
 import 'home_screen.dart';
 
 ///[NavigationHomeScreen] describes the navigation bar.

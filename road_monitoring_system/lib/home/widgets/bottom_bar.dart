@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:road_monitoring_system/utils/app_theme.dart';
+import 'package:road_monitoring_system/utils/bottom_bar_icon.dart';
 
-import '../utils/app_theme.dart';
-import '../utils/bottom_bar_icon.dart';
 
 
 ///[BottomBar] describes the stateful bottom navigation bar.

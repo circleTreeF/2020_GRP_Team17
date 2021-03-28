@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:road_monitoring_system/utils/constant.dart';
 
 
-/// [PopUpPageForLoginFail] is for generating a dialog to alert the users that they have entered the wrong [password] or [username].
+/// This class is for generating a dialog to alert the users that they have entered the wrong [password] or [username].
 
 class PopUpPageForLoginFail extends StatefulWidget {
   const PopUpPageForLoginFail(
@@ -18,6 +18,7 @@ class PopUpPageForLoginFail extends StatefulWidget {
   }
 }
 
+/// The state of the login fail page
 class PopUpPageForLoginFailState extends State<PopUpPageForLoginFail> with TickerProviderStateMixin {
 
   ///width of this dialog
@@ -110,7 +111,7 @@ class PopUpPageForLoginFailState extends State<PopUpPageForLoginFail> with Ticke
    *** @version:1.0
    **/
 
-  /// Return the button which can be used to close the dialog
+  /// Returns the button which can be used to close the dialog
   Widget cancelButton() {
     return
       Container(

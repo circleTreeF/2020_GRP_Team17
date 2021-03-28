@@ -21,7 +21,7 @@ class HistoryTheme {
   }
 
   static ThemeData buildLightTheme() {
-    final Color primaryColor = Colors.blue;
+    final Color primaryColor = Color.fromRGBO(27,42,107,1.0);
     final Color secondaryColor = Colors.blueGrey;
     final ColorScheme colorScheme = const ColorScheme.light().copyWith(
       primary: primaryColor,

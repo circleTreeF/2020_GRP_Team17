@@ -1,0 +1,383 @@
+@startuml
+
+title __ROAD_MONITORING_SYSTEM's Class Diagram__\n
+
+  namespace com.baseflow.geolocator {
+    class com.baseflow.geolocator.GeolocatorPlugin {
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    class com.baseflow.geolocator.MethodCallHandlerImpl {
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    class com.baseflow.geolocator.StreamHandlerImpl {
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace errors {
+      interface com.baseflow.geolocator.errors.ErrorCallback {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace errors {
+      enum ErrorCodes {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace errors {
+      class com.baseflow.geolocator.errors.PermissionUndefinedException {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      class com.baseflow.geolocator.location.FlutterLocationServiceListener {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      class com.baseflow.geolocator.location.FusedLocationClient {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      class com.baseflow.geolocator.location.GeolocationManager {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      enum LocationAccuracy {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      interface com.baseflow.geolocator.location.LocationClient {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      class com.baseflow.geolocator.location.LocationManagerClient {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      class com.baseflow.geolocator.location.LocationMapper {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      class com.baseflow.geolocator.location.LocationOptions {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      interface com.baseflow.geolocator.location.LocationServiceListener {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace location {
+      interface com.baseflow.geolocator.location.PositionChangedCallback {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace permission {
+      enum LocationPermission {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace permission {
+      class com.baseflow.geolocator.permission.PermissionManager {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace permission {
+      interface com.baseflow.geolocator.permission.PermissionResultCallback {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace permission {
+      class com.baseflow.geolocator.permission.PermissionUtils {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace utils {
+      class com.baseflow.geolocator.utils.Utils {
+      }
+    }
+  }
+  
+
+  namespace com.baseflow.geolocator {
+    namespace example {
+      class com.baseflow.geolocator_example.MainActivity {
+      }
+    }
+  }
+  
+
+  namespace com.ly.permission {
+    class com.ly.permission.PermissionPlugin {
+    }
+  }
+  
+
+  namespace com.ly.permission {
+    namespace example {
+      class com.ly.permission_example.MainActivity {
+      }
+    }
+  }
+  
+
+  namespace com.lyokone.location {
+    class com.lyokone.location.FlutterLocation {
+    }
+  }
+  
+
+  namespace com.lyokone.location {
+    class com.lyokone.location.LocationPlugin {
+    }
+  }
+  
+
+  namespace com.lyokone.location {
+    class com.lyokone.location.MethodCallHandlerImpl {
+    }
+  }
+  
+
+  namespace com.lyokone.location {
+    class com.lyokone.location.StreamHandlerImpl {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.pathprovider {
+    class io.flutter.plugins.pathprovider.EmbeddingV1ActivityTest {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.pathprovider {
+    class io.flutter.plugins.pathprovider.MainActivityTest {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.pathprovider {
+    class io.flutter.plugins.pathprovider.PathProviderPlugin {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.pathprovider {
+    class io.flutter.plugins.pathprovider.StorageDirectoryMapper {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.pathprovider {
+    class io.flutter.plugins.pathprovider.StorageDirectoryMapperTest {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.pathprovider {
+    namespace xample {
+      class io.flutter.plugins.pathproviderexample.EmbeddingV1Activity {
+      }
+    }
+  }
+  
+
+  namespace io.flutter.plugins.sensors {
+    class io.flutter.plugins.sensors.SensorsPlugin {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.sensors {
+    class io.flutter.plugins.sensors.StreamHandlerImpl {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.sensors {
+    namespace xample {
+      class io.flutter.plugins.sensorsexample.EmbeddingV1Activity {
+      }
+    }
+  }
+  
+
+  namespace io.flutter.plugins.sensors {
+    namespace xample {
+      class io.flutter.plugins.sensorsexample.EmbeddingV1ActivityTest {
+      }
+    }
+  }
+  
+
+  namespace io.flutter.plugins.sensors {
+    namespace xample {
+      class io.flutter.plugins.sensorsexample.FlutterActivityTest {
+      }
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    class io.flutter.plugins.urllauncher.MethodCallHandlerImpl {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    class io.flutter.plugins.urllauncher.MethodCallHandlerImplTest {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    class io.flutter.plugins.urllauncher.UrlLauncher {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    class io.flutter.plugins.urllauncher.UrlLauncherPlugin {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    class io.flutter.plugins.urllauncher.WebViewActivity {
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    namespace xample {
+      class io.flutter.plugins.urllauncherexample.EmbeddingV1Activity {
+      }
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    namespace xample {
+      class io.flutter.plugins.urllauncherexample.EmbeddingV1ActivityTest {
+      }
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    namespace xample {
+      class io.flutter.plugins.urllauncherexample.FlutterActivityTest {
+      }
+    }
+  }
+  
+
+  namespace io.flutter.plugins.urllauncher {
+    namespace xample {
+      class io.flutter.plugins.urllauncherexample.MainActivityTest {
+      }
+    }
+  }
+  
+
+  com.baseflow.geolocator.GeolocatorPlugin .up.|> ActivityAware
+  com.baseflow.geolocator.GeolocatorPlugin .up.|> FlutterPlugin
+  com.baseflow.geolocator.MethodCallHandlerImpl .up.|> MethodChannel.MethodCallHandler
+  com.baseflow.geolocator.StreamHandlerImpl .up.|> EventChannel.StreamHandler
+  com.baseflow.geolocator.location.FlutterLocationServiceListener .up.|> LocationServiceListener
+  com.baseflow.geolocator.location.FusedLocationClient .up.|> LocationClient
+  com.baseflow.geolocator.location.GeolocationManager .up.|> io.flutter.plugin.common.PluginRegistry.ActivityResultListener
+  com.baseflow.geolocator.location.LocationManagerClient .up.|> LocationClient
+  com.baseflow.geolocator.location.LocationManagerClient .up.|> LocationListener
+  com.baseflow.geolocator.permission.PermissionManager .up.|> io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener
+  com.ly.permission.PermissionPlugin .up.|> MethodCallHandler
+  com.ly.permission.PermissionPlugin .up.|> PluginRegistry.RequestPermissionsResultListener
+  com.lyokone.location.FlutterLocation .up.|> PluginRegistry.ActivityResultListener
+  com.lyokone.location.FlutterLocation .up.|> PluginRegistry.RequestPermissionsResultListener
+  com.lyokone.location.LocationPlugin .up.|> ActivityAware
+  com.lyokone.location.LocationPlugin .up.|> FlutterPlugin
+  com.lyokone.location.MethodCallHandlerImpl .up.|> MethodCallHandler
+  com.lyokone.location.StreamHandlerImpl .up.|> StreamHandler
+  io.flutter.plugins.pathprovider.PathProviderPlugin .up.|> FlutterPlugin
+  io.flutter.plugins.pathprovider.PathProviderPlugin .up.|> MethodCallHandler
+  io.flutter.plugins.sensors.SensorsPlugin .up.|> FlutterPlugin
+  io.flutter.plugins.sensors.StreamHandlerImpl .up.|> EventChannel.StreamHandler
+  io.flutter.plugins.urllauncher.MethodCallHandlerImpl .up.|> MethodCallHandler
+  io.flutter.plugins.urllauncher.UrlLauncherPlugin .up.|> ActivityAware
+  io.flutter.plugins.urllauncher.UrlLauncherPlugin .up.|> FlutterPlugin
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

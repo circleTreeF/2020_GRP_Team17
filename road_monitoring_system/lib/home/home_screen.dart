@@ -1,15 +1,16 @@
 
 import 'package:flutter/material.dart';
+import 'package:road_monitoring_system/home/widgets/bottom_bar.dart';
 import 'package:road_monitoring_system/utils/bottom_bar_icon.dart';
-import 'package:road_monitoring_system/widgets/bottom_bar.dart';
 
 
-import 'utils/app_theme.dart';
-import 'driving/driving_screen.dart';
-import 'history_data/history_data_search.dart';
+import '../utils/app_theme.dart';
+import '../driving/view/driving_screen.dart';
+import '../history_data/view/history_data_screen.dart';
 
 
-
+///This class defines the home screen of this app
+///consisting of the body of the screen,such as driving screen, and the bottom bar of this app.
 class HomeScreen extends StatefulWidget {
   @override
 
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
   }
 }
 
+///The state of this home page.
 class HomeScreenState extends State<HomeScreen>
     with TickerProviderStateMixin {
   AnimationController animationController;

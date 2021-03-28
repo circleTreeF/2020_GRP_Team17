@@ -5,17 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:road_monitoring_system/driving/util/constant_style.dart';
 import 'package:road_monitoring_system/driving/widgets/data_card.dart';
 import 'package:road_monitoring_system/driving/widgets/title_card.dart';
 import 'package:sensors/sensors.dart';
-import '../score_screen.dart';
-import '../utils/app_theme.dart';
+import 'score_screen.dart';
+import '../../utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
-import 'controller/driving_data_process.dart';
+import '../controller/driving_data_process.dart';
 
 
-///The [DrivingScreen] displays the driving data for users.
+///This class displays the driving data for users.
 class DrivingScreen extends StatefulWidget {
 
   @override
@@ -163,8 +164,9 @@ class DrivingScreenState extends State<DrivingScreen>
                     // ignore: deprecated_member_use
                     child: RaisedButton(
                       child: buttonText(),
+
                       shape: CircleBorder(
-                        side: BorderSide(color: Colors.cyanAccent),
+                        side: BorderSide(color: defaultBorderColor),
                       ),
                       onPressed: () {
                         setState(() {
@@ -194,7 +196,7 @@ class DrivingScreenState extends State<DrivingScreen>
    *** @version:1.2
    **/
 
-  ///Return the content of [Text] contains the Acceleration force along the x axis (including gravity) measured in m/s^2
+  ///Returns the content of [Text] contains the Acceleration force along the x axis (including gravity) measured in m/s^2
   String cardTextAccX() {
     if (event != null&&isListeningPosition()) {
       return '${event.x.roundToDouble()}';
@@ -209,7 +211,7 @@ class DrivingScreenState extends State<DrivingScreen>
    *** @version:1.2
    **/
   
-  ///Return the content of [Text] contains the Acceleration force along the y axis (including gravity) measured in m/s^2
+  ///Returns the content of [Text] contains the Acceleration force along the y axis (including gravity) measured in m/s^2
   String cardTextAccY() {
     if (event != null&&isListeningPosition()) {
       return '${event.y.roundToDouble()}';
@@ -251,7 +253,7 @@ class DrivingScreenState extends State<DrivingScreen>
 /**
 *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
 *** @date: 2021/3/21 7:14 PM
-*** @version:
+*** @version:1.2
 **/
   ///Return the content of [Text] contains the latitude of this position in degrees normalized to the interval -90.0
   String cardTextLat() {
@@ -382,8 +384,8 @@ class DrivingScreenState extends State<DrivingScreen>
   
   /// Returns [Text] on the button
   ///
-  /// if users press this [button] to start driving, the [Text] will be 'stop';
-  /// if users are not driving, the [Text] will be 'start;
+  /// If users press this [button] to start driving, the [Text] will be 'stop';
+  /// If users are not driving, the [Text] will be 'start;
   Text buttonText() {
 
     return isListeningPosition()
@@ -394,7 +396,7 @@ class DrivingScreenState extends State<DrivingScreen>
           fontWeight: FontWeight.normal,
           fontSize: 24,
           letterSpacing: 0.0,
-          color: AppTheme.nearlyDarkBlue,
+          color: defaultButtomColor,
         ))
         : Text('start',
         textAlign: TextAlign.center,
@@ -403,7 +405,7 @@ class DrivingScreenState extends State<DrivingScreen>
           fontWeight: FontWeight.normal,
           fontSize: 24,
           letterSpacing: 0.0,
-          color: AppTheme.nearlyDarkBlue,
+          color: defaultButtomColor,
         ));
 
 

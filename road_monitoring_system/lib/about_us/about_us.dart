@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-/// [AboutUs] defines the info page.
+/// This class defines the info page.
 class AboutUs extends StatefulWidget {
   /// Constructs the [AboutUs] widget
   AboutUs({Key key}) : super(key: key);
 
   @override
-  _AboutUsState createState() => _AboutUsState();
+  AboutUsState createState() => AboutUsState();
 
 
 
 }
 
-class _AboutUsState extends State<AboutUs> {
+class AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -137,12 +137,12 @@ returned by this method, either by updating the existing subtree or by
 removing the subtree and inflating a new subtree, depending on whether the
 widget returned by this method can update the root of the existing
 subtree, as determined by calling <a href="https://api.flutter.dev/flutter/widgets/Widget/canUpdate.html">Widget.canUpdate</a>.</p>
-<p>Typically implementations return a newly created constellation of widgets
+<p>Typically implementations return a newly created constellation of home.widgets
 that are configured with information from this widget's constructor, the
 given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>, and the internal state of this <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object.</p>
 <p>The given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> contains information about the location in the
 tree at which this widget is being built. For example, the context
-provides the set of inherited widgets for this location in the tree. The
+provides the set of inherited home.widgets for this location in the tree. The
 <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> argument is always the same as the <code>context</code> property of
 this <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object and will remain the same for the lifetime of this
 object. The <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> argument is provided redundantly here so that

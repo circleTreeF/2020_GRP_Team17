@@ -4,7 +4,7 @@ import 'package:scidart/numdart.dart';
 ///This class contains the methods used during the driving process
 class DrivingDataProcess {
 
-  ///Diagnoses and filter the data in [_targetList].
+  ///Diagnoses and filter the data in the list.
   List<Map<String, double>> firstFilter(List _targetList) {
     List<Map<String, double>> _outputList = <Map<String, double>>[];
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:road_monitoring_system/widgets/drawer.dart';
+import 'package:road_monitoring_system/home/widgets/drawer.dart';
+import 'package:road_monitoring_system/utils/app_theme.dart';
 
 
-import '../utils/app_theme.dart';
-
+///This class is for controlling the animation of the drawer.
 class DrawerWidgetController extends StatefulWidget {
   const DrawerWidgetController({
     Key key,

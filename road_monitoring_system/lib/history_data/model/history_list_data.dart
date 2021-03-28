@@ -1,5 +1,5 @@
 
-///[HistoryData] describes contents of the history record of one round driving.
+///This class describes contents of the history record of one round driving.
 class HistoryData {
   HistoryData({
     this.startTime = "",

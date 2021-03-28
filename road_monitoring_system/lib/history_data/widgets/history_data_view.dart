@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:road_monitoring_system/history_data/utils/history_app_theme.dart';
 
-import 'view/history_app_theme.dart';
-import 'model/history_list_data.dart';
+import '../model/history_list_data.dart';
 
 
 /// A widget describes [historyData].

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// This class contains some style, such as color and text style
 class AppTheme {
   AppTheme._();
   static const Color nearlyWhite = Color(0xFFFAFAFA);

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:road_monitoring_system/score_screen.dart';
+import 'package:road_monitoring_system/driving/view/score_screen.dart';
 
-import 'driving/driving_screen.dart';
+import 'driving_screen.dart';
 
 class DrivingStateView extends StatefulWidget {
   @override

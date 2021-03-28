@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'Record.g.dart';
+part '../controller/Record.g.dart';
 
 @JsonSerializable()
 ///This class represents the history record get from database.

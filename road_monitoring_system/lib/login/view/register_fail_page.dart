@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:road_monitoring_system/utils/constant.dart';
 
 
-/// [PopUpPageForRegisterFail] is for generating a dialog to alert the users that they have entered the existing [username].
+/// This class is for generating a dialog to alert the users that they have entered the existing [username].
 
 class PopUpPageForRegisterFail extends StatefulWidget {
   const PopUpPageForRegisterFail(
@@ -25,6 +25,7 @@ class PopUpPageForRegisterFail extends StatefulWidget {
   }
 }
 
+/// The state of the register fail page
 class PopUpPageForRegisterFailState extends State<PopUpPageForRegisterFail> with TickerProviderStateMixin {
 
   ///width of this dialog

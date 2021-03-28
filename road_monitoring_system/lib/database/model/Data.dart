@@ -1,6 +1,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
-part 'Data.g.dart';
+part '../controller/Data.g.dart';
 
 @JsonSerializable()
 /// This class represents the data sent to the database.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-///[UserText] is a stateful widget for user to input the [username] and [password]
+///This class is a stateful widget for user to input the [username] and [password]
 class UserText extends StatefulWidget {
   const UserText(
       {

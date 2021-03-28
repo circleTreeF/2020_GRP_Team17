@@ -1,6 +1,6 @@
 
 
-///[UserAccount] describe the information of the user who has logged in to this app.
+///This class describe the information of the user who has logged in to this app.
 class UserAccount {
 
   static final UserAccount _singleton = UserAccount._internal();

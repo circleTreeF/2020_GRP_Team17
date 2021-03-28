@@ -86,13 +86,13 @@
     <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/TickerProviderStateMixin/didChangeDependencies.html">didChangeDependencies</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/didUpdateWidget.html">didUpdateWidget</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/TickerProviderStateMixin/dispose.html">dispose</a></li>
-    <li><a href="../../score_screen/ScoreState/imageChoose.html">imageChoose</a></li>
     <li><a href="../../score_screen/ScoreState/initState.html">initState</a></li>
     <li><a href="../../score_screen/ScoreState/mapGenerator.html">mapGenerator</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/reassemble.html">reassemble</a></li>
     <li><a href="../../score_screen/ScoreState/sendData.html">sendData</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/setState.html">setState</a></li>
+    <li><a href="../../score_screen/ScoreState/textChoose.html">textChoose</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toDiagnosticsNode.html">toDiagnosticsNode</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toString.html">toString</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toStringShort.html">toStringShort</a></li>
@@ -142,12 +142,12 @@ returned by this method, either by updating the existing subtree or by
 removing the subtree and inflating a new subtree, depending on whether the
 widget returned by this method can update the root of the existing
 subtree, as determined by calling <a href="https://api.flutter.dev/flutter/widgets/Widget/canUpdate.html">Widget.canUpdate</a>.</p>
-<p>Typically implementations return a newly created constellation of widgets
+<p>Typically implementations return a newly created constellation of home.widgets
 that are configured with information from this widget's constructor, the
 given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>, and the internal state of this <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object.</p>
 <p>The given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> contains information about the location in the
 tree at which this widget is being built. For example, the context
-provides the set of inherited widgets for this location in the tree. The
+provides the set of inherited home.widgets for this location in the tree. The
 <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> argument is always the same as the <code>context</code> property of
 this <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object and will remain the same for the lifetime of this
 object. The <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> argument is provided redundantly here so that
@@ -227,18 +227,17 @@ Widget build(BuildContext context) {
 
 
 
-
   &#47;&#47;&#47;Creates a rounded-rectangular clip to contain the image
-  var image = ClipRRect(
-      child: Image.asset(
-        imageChoose(),
-        fit: BoxFit.fill,
-        width: dialogWidth * 0.25,
-        height: dialogHeight * 0.45,
-      ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(15),)
-  );
+  &#47;&#47; var image = ClipRRect(
+  &#47;&#47;     child: Image(
+  &#47;&#47;       image: AssetImage(imageChoose()),
+  &#47;&#47;       fit: BoxFit.fill,
+  &#47;&#47;       width: dialogWidth * 0.25,
+  &#47;&#47;       height: dialogHeight * 0.45,
+  &#47;&#47;     ),
+  &#47;&#47;     borderRadius: BorderRadius.all(
+  &#47;&#47;       Radius.circular(15),)
+  &#47;&#47; );
 
   return GestureDetector(
     onTap: (){Navigator.of(context).pop();},
@@ -264,9 +263,15 @@ Widget build(BuildContext context) {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: &lt;Widget&gt;[
-                             image,
+
+                    Padding(
+                    padding: const EdgeInsets.only(left:5,top:12),                                          child: Text(
+              textChoose(),
+              style: scoreTextStyle,
+            ),
+                    ),
                               SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
-                             Padding(
+                              Padding(
                                 padding: const EdgeInsets.only(left:5,top:10),                                          child: Text(
                                                &#39;End Time:   ${time[&quot;end_time&quot;]}&#39;,
                                                 style: TextStyle(

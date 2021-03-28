@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
+///The header of the pop up dialog
 class MyHeader extends StatefulWidget {
 
   final String textTop;
@@ -13,13 +13,11 @@ class MyHeader extends StatefulWidget {
       : super(key: key);
 
   @override
-  _MyHeaderState createState() => _MyHeaderState();
+  MyHeaderState createState() => MyHeaderState();
 }
 
 
-class _MyHeaderState extends State<MyHeader> {
-
-
+class MyHeaderState extends State<MyHeader> {
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +34,8 @@ class _MyHeaderState extends State<MyHeader> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Color(0xFF3383CD),
-              Color(0xFF11249F),
+              Color.fromRGBO(27, 42, 107, 1.0),
+              Color.fromRGBO(0, 86, 151, 1.0),
             ],
           ),
         ),

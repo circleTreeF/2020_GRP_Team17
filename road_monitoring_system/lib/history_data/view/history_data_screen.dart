@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:road_monitoring_system/database/record_list.dart';
+import 'package:road_monitoring_system/database/model/record_list.dart';
+import 'package:road_monitoring_system/history_data/utils/history_app_theme.dart';
 import 'package:road_monitoring_system/login/model/user_account.dart';
 
 
-import 'view/history_app_theme.dart';
-import 'history_data_view.dart';
-import 'model/history_list_data.dart';
+import '../widgets/history_data_view.dart';
+import '../model/history_list_data.dart';
 
-///[HistoryDataScreen] describes the screen displayed the history data.
+///This class describes the screen displayed the history data.
 class HistoryDataScreen extends StatefulWidget {
   const  HistoryDataScreen({Key key, this.animationController}) : super(key: key);
 

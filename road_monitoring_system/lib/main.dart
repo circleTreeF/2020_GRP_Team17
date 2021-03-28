@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:road_monitoring_system/login/register_fail_page.dart';
+import 'package:road_monitoring_system/login/view/register_fail_page.dart';
 
 
-import 'about_us.dart';
-import 'driving/driving_screen.dart';
-import 'history_data/history_data_search.dart';
-import 'home_screen.dart';
-import 'login/login_screen.dart';
-import 'login/register.dart';
-import 'navigation_home_screen.dart';
+import 'about_us/about_us.dart';
+import 'driving/view/driving_screen.dart';
+import 'history_data/view/history_data_screen.dart';
+import 'home/home_screen.dart';
+import 'login/view/login_screen.dart';
+import 'login/view/register_screen.dart';
+import 'home/navigation_home_screen.dart';
 import 'utils/app_theme.dart';
 
 
@@ -50,7 +50,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: AppTheme.textTheme,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        platform: TargetPlatform.iOS,
       ),
       onGenerateRoute: _getRoutePath,
     );
