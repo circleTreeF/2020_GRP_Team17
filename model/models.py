@@ -12,10 +12,10 @@ class AbnormalRoadTemplate(models.Model):
 
 
 # The templates of bad points to calibrate in K-Mean step of detection
-class BadPointsTemplates(models.Model):
-    point_longitude = models.FloatField('Longitude of Point')
-    point_latitude = models.FloatField('Latitude of Point')
-    point_radius = models.FloatField('Radius of Point')
-    round_log = models.JSONField('Record of Log in Normal Road', default=list)
+# class BadPointsTemplates(models.Model):
+#     point_longitude = models.FloatField('Longitude of Point')
+#     point_latitude = models.FloatField('Latitude of Point')
+#     point_radius = models.FloatField('Radius of Point')
+#     round_log = models.JSONField('Record of Log in Normal Road', default=list)
 
 

@@ -7,14 +7,18 @@ from apscheduler.triggers.cron import CronTrigger
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
-# from model.engine.detect import update
+from model.engine.detect import update
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
 
 def my_job():
-    # update()
-    print("Hello world")
+    logger.info("Update start on " + datetime.now().__str__())
+    print("Update start on " + datetime.now().__str__())
+    update()
+    print("Update successfully on " + datetime.now().__str__())
+    logger.info("Update successfully on " + datetime.now().__str__())
     pass
 
 
@@ -32,7 +36,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(hour="23", minute="02"),  # Midnight everyday
+            trigger=CronTrigger(second="00"),  # Midnight everyday
             id="my_job",  # The `id` assigned to each job MUST be unique
             max_instances=1,
             replace_existing=True,

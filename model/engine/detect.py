@@ -1,22 +1,20 @@
 import numpy as np
 import dtw
-import json
-from model.models import NormalRoadTemplate, AbnormalRoadTemplate, BadPointsTemplates
+from model.models import NormalRoadTemplate, AbnormalRoadTemplate
 from statistics.models import BadPoints, Record
-import sklearn.cluster._kmeans as km
 from datetime import datetime, timedelta
-from random import uniform
 
 num_of_features = 3
+standard_road_width = 4
 
 normal_road_template = NormalRoadTemplate.objects.all()
 abnormal_road_template = AbnormalRoadTemplate.objects.all()
 bad_points_calibration = BadPointsTemplates.objects.all()
-bad_points = bad_points_calibration.values_list()[:, 1:4]
+# bad_points = bad_points_calibration.values_list()[:, 1:4]
 
 # get round_log of all yesterday records
-round_logs = Record.objects.filter(end_time__lt=datetime.now() - timedelta(days=1)).values_list('round_log',
-                                                                                                flat=True)
+time_threshold = datetime.now() - timedelta(hours=24)
+round_logs = Record.objects.filter(end_time__gte=time_threshold).values_list('round_log', flat=True)
 
 
 def update():
@@ -24,25 +22,28 @@ def update():
     suspected_bad_points_counter = 0
     for sample in round_logs:
         # select the 3 features for the further detection, the acceleration value in x, y, z axis
-        collected_series = np.array((sample['acc'][3:5]))
-        is_abnormal, cost_matrix = find(collected_series)
+        collected_series = np.array(list(map(lambda x: x['x', 'y', 'z'], sample)))
+        is_abnormal, cost_matrix, confidence_level = find(collected_series)
         if is_abnormal:
             # in the format of locations, the array of longitude and  latitude, the value of acceleration in
             # x, y and z axis
             # the array of min index of the cost_matrix
             min_index_array = np.array(list(map(np.argmin, cost_matrix)))
             most_frequent_index = np.bincount(min_index_array).argmax()
-            bad_point_longitude = sample[most_frequent_index][1]
-            bad_point_latitude = sample[most_frequent_index][2]
-            radius = uniform(1, 3)
+            bad_point_longitude = np.array(list(map(lambda x: x['longitude'], sample)))[most_frequent_index]
+            bad_point_latitude = np.array(list(map(lambda x: x['latitude'], sample)))[most_frequent_index]
+            # the radius is the confidence level multiply the average width of the road
+            radius = confidence_level * standard_road_width
+            # the time array of the sample
+            sample_time = np.array(list(map(lambda x: x['time'], sample)), dtype=object)
             # the last unix time in the round record
-            bad_point_time = datetime.fromtimestamp(sample[np.shape(sample)[0] - 1][0])
+            bad_point_time = datetime.fromtimestamp(sample_time[sample_time.size - 1]/1000.0)
             detected_bad_point = BadPoints(point_longitude=bad_point_longitude, point_latitude=bad_point_latitude,
                                            point_radius=radius, point_time=bad_point_time)
             detected_bad_point.save()
-            formatted_sample = np.array((np.array(sample['acc'][:][1:2]), sample['acc'][:][3:5]))
-            suspected_bad_points[suspected_bad_points_counter] = formatted_sample
-            suspected_bad_points_counter += 1
+            # formatted_sample = np.array((np.array(sample['acc'][:][1:2]), sample['acc'][:][3:5]))
+            # suspected_bad_points[suspected_bad_points_counter] = formatted_sample
+            # suspected_bad_points_counter += 1
 
     # concatenate the array of suspected bad points with the pre-saved bad points in the database
     # concatenated_points = np.concatenate(suspected_bad_points, bad_points)
@@ -96,11 +97,14 @@ def find(collected_series):
 
     normal_distance_avg = normal_distance.mean()
     abnormal_distance_avg = abnormal_distance.mean()
+    # the confidence of the result is the ratio of the inverse value of the distance to the prediction to the sum of the inverse value of the distances to the abnormality and normality
     if normal_distance_avg > abnormal_distance_avg:
         # the distance of collected sample is closer to abnormal than the normal templates
-        return True, abnormal_cost_matrix
+        confidence_level = (1.0 / normal_distance_avg) / (1.0 / normal_distance_avg + 1.0 / abnormal_distance_avg)
+        return True, abnormal_cost_matrix, confidence_level
     else:
-        return False, normal_cost_matrix
+        confidence_level = (1.0 / abnormal_distance_avg) / (1.0 / normal_distance_avg + 1.0 / abnormal_distance_avg)
+        return False, normal_cost_matrix, confidence_level
 
 
 # Find the best match between the time series of the record of one round with the manhattan distance as the element
@@ -114,3 +118,5 @@ def compare(collected_series, template_series):
 # x, y and z axis
 # def k_mean_cluster(suspected_bad_points):
 #     return km.KMeans(n_clusters=np.shape(suspected_bad_points)[0]).fit(suspected_bad_points)
+
+
