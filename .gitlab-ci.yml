@@ -1,19 +1,18 @@
 # Official framework image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/python
-image: python:latest
-#image: docker/compose:latest
+image: docker:stable
+
 
 # Pick zero or more services to be used on all builds.
 # Only needed when using a docker container to run your tests in.
 # Check out: http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
 services:
-  - postgres:latest
-# - docker:dind
+  - docker:dind
 
 
 
 variables:
-#  DOCKER_DRIVER: overlay2
+  DOCKER_DRIVER: overlay2
 #  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_SLUG
 #  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
   POSTGRES_DB: postgres
@@ -35,6 +34,8 @@ cache:
 # This is a basic example for a gem or script which doesn't use
 # services such as redis or postgres
 before_script:
+  - apk add --update py-pip
+  - pip install docker-compose
   - python -V  # Print out python version for debugging
   # Uncomment next line if your Django app needs a JS runtime:
   - apt-get update -q
@@ -44,7 +45,9 @@ before_script:
 run:
   stage: run
   script:
-  - python manage.py runserver 0.0.0.0:8866
+  - docker-compose up
+  only:
+    - server
 
 # To get Django tests to work you may need to create a settings file using
 # the following DATABASES:
