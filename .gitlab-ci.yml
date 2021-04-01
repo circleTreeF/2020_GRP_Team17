@@ -13,7 +13,7 @@ variables:
 # Check out: http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
 services:
   - name: postgres:13
-    alias: db, default
+    alias: db
 
 stages:
   - runserver
