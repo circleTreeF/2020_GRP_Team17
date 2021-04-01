@@ -18,6 +18,7 @@ variables:
   POSTGRES_DB: postgres
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST_AUTH_METHOD: trust
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
@@ -50,13 +51,13 @@ before_script:
 #
 # and then adding `--settings app.settings.ci` (or similar) to the test command
 
-build:
-  variables:
-    DATABASE_URL: "postgresql://db:postgres@postgres:5432/$POSTGRES_DB"
-  script:
-    - python manage.py runserver 0.0.0.0:8888
-  only:
-    - server
+#build:
+#  variables:
+#    DATABASE_URL: "postgresql://db:postgres@postgres:5432/$POSTGRES_DB"
+#  script:
+#    - python manage.py runserver 0.0.0.0:8888
+#  only:
+#    - server
 
 
 test:
