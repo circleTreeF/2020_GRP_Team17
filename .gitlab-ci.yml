@@ -14,8 +14,8 @@ stages:
   - test
 
 variables:
+  POSTGRES_DB: db
   POSTGRES_HOST: db
-  POSTGRES_DB: postgres
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
 
@@ -57,10 +57,12 @@ build:
     - python manage.py runserver 0.0.0.0:8888
   only:
     - server
+
+
 test:
   variables:
     DATABASE_URL: "postgresql://db:postgres@postgres:5432/$POSTGRES_DB"
   script:
-    - python manage.py test
+    - python manage.py test --settings myServer.settings
   only:
     - server
