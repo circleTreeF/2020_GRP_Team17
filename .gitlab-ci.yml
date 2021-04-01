@@ -69,7 +69,8 @@ runserver:
       - python manage.py runserver 0.0.0.0:8866
       - python manage.py makemigrations
       - python manage.py migrate
-  only:
+   allow_failure: true
+   only:
     - server
 
 test:

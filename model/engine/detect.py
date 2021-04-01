@@ -9,7 +9,7 @@ standard_road_width = 4
 
 normal_road_template = NormalRoadTemplate.objects.all()
 abnormal_road_template = AbnormalRoadTemplate.objects.all()
-bad_points_calibration = BadPointsTemplates.objects.all()
+# bad_points_calibration = BadPointsTemplates.objects.all()
 # bad_points = bad_points_calibration.values_list()[:, 1:4]
 
 # get round_log of all yesterday records
