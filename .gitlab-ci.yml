@@ -62,6 +62,7 @@ before_script:
 
 runserver:
 #  stage: runserver
+   timeout: 15 minutes
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
