@@ -1,13 +1,8 @@
-
-
-
 stages:
-  - app_build
   - app_test
+  - app_build
 
-
-
-build:
+build_debug:
   image: "cirrusci/flutter:2.0.0"
   stage: app_build
   before_script:
@@ -15,11 +10,37 @@ build:
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
   script:
     - flutter pub get
-#    - flutter test
     - flutter build apk --debug --split-per-abi
+
   artifacts:
     paths:
-      - "build/app/outputs/apk/debug/*apk"
+      - build/app/outputs/apk/debug/*.apk
+
+build_release:
+  image: "cirrusci/flutter:2.0.0"
+  stage: app_build
+  before_script:
+    - cd road_monitoring_system/
+    - export PATH="$PATH":"$HOME/.pub-cache/bin"
+  script:
+    - flutter pub get
+    -  flutter build apk --release --build-number=$CI_PIPELINE_ID
+  artifacts:
+    paths:
+      - build/app/outputs/apk/release/*.apk
+
+build_ios:
+  image: "cirrusci/flutter:2.0.0"
+  stage: app_build
+  before_script:
+    - cd road_monitoring_system/
+    - export PATH="$PATH":"$HOME/.pub-cache/bin"
+  script:
+    - flutter pub get
+    - flutter build ios --release --build-number=$CI_PIPELINE_ID
+  artifacts:
+    paths:
+      - build/app/outputs/ios/release/
 
 
 code_quality:
