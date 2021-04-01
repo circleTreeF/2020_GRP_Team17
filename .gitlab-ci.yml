@@ -1,8 +1,11 @@
+image: "cirrusci/flutter:2.0.0"
+
+before_script:
+    - cd road_monitoring_system/
+
 code_quality:
   stage: test
-  image: "cirrusci/flutter:2.0.0"
   before_script:
-    - cd road_monitoring_system/
     - pub global activate dart_code_metrics
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
   script:
