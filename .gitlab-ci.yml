@@ -2,8 +2,8 @@ image: "cirrusci/flutter:2.0.0"
 
 
 stages:
-  - app_test
   - app_build
+  - app_test
 
 build:
   stage: app_build
@@ -14,9 +14,9 @@ build:
     - flutter pub get
     - flutter test
     - flutter build apk --debug --split-per-abi
-#  artifacts:
-#    paths:
-#      - "build/app/outputs/apk/debug/*apk"
+  artifacts:
+    paths:
+      - "build/app/outputs/apk/debug/*apk"
 
 
 code_quality:
@@ -28,6 +28,8 @@ code_quality:
   script:
     - metrics lib -r codeclimate  > gl-code-quality-report.json
   artifacts:
+    paths:
+      - bin/cache/artifacts/
     reports:
       codequality: gl-code-quality-report.json
   only: [RoadMonitoringSystemApp]
@@ -47,8 +49,8 @@ test:
   artifacts:
     name: coverage
     paths:
-      - $CI_PROJECT_DIR/coverage
+      - bin/cache/artifacts/
     reports:
-      junit: report.xml
+      junit: coverage.xml
   only: [RoadMonitoringSystemApp]
 
