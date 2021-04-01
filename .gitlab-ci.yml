@@ -16,7 +16,7 @@ services:
     alias: db
 
 stages:
-  - test_db
+  - runserver
   - test
 
 
@@ -60,11 +60,13 @@ before_script:
 #  only:
 #    - server
 
-test_db:
+runserver:
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
-      - python manage.py testserver
+      - python manage.py runserver 0.0.0.0:8866
+      - python manage.py makemigrations
+      - python manage.py migrate
   only:
     - server
 
@@ -74,5 +76,7 @@ test:
   script:
     - python manage.py test --settings myServer.settings
     - bash
+  dependencies:
+    - runserver
   only:
     - server
