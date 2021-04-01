@@ -11,7 +11,10 @@ sample_round_log = [
      "longitude": 121.5599518}]
 sample_round_mark = 'A'
 
-sample_bad_point_id = BadPoints.objects.latest('id').id + 1
+try:
+    sample_bad_point_id = BadPoints.objects.latest('id').id + 1
+except:
+    sample_bad_point_id = 1
 sample_point_longitude = 130.0
 sample_point_latitude = 30.0
 sample_point_radius = 3.0
