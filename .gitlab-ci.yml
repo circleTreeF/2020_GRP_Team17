@@ -1,8 +1,5 @@
 image: "cirrusci/flutter:2.0.0"
 
-before_script:
-  - cd road_monitoring_system/
-  - export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 stages:
   - app_test
@@ -10,6 +7,8 @@ stages:
 code_quality:
   stage: app_test
   before_script:
+    - cd road_monitoring_system/
+    - export PATH="$PATH":"$HOME/.pub-cache/bin"
     - pub global activate dart_code_metrics
   script:
     - metrics lib -r codeclimate  > gl-code-quality-report.json
@@ -22,6 +21,8 @@ code_quality:
 test:
   stage: app_test
   before_script:
+    - cd road_monitoring_system/
+    - export PATH="$PATH":"$HOME/.pub-cache/bin"
     - pub global activate junitreport
   script:
     - flutter test --machine --coverage | tojunit -o report.xml
