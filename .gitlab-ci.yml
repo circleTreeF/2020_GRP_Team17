@@ -1,11 +1,11 @@
 image: "cirrusci/flutter:2.0.0"
 
+before_script:
+  - cd road_monitoring_system/
+  - export PATH="$PATH":"$HOME/.pub-cache/bin"
+
 stages:
   - app_test
-
-before_script:
-    - cd road_monitoring_system/
-    - export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 code_quality:
   stage: app_test
@@ -16,6 +16,8 @@ code_quality:
   artifacts:
     reports:
       codequality: gl-code-quality-report.json
+  only: [RoadMonitoringSystemApp]
+
 
 test:
   stage: app_test
@@ -32,3 +34,5 @@ test:
       - $CI_PROJECT_DIR/coverage
     reports:
       junit: report.xml
+  only: [RoadMonitoringSystemApp]
+
