@@ -3,10 +3,10 @@
 image: python:latest
 
 variables:
+  POSTGRES_HOST: db
   POSTGRES_DB: postgres
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
-  POSTGRES_HOST_AUTH_METHOD: trust
 
 # Pick zero or more services to be used on all builds.
 # Only needed when using a docker container to run your tests in.
@@ -64,7 +64,7 @@ test_db:
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
-      - python manage.py
+      - python manage.py testserver
   only:
     - server
 
