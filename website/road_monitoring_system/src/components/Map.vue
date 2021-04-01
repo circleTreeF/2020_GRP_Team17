@@ -83,7 +83,7 @@ export default {
       url: "http://10.6.2.61:8866/statistics/get/bad/points?date=",
       amapManager,
       zoom: 17,
-      language: "en",
+      // language: "en",
       center: [121.562236, 29.8000444],
       date:'',
       badPoints: [],
