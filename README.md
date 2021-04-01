@@ -20,6 +20,10 @@ We are Software Engineering Group Project 2020 Team 17. Here are our contact.
 
 
 
+# Project development log
+
+The development log is [here](../log/devLog.md).
+
 # Status
 
 This project is under developing now. You may refer to the timeline of this project.
