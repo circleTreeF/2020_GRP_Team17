@@ -30,9 +30,9 @@ code_quality:
     - metrics lib -r codeclimate  > gl-code-quality-report.json
   artifacts:
     paths:
-      - bin/cache/artifacts/
+      - bin/cache/artifacts/flutter/
     reports:
-      codequality: gl-code-quality-report.json
+      codequality: code-quality-report.json
   only: [RoadMonitoringSystemApp]
 
 
@@ -50,7 +50,7 @@ test:
   artifacts:
     name: coverage
     paths:
-      - bin/cache/artifacts/
+      - bin/cache/artifacts/flutter/
     reports:
       junit: coverage.xml
   only: [RoadMonitoringSystemApp]
