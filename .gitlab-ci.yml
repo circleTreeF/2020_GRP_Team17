@@ -27,12 +27,12 @@ code_quality:
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
     - pub global activate dart_code_metrics
   script:
-    - metrics lib -r codeclimate  > gl-code-quality-report.json
-  artifacts:
-    paths:
-      - bin/cache/artifacts/flutter/
-    reports:
-      codequality: code-quality-report.json
+    - metrics lib -r codeclimate  > code-quality-report.json
+#  artifacts:
+#    paths:
+#      - bin/cache/artifacts/flutter/
+#    reports:
+#      codequality: code-quality-report.json
   only: [RoadMonitoringSystemApp]
 
 
@@ -43,7 +43,7 @@ test:
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
     - pub global activate junitreport
   script:
-    - flutter test --machine --coverage | tojunit -o report.xml
+    - flutter test --machine --coverage | tojunit -o coverage.xml
     - lcov --summary coverage/lcov.info
     - genhtml coverage/lcov.info --output=coverage
   coverage: '/lines\.*: \d+\.\d+\%/'
