@@ -2,8 +2,9 @@ image: "cirrusci/flutter:2.0.0"
 
 
 stages:
-  - app_test
   - app_build
+  - app_test
+
 
 
 build:
@@ -28,11 +29,11 @@ code_quality:
     - pub global activate dart_code_metrics
   script:
     - metrics lib -r codeclimate  > code-quality-report.json
-#  artifacts:
-#    paths:
-#      - bin/cache/artifacts/flutter/
-#    reports:
-#      codequality: code-quality-report.json
+  artifacts:
+    paths:
+      - bin/cache/artifacts/flutter/
+    reports:
+      codequality: code-quality-report.json
   only: [RoadMonitoringSystemApp]
 
 
