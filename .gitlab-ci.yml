@@ -76,7 +76,6 @@ test:
   script:
     - python manage.py test --settings myServer.settings
     - bash
-  dependencies:
-    - runserver
+  dependencies: [runserver]
   only:
     - server
