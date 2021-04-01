@@ -1,4 +1,4 @@
-image: "cirrusci/flutter:2.0.0"
+
 
 
 stages:
@@ -8,6 +8,7 @@ stages:
 
 
 build:
+  image: "cirrusci/flutter:2.0.0"
   stage: app_build
   before_script:
     - cd road_monitoring_system/
@@ -22,6 +23,7 @@ build:
 
 
 code_quality:
+  image: "cirrusci/flutter:2.0.0"
   stage: app_test
   before_script:
     - cd road_monitoring_system/
@@ -38,16 +40,17 @@ code_quality:
 
 
 test:
+  image: "cirrusci/flutter:2.0.0"
   stage: app_test
   before_script:
     - cd road_monitoring_system/
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
     - pub global activate junitreport
   script:
-    - flutter test --machine --coverage | tojunit -o coverage.xml
-    - lcov --summary coverage/lcov.info
+    - flutter test --coverage
+#    - lcov --summary coverage/lcov.info
     - genhtml coverage/lcov.info --output=coverage
-  coverage: '/lines\.*: \d+\.\d+\%/'
+#  coverage: '/lines\.*: \d+\.\d+\%/'
   artifacts:
     name: coverage
     paths:
