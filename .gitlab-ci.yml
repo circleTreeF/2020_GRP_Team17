@@ -3,6 +3,7 @@ default:
 
   # Validate that the repository contains a package.json and extract a few values from it.
   before_script:
+    - cd website/road_monitoring_system/
     - |
       if [[ ! -f package.json ]]; then
         echo "No package.json found! A package.json file is required to publish a package to GitLab's NPM registry."
@@ -17,7 +18,6 @@ default:
 validate_package_scope:
   stage: build
   script:
-    - cd website/road_monitoring_system/
     - npm run build
     # - |
     #   if [[ ! $NPM_PACKAGE_NAME =~ ^@$CI_PROJECT_ROOT_NAMESPACE/ ]]; then
