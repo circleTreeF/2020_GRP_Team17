@@ -3,17 +3,17 @@
 image: python:latest
 
 variables:
-  POSTGRES_HOST: db
-  POSTGRES_DB: postgres
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST: "db"
+  POSTGRES_DB: "postgres"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "postgres"
 
 # Pick zero or more services to be used on all builds.
 # Only needed when using a docker container to run your tests in.
 # Check out: http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
 services:
-  - postgres:13
-
+  - name: postgres:13
+    alias: db
 
 stages:
   - test_db
