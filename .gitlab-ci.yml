@@ -14,8 +14,8 @@ stages:
   - test
 
 variables:
-  POSTGRES_DB: db
   POSTGRES_HOST: db
+  POSTGRES_DB: postgres
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
 
@@ -28,6 +28,7 @@ cache:
 # This is a basic example for a gem or script which doesn't use
 # services such as redis or postgres
 before_script:
+  -
   - python -V  # Print out python version for debugging
   # Uncomment next line if your Django app needs a JS runtime:
   - apt-get update -q
@@ -61,7 +62,7 @@ build:
 
 test:
   variables:
-    DATABASE_URL: "postgresql://db:postgres@postgres:5432/$POSTGRES_DB"
+    DATABASE_URL: "postgresql://db:postgres@db:5432/$POSTGRES_DB"
   script:
     - python manage.py test --settings myServer.settings
   only:
