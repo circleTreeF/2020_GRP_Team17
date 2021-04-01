@@ -61,6 +61,7 @@ before_script:
 #    - server
 
 runserver:
+  stage: runserver
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
@@ -71,6 +72,7 @@ runserver:
     - server
 
 test:
+  stage: test
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
