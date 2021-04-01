@@ -2,23 +2,24 @@
 # https://hub.docker.com/r/library/python
 image: python:latest
 
+variables:
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST_AUTH_METHOD: trust
+
 # Pick zero or more services to be used on all builds.
 # Only needed when using a docker container to run your tests in.
 # Check out: http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
 services:
-  - postgres:latest
+  - postgres:13
 
 
 stages:
   - test_db
   - test
 
-variables:
-  POSTGRES_HOST: 'db'
-  POSTGRES_DB: postgres
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
-  POSTGRES_HOST_AUTH_METHOD: trust
+
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
@@ -63,7 +64,7 @@ test_db:
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
-      - psql -h "postgres" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f sql/schema.sql
+      - python manage.py
   only:
     - server
 
