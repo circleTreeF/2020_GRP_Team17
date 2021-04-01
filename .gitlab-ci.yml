@@ -3,6 +3,21 @@ image: "cirrusci/flutter:2.0.0"
 
 stages:
   - app_test
+  - app_build
+
+build:
+  stage: app_build
+  before_script:
+    - cd road_monitoring_system/
+    - export PATH="$PATH":"$HOME/.pub-cache/bin"
+  script:
+    - flutter pub get
+    - flutter test
+    - flutter build apk --debug --split-per-abi
+#  artifacts:
+#    paths:
+#      - "build/app/outputs/apk/debug/*apk"
+
 
 code_quality:
   stage: app_test
