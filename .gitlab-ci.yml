@@ -2,8 +2,9 @@ image: "cirrusci/flutter:2.0.0"
 
 
 stages:
-  - app_build
   - app_test
+  - app_build
+
 
 build:
   stage: app_build
@@ -12,7 +13,7 @@ build:
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
   script:
     - flutter pub get
-    - flutter test
+#    - flutter test
     - flutter build apk --debug --split-per-abi
   artifacts:
     paths:
