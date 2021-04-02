@@ -2,7 +2,7 @@
 
 This repository is a project for the 2020 GRP Team 17. See more about our project as the [project website](http://cslinux.nottingham.edu.cn/~Team202017/).
 
-[![Pipeline Status](https://csprojects.nottingham.edu.cn/%{project_path}/badges/%{default_branch}/pipeline.svg)](https://csprojects.nottingham.edu.cn/%{project_path}/-/commits/%{default_branch})
+[![Pipeline Status](https://csprojects.nottingham.edu.cn/2020_grp_17/badges/master/pipeline.svg)](https://csprojects.nottingham.edu.cn/2020_grp_17/-/commits/master)
 
 # What
 
