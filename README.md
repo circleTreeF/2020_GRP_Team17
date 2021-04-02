@@ -2,9 +2,7 @@
 
 This repository is a project for the 2020 GRP Team 17. See more about our project as the [project website](http://cslinux.nottingham.edu.cn/~Team202017/).
 
-[![Pipeline Status](https://csprojects.nottingham.edu.cn/2020_grp_17/badges/master/pipeline.svg)](https://csprojects.nottingham.edu.cn/2020_grp_17/-/commits/master)
-
-# What
+[![License](https://img.shields.io/badge/license-mit-green.svg)](LICENSE)What
 
 This package is a project of **Distributed Road Network Monitoring System**. This project is part of University of Nottingham Ningbo China, School of Computer Science module COMP 2043 Software Engineering Group Project. 
 
