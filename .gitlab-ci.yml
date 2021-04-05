@@ -70,12 +70,9 @@ runserver:
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
-#    - python manage.py runserver 0.0.0.0:8866
     - python manage.py makemigrations
     - python manage.py migrate
-  allow_failure: true
-  only:
-    - server
+    - python manage.py runserver 0.0.0.0:8866
 
 test:
   before_script:
@@ -94,7 +91,3 @@ test:
     - python manage.py makemigrations
     - python manage.py migrate
     - python manage.py test --settings myServer.settings
-    - bash
-  #  dependencies: [runserver]
-  only:
-    - server
