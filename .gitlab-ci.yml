@@ -1,6 +1,6 @@
 # Official framework image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/python
-image: python:latest
+
 
 variables:
   POSTGRES_HOST: "db"
@@ -16,8 +16,8 @@ services:
     alias: db
 
 stages:
-  - runserver
   - test
+  - runserver
 
 
 
@@ -29,12 +29,7 @@ cache:
 
 # This is a basic example for a gem or script which doesn't use
 # services such as redis or postgres
-before_script:
-  - python -V  # Print out python version for debugging
-  # Uncomment next line if your Django app needs a JS runtime:
-  - apt-get update -q
-  #  - apt-get install nodejs -yqq
-  - pip install -r requirements.txt
+
 
 # To get Django tests to work you may need to create a settings file using
 # the following DATABASES:
@@ -61,7 +56,14 @@ before_script:
 #    - server
 
 runserver:
-  #  stage: runserver
+  before_script:
+    - python -V  # Print out python version for debugging
+    # Uncomment next line if your Django app needs a JS runtime:
+    - apt-get update -q
+    #  - apt-get install nodejs -yqq
+    - pip install -r requirements.txt
+  image: python:latest
+  stage: runserver
   timeout: 15 minutes
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
@@ -74,7 +76,14 @@ runserver:
     - server
 
 test:
-  #  stage: test
+  before_script:
+    - python -V  # Print out python version for debugging
+    # Uncomment next line if your Django app needs a JS runtime:
+    - apt-get update -q
+    #  - apt-get install nodejs -yqq
+    - pip install -r requirements.txt
+  stage: test
+  image: python:latest
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
   script:
