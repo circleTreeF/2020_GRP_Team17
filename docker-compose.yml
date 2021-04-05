@@ -13,7 +13,7 @@ services:
   web:
     image: unncgrpteam17/server_web:beta_release
     build: .
-    command: python manage.py runserver 0.0.0.0:8866
+    command: bash -c "python manage.py runserver 0.0.0.0:8866 && python manage.py updatedatabase"
     volumes:
       - .:/code
     ports:
