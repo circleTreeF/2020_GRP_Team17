@@ -1,6 +1,4 @@
-# Official framework image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/python
-
+# To config services postgres
 
 variables:
   POSTGRES_HOST: "db"
@@ -8,82 +6,30 @@ variables:
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "postgres"
 
-# Pick zero or more services to be used on all builds.
+# Pick PostgreSQL service to be used on all builds.
 # Only needed when using a docker container to run your tests in.
-# Check out: http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
 services:
   - name: postgres:13
     alias: db
 
 stages:
-  - test
-  - runserver
+  - test_server
 
 
 
 # This folder is cached between builds
-# http://docs.gitlab.com/ee/ci/yaml/README.html#cache
 cache:
   paths:
     - ~/.cache/pip/
 
-# This is a basic example for a gem or script which doesn't use
-# services such as redis or postgres
-
-
-# To get Django tests to work you may need to create a settings file using
-# the following DATABASES:
-#
-# DATABASES = {
-#     'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'postgres',
-#        'USER': 'postgres',
-#        'PASSWORD': 'postgres',
-#        'HOST': 'db',
-#        'PORT': '5432',
-#    },
-# }
-#
-# and then adding `--settings app.settings.ci` (or similar) to the test command
-
-#build:
-#  variables:
-#    DATABASE_URL: "postgresql://db:postgres@postgres:5432/$POSTGRES_DB"
-#  script:
-#    - python manage.py runserver 0.0.0.0:8888
-#  only:
-#    - server
-
-runserver:
-  stage: runserver
+test_server:
   before_script:
     - python -V  # Print out python version for debugging
-    # Uncomment next line if your Django app needs a JS runtime:
     - apt-get update -q
-    #  - apt-get install nodejs -yqq
     - cd src/server
     - pip install -r requirements.txt
 
-  image: python:latest
-  timeout: 15 minutes
-  variables:
-    DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
-  script:
-    - python manage.py makemigrations
-    - python manage.py migrate
-    - python manage.py runserver 0.0.0.0:8866
-
-test:
-  before_script:
-    - python -V  # Print out python version for debugging
-    # Uncomment next line if your Django app needs a JS runtime:
-    - apt-get update -q
-    #  - apt-get install nodejs -yqq
-    - cd src/server
-    - pip install -r requirements.txt
-
-  stage: test
+  stage: test_server
   image: python:latest
   variables:
     DATABASE_URL: "postgresql://postgres@db:5432/$POSTGRES_DB"
