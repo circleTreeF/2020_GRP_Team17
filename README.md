@@ -2,7 +2,9 @@
 
 ![Build status](https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17/badges/master/pipeline.svg)
 
-https://csprojects.nottingham.edu.cn/%{project_path}/badges/%{default_branch}/pipeline.svg
+[TOC]
+
+
 
 ## What
 
