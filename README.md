@@ -1,5 +1,9 @@
 # Distributed Road Network Monitoring System
 
+![Build status](https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17/badges/master/pipeline.svg)
+
+https://csprojects.nottingham.edu.cn/%{project_path}/badges/%{default_branch}/pipeline.svg
+
 ## What
 
 This repository is a project,  **Distributed Road Network Monitoring System**, developed by the 2020 GRP Team 17, School of Computer Science, University of Nottingham Ningbo China. See more about our project as the [project website](http://cslinux.nottingham.edu.cn/~Team202017/). This project is part of module Software Engineering Group Project (COMP 2043), School of Computer Science, University of Nottingham Ningbo China.
