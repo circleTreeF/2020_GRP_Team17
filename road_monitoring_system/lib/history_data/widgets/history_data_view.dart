@@ -4,7 +4,7 @@ import 'package:road_monitoring_system/history_data/utils/history_app_theme.dart
 import '../model/history_list_data.dart';
 
 
-/// A widget describes [historyData].
+/// A ListView widget to display the history records.
 class HistoryDataListView extends StatelessWidget {
   const HistoryDataListView({Key key,
     this.historyData,
@@ -16,9 +16,13 @@ class HistoryDataListView extends StatelessWidget {
 
   ///The [HistoryData] of one round driving of this user.
   final HistoryData historyData;
+  ///The controller of the animation.
   final AnimationController animationController;
+  ///The animation used in this widget
   final Animation<dynamic> animation;
 
+
+  /// build method for UI rendering
  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -57,7 +61,7 @@ class HistoryDataListView extends StatelessWidget {
 
                             Container(
                               color: HistoryTheme
-                                  .buildLightTheme()
+                                  .buildInterfaceTheme()
                                   .backgroundColor,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +88,7 @@ class HistoryDataListView extends StatelessWidget {
                                             ),
 
                                             Text(
-                                              "round_mark: "+historyData.roundMark,
+                                              "round_mark: "+historyData.roundMark, // display the mark
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,

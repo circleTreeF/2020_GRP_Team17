@@ -33,15 +33,16 @@ class NavigationHomeScreenState extends State<NavigationHomeScreen> {
     super.initState();
   }
 
+  /// build method for UI rendering
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.nearlyWhite,
+      color: AppTheme.whiteExtent1,
       child: SafeArea(
         top: false,
         bottom: false,
         child: Scaffold(
-          backgroundColor: AppTheme.nearlyWhite,
+          backgroundColor: AppTheme.whiteExtent1,
           body: DrawerWidgetController(
             index: drawerIndex,
             drawerWidth: MediaQuery.of(context).size.width * 0.75,

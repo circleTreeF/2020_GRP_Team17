@@ -26,22 +26,22 @@ class HistoryDataScreen extends StatefulWidget {
 class HistoryDataScreenState extends State<HistoryDataScreen>
     with TickerProviderStateMixin {
 
-  /// The controller for the editable text field for entering date.
+  ///The controller for the editable text field for entering date.
   final myController = TextEditingController();
   ///Creates a dio instance
   Dio dio =  Dio();
-  /// Http response information.
+  ///Http response information.
   Response response;
   ///The controller controls the animation.
   AnimationController animationController;
   ///The static list of history data of the [HistoryData].
   List<HistoryData> historyDataList = HistoryData.historyList;
   ///The controller controls the scrollable widget.
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
-    getHistoryList();
+    getHistoryList();// fetch the history data from the database and display them on this interface
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     super.initState();
@@ -55,10 +55,11 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
     super.dispose();
   }
 
+  /// build method for UI rendering
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: HistoryTheme.buildLightTheme(),
+      data: HistoryTheme.buildInterfaceTheme(),
       child: Container(
         child: Scaffold(
           body: Stack(
@@ -71,7 +72,7 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                     ),
                     Expanded(
                       child: NestedScrollView(
-                        controller: _scrollController,
+                        controller: scrollController,
                         headerSliverBuilder:
                             (BuildContext context, bool innerBoxIsScrolled) {
                           return <Widget>[
@@ -100,14 +101,14 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                         body: Container(
                           color:
                           HistoryTheme
-                              .buildLightTheme()
+                              .buildInterfaceTheme()
                               .backgroundColor,
                           child: ListView.builder(
                             itemCount: historyDataList.length,
                             padding: const EdgeInsets.only(top: 10),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (BuildContext context, int index) {
-                              final int count =  historyDataList.length;
+                              final int count =  historyDataList.length; // the number of the history record in historyDataList
                               final Animation<double> animation =
                               Tween<double>(begin: 0.0, end: 1.0).animate(
                                   CurvedAnimation(
@@ -115,6 +116,7 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                                       curve: Interval(
                                           (1 / count) * index, 1.0,
                                           curve: Curves.easeInOutSine)));
+                              //the listView of history record presents a easeInOutSine animation.
                               animationController.forward();
 
                               return HistoryDataListView(
@@ -123,7 +125,7 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                                 animationController: animationController,
                               );
                             },
-                          ),
+                          ),//build the ListView history record
                         ),
                       ),
                     )
@@ -154,7 +156,7 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
               child: Container(
                 decoration: BoxDecoration(
                   color: HistoryTheme
-                      .buildLightTheme()
+                      .buildInterfaceTheme()
                       .backgroundColor,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(38.0),
@@ -162,7 +164,6 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                   boxShadow: <BoxShadow>[
                     BoxShadow(
                         color: Colors.grey.withOpacity(0.2),
-
                         blurRadius: 8.0),
                   ],
                 ),
@@ -171,12 +172,11 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                       left: 16, right: 16, top: 4, bottom: 4),
                   child: TextField(
                     controller: myController,
-                    //onChanged: (String txt) {},
                     style: const TextStyle(
                       fontSize: 16,
                     ),
                     cursorColor: HistoryTheme
-                        .buildLightTheme()
+                        .buildInterfaceTheme()
                         .primaryColor,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -190,7 +190,7 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
           Container(
             decoration: BoxDecoration(
               color: HistoryTheme
-                  .buildLightTheme()
+                  .buildInterfaceTheme()
                   .primaryColor,
               borderRadius: const BorderRadius.all(
                 Radius.circular(38.0),
@@ -206,12 +206,12 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
                     icon: Icon(Icons.search,
                         size: 15,
                         color: HistoryTheme
-                            .buildLightTheme()
+                            .buildInterfaceTheme()
                             .backgroundColor),
                     onPressed: () {
                       setState(() {
-                        HistoryData.historyList.clear();
-                        getHistoryListByDate(myController.text);
+                        HistoryData.historyList.clear();//first clear the historyList in order to add another list of history records
+                        getHistoryListByDate(myController.text);//get the record on certain date
                       });
                     },),
                 ),
@@ -230,9 +230,9 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
 **/
 
 
-/// Gets history data from database and adds the data filtered by the certain date to the list
+  /// Gets history data on the certain date from the database
   ///
-  ///Use [Dio] to make http [GET] request 
+  ///Use [Dio] to make HTTP [GET] request 
   Future<void> getHistoryListByDate( String date) async {
     response=await dio.get("http://10.6.2.61:8866/statistics/get/record",queryParameters:{"user_id":UserAccount().user_id,"date":date});
 
@@ -244,21 +244,23 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
       HistoryData.historyList.clear();
     }
 
+
+    //add all items to the _historyDataList
     for (int i = 0; i < recordList.records.length; i++) {
+
       HistoryData _historyDataList = new HistoryData();
+
       _historyDataList.startDate = recordList.records[i].startTime.substring(0,10);
-      print(_historyDataList.startDate);
       _historyDataList.startTime=recordList.records[i].startTime.substring(12,19);
-      print(_historyDataList.startTime);
       _historyDataList.endDate = recordList.records[i].endTime.substring(0,10);
-      print(_historyDataList.endDate);
       _historyDataList.endTime = recordList.records[i].endTime.substring(12,19);
-      print(_historyDataList.endTime);
       _historyDataList.roundMark = recordList.records[i].roundMark;
-      print(_historyDataList.roundMark);
+
 
       setState(() {
-        HistoryData.historyList.add(_historyDataList);//Notify the [HistoryDataListView] that the state of this object has changed.
+        HistoryData.historyList.add(_historyDataList);
+        //Notify the [HistoryDataListView] that the state of this object has changed.
+        //after changing the historyList, the interface will display the new record list.
       });
 
     }
@@ -300,6 +302,8 @@ class HistoryDataScreenState extends State<HistoryDataScreen>
 
       setState(() {
         HistoryData.historyList.add(_historyDataList);
+        //Notify the [HistoryDataListView] that the state of this object has changed.
+        //after changing the historyList, the interface will display the new record list.
       });
 
     }

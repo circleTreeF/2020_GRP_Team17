@@ -1,3 +1,4 @@
+
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:road_monitoring_system/utils/bottom_bar_icon.dart';
 
 
 
-///[BottomBar] describes the stateful bottom navigation bar.
+///This class describes the stateful bottom navigation bar.
 class BottomBar extends StatefulWidget {
   const BottomBar({Key key, this.bottomBarIconList, this.changeIndex})
       : super(key: key);
@@ -21,7 +22,7 @@ class BottomBar extends StatefulWidget {
 }
 
 
-
+///This class describes the state of this bottom navigation bar widget.
 class BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
   AnimationController animationController;
 
@@ -47,21 +48,21 @@ class BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
               transform: Matrix4.translationValues(0.0, 0.0, 0.0),
               child: PhysicalShape(
                 color: AppTheme.white,
-                elevation: 16.0,
-                clipper: TabClipper(
+                elevation: 15.0,
+                clipper: MyClipper(
                     radius: Tween<double>(begin: 0.0, end: 1.0)
-                            .animate(CurvedAnimation(
-                                parent: animationController,
-                                curve: Curves.fastOutSlowIn))
-                            .value *
-                        38.0),
+                        .animate(CurvedAnimation(
+                        parent: animationController,
+                        curve: Curves.fastOutSlowIn))
+                        .value *
+                        36.0),
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      height: 62,
+                      height: 60,
                       child: Padding(
                         padding:
-                            const EdgeInsets.only(left: 8, right: 8, top: 4),
+                        const EdgeInsets.only(left: 8, right: 8, top: 4),
                         child: Row(
                           children: <Widget>[
                             Expanded(
@@ -99,7 +100,7 @@ class BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
     );
   }
 
-  
+
   void setRemoveAllSelection(BottomBarIcon bottomBarIcon) {
     if (!mounted) return;
     setState(() {
@@ -114,7 +115,7 @@ class BottomBarState extends State<BottomBar> with TickerProviderStateMixin {
 }
 
 
-///[BottomBarIcons] describe the icons on the bottom bar.
+///This class describes the icons on the bottom bar.
 class BottomBarIcons extends StatefulWidget {
   const BottomBarIcons({Key key, this.bottomBarIcon, this.removeAllSelect})
       : super(key: key);
@@ -126,7 +127,7 @@ class BottomBarIcons extends StatefulWidget {
   BottomBarIconsState createState() => BottomBarIconsState();
 }
 
-///[BottomBarIconsState] is the state of the icons on the bottom bar.
+///This class is the state of the icons on the bottom bar.
 class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderStateMixin {
   @override
   void initState() {
@@ -134,12 +135,12 @@ class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderState
       vsync: this,
       duration: const Duration(milliseconds: 400),
     )..addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) {
-          if (!mounted) return;
-          widget.removeAllSelect();
-          widget.bottomBarIcon.animationController.reverse();
-        }
-      });
+      if (status == AnimationStatus.completed) {
+        if (!mounted) return;
+        widget.removeAllSelect();
+        widget.bottomBarIcon.animationController.reverse();
+      }
+    });
     super.initState();
   }
 
@@ -172,7 +173,7 @@ class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderState
                       CurvedAnimation(
                           parent: widget.bottomBarIcon.animationController,
                           curve:
-                              Interval(0.1, 1.0, curve: Curves.fastOutSlowIn))),
+                          Interval(0.1, 1.0, curve: Curves.fastOutSlowIn))),
                   child: Icon(widget.bottomBarIcon.isSelected
                       ? widget.bottomBarIcon.iconIsSelected
                       : widget.bottomBarIcon.icon),
@@ -192,7 +193,7 @@ class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderState
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: AppTheme.nearlyDarkBlue,
+                        color: AppTheme.blueExtent1,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -213,7 +214,7 @@ class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderState
                       width: 4,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: AppTheme.nearlyDarkBlue,
+                        color: AppTheme.blueExtent1,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -234,7 +235,7 @@ class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderState
                       width: 6,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: AppTheme.nearlyDarkBlue,
+                        color: AppTheme.blueExtent1,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -249,8 +250,9 @@ class BottomBarIconsState extends State<BottomBarIcons> with TickerProviderState
   }
 }
 
-class TabClipper extends CustomClipper<Path> {
-  TabClipper({this.radius = 38.0});
+///
+class MyClipper extends CustomClipper<Path> {
+  MyClipper({this.radius = 38.0});
 
   final double radius;
 
@@ -273,7 +275,7 @@ class TabClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(TabClipper oldClipper) => true;
+  bool shouldReclip(MyClipper oldClipper) => true;
 
   double degreeToRadians(double degree) {
     final double redian = (math.pi / 180) * degree;

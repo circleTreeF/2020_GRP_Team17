@@ -189,8 +189,8 @@ class RegisterScreenState extends State<RegisterScreen> {
               themeColor: Theme
                   .of(context)
                   .primaryColor,
-              cornerRadius: 48.0,
-              maxLength: 24,
+              radius: 50.0,
+              maxLength: 20,
               prefixIcon: Icon(Icons.person, color: Theme
                   .of(context)
                   .primaryColor),
@@ -204,8 +204,8 @@ class RegisterScreenState extends State<RegisterScreen> {
               hintTextString: 'Enter Password',
               inputType: InputType.Password,
               enableBorder: true,
-              cornerRadius: 48.0,
-              maxLength: 16,
+              radius: 50.0,
+              maxLength: 20,
               prefixIcon: Icon(Icons.lock, color: Theme.of(context).primaryColor),
             ),
           ],

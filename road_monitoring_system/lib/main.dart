@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
 
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        textTheme: AppTheme.textTheme,
+
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       onGenerateRoute: _getRoutePath,

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-///The header of the pop up dialog
+///The header of the pop up interface
 class MyHeader extends StatefulWidget {
 
-  final String textTop;
-  final String textBottom;
+
+
   final double offset;
   const MyHeader(
-      {Key key, this.textTop, this.textBottom, this.offset})
+      {Key key,  this.offset})
       : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class MyHeaderState extends State<MyHeader> {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
     return ClipPath(
-      clipper: MyClipper(),
+      clipper: Clipper(),
       child: Container(
         padding: EdgeInsets.zero ,
         height: 350,
@@ -60,13 +60,13 @@ class MyHeaderState extends State<MyHeader> {
   }
 }
 
-class MyClipper extends CustomClipper<Path> {
+class Clipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
-    path.lineTo(0, size.height - 80);
+    path.lineTo(0, size.height - 85);
     path.quadraticBezierTo(
-        size.width / 2, size.height, size.width, size.height - 80);
+        size.width / 2, size.height, size.width, size.height - 85);
     path.lineTo(size.width, 0);
     path.close();
     return path;
@@ -76,4 +76,6 @@ class MyClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) {
     return false;
   }
+
+
 }

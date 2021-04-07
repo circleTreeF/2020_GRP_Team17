@@ -10,6 +10,7 @@ class DataCard extends StatelessWidget {
   ///The text on this card
   final String text;
 
+  ///The Constructor
   const DataCard({Key key, this.width, this.height, this.text}) : super(key: key);
 
   @override

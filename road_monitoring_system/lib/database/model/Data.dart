@@ -16,6 +16,7 @@ class Data extends Object {
   /// The end time of this round of driving
   final DateTime endTime;
 
+  ///The Constructor
   Data(this.userID,this.startTime,this.endTime ,this.roundLog, this.roundMark );
 
   /**
@@ -23,14 +24,14 @@ class Data extends Object {
   *** @date: 2021/3/1 7:44 PM
   *** @version:1.0
   **/
-  ///Converts  Json to [Data]
+  ///Converts JSON format data to Data object
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
   /**
   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
   *** @date: 2021/3/21 7:44 PM
   *** @version:1.0
   **/
-  ///Converts [Data] to Json
+  ///Converts Data object to JSON data format
   Map<String, dynamic> toJson(Data instance) => _$DataToJson(instance);
 
 }

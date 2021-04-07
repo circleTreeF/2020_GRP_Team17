@@ -9,7 +9,7 @@ class TitleCard extends StatelessWidget {
   final double height;
   ///The text on this card
   final String text;
-
+  ///The Constructor
   const TitleCard({Key key, this.width, this.height, this.text}) : super(key: key);
 
   @override

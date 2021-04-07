@@ -40,7 +40,7 @@ class HomeScreenState extends State<HomeScreen>
       icon.isSelected = false;
     });//initializes all the bottom icon is not being selected.
 
-    //bottomIconsList[0].isSelected = true;
+
 
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
@@ -56,6 +56,8 @@ class HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+
+  /// build method for UI rendering
   @override
   Widget build(BuildContext context) {
     return Container(

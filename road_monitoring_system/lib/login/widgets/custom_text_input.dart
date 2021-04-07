@@ -10,7 +10,7 @@ class UserText extends StatefulWidget {
       @required this.inputType,
       this.enableBorder = true,
       this.themeColor,
-      this.cornerRadius,
+      this.radius,
       this.maxLength,
       this.prefixIcon,
       this.textColor,
@@ -23,7 +23,7 @@ class UserText extends StatefulWidget {
   final InputType inputType;
   final bool enableBorder;
   final Color themeColor;
-  final double cornerRadius;
+  final double radius;
   final int maxLength;
   final Widget prefixIcon;
   final Color textColor;
@@ -34,7 +34,7 @@ class UserText extends StatefulWidget {
   UserTextState createState() => UserTextState();
 }
 
-/// [UserTextState] is input text state.
+/// This class describe the state of this input text field.
 class UserTextState extends State<UserText> {
   bool _isValidate = true;
   String validationMessage = '';
@@ -57,12 +57,12 @@ class UserTextState extends State<UserText> {
           hintText: widget.hintTextString as String,
           errorText: _isValidate ? null : validationMessage,
           border: getBorder(),
-          enabledBorder: widget.enableBorder ? getBorder() : InputBorder.none,
-          focusedBorder: widget.enableBorder ? getBorder() : InputBorder.none,
           labelText: widget.labelText ?? widget.hintTextString as String,
           labelStyle: getTextStyle(),
           prefixIcon: widget.prefixIcon ?? getPrefixIcon(),
           suffixIcon: getSuffixIcon(),
+          enabledBorder: widget.enableBorder ? getBorder() : InputBorder.none,
+          focusedBorder: widget.enableBorder ? getBorder() : InputBorder.none,
         ),
         keyboardType: TextInputType.text,
         obscureText: widget.inputType == InputType.Password && !visibility,
@@ -84,7 +84,7 @@ class UserTextState extends State<UserText> {
   ///Return the OutlineInputBorder
   OutlineInputBorder getBorder() {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(widget.cornerRadius ?? 12.0)),
+      borderRadius: BorderRadius.all(Radius.circular(widget.radius ?? 12.0)),
       borderSide: BorderSide(width: 2, color: widget.themeColor ?? Theme.of(context).primaryColor),
       gapPadding: 2,
     );

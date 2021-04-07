@@ -12,26 +12,26 @@ import '../controller/driving_data_process.dart';
 import '../../login/model/user_account.dart';
 
 
-///[Score] shows a dialog containing [mark] and [rank].
+///This class represents the score interface containing [mark] and [rank].
 class Score extends StatefulWidget {
+  ///The Constructor initializes the button color and the text on button.
   const Score(
       {Key key,
         this.buttonColor = Colors.blueAccent,
         this.buttonString = "OK",
         this.list,
         this.time,
-    
       })
       : super(key: key);
 
   
-  ///The color of the button of this dialog
+  ///The color of the button of this interface
   final Color buttonColor;
-  ///The text on the button of this dialog
+  ///The text on the button of this interface
   final String buttonString;
-  ///The list of data need to be posted to database
+  ///The list of data which should be sended to database
   final  List<Map<String,double>> list;
-  ///the map contains the start time and the end time
+  ///The map contains the start time and the end time
   final Map<String,DateTime> time;
 
   @override
@@ -40,46 +40,52 @@ class Score extends StatefulWidget {
   }
 }
 
+///This class describes the state of the widgets on this interface.
 class ScoreState extends State<Score> with TickerProviderStateMixin {
+  ///The controller of the animation on this interface
   AnimationController animationController;
+  ///The animation on this interface.
   Animation animation;
   
   
-  ///width of this dialog
+  ///The width of this interface
   double width;
-  ///height of this dialog
+  ///The height of this interface
   double height;
 
 
-  ///The color of the button in this state of this dialog.
+  ///The color of the button in this state of this interface.
   Color buttonColor;
-  ///The text on the button in this state of this dialog.
+  ///The text on the button in this state of this interface.
   String buttonString;
   ///The final mark for this round of driving
   String mark;
-  ///The final rank
+  ///The final ranking for this user among all the users.
   int rank;
-  ///the map contains the start time and the end time
+  ///The map contains the start time and the end time
   Map<String,DateTime> time;
 
   @override
   void initState() {
-    ///instance of DrivingDataProcess class
+    //The instance of [DrivingDataProcess] class
     DrivingDataProcess dataProcess = new DrivingDataProcess();
-    ///Gets marks
+    //Generates the mark
     mark= dataProcess.drivingGrade(widget.list);
-    ///Generates the [Data] and Sends data to database
+    //Generates the [Data] object and Sends it to database
     sendData(mapGenerator());
 
-
+    //Sets the color of the button
     buttonColor = widget.buttonColor;
+    //Sets the text on the button
     buttonString = widget.buttonString;
-    
+    //Sets the time
     time= widget.time;
-
+    //Sets the controller of the animation
     animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    //Sets the animation
     animation = Tween(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: animationController, curve: Curves.easeIn));
+    //add the listener on this animation
     animation.addListener(() {
       setState(() {});
     });
@@ -91,29 +97,16 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    ///the width of the screen
+    ///The width of the screen of the devices
     width = MediaQuery.of(context).size.width;
-    ///the height of the screen
+    ///The height of the screen of the devices
     height = MediaQuery.of(context).size.height;
 
-    ///the width of this dialog
+    ///The width of this interface
     var dialogWidth = 0.8 * height;
-    ///the height of this dialog
+    ///The height of this interface
     var dialogHeight = 0.8 * width;
 
-
-
-    ///Creates a rounded-rectangular clip to contain the image
-    // var image = ClipRRect(
-    //     child: Image(
-    //       image: AssetImage(imageChoose()),
-    //       fit: BoxFit.fill,
-    //       width: dialogWidth * 0.25,
-    //       height: dialogHeight * 0.45,
-    //     ),
-    //     borderRadius: BorderRadius.all(
-    //       Radius.circular(15),)
-    // );
 
     return GestureDetector(
       onTap: (){Navigator.of(context).pop();},
@@ -126,11 +119,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
               child: Container(
                       width: dialogWidth,
                       height: dialogHeight,
-                      transform: Matrix4.translationValues(
-                                 0,
-                                 0,
-                                  0
-                      ),
+                      transform: Matrix4.translationValues(0, 0, 0),
                       decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white,
@@ -141,10 +130,11 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
                               children: <Widget>[
 
                       Padding(
-                      padding: const EdgeInsets.only(left:5,top:12),                                          child: Text(
-                textChoose(),
-                style: scoreTextStyle,
-              ),
+                      padding: const EdgeInsets.only(left:5,top:12),
+                        child: Text(
+                      textChoose(), //choose the score
+                      style: scoreTextStyle,
+                      ),
                       ),
                                 SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
                                 Padding(
@@ -178,8 +168,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
 
                                                     children: <Widget>[
 
-
-                                                      cancelButton(),
+                                                      cancelButton(),// the button for close this interface
 
                                                             ],
                                                     ),
@@ -225,7 +214,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
   *** @version:1.0
   **/
 
-  ///Generates the [Data]
+  ///Generates the [Data] object.
   Data mapGenerator() {
     return new Data(UserAccount().user_id,widget.time["start_time"],widget.time["end_time"],widget.list,mark);
   }
@@ -236,7 +225,7 @@ class ScoreState extends State<Score> with TickerProviderStateMixin {
   *** @date: 2021/3/9 3:38 PM
   *** @version:2.1
   **/
-  ///Sends the [Data] to database and gets the [rank] from the database.
+  ///Sends the [Data] object to database and gets the [rank] from the database.
    void sendData(Data data) {
 
     Map<String, dynamic> dataJson= data.toJson(data);

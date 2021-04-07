@@ -10,13 +10,12 @@ import 'package:road_monitoring_system/driving/widgets/data_card.dart';
 import 'package:road_monitoring_system/driving/widgets/title_card.dart';
 import 'package:sensors/sensors.dart';
 import 'score_screen.dart';
-import '../../utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 import '../controller/driving_data_process.dart';
 
 
-///This class displays the driving data for users.
+///This class describes the interface that displays the driving data for users.
 class DrivingScreen extends StatefulWidget {
 
   @override
@@ -27,16 +26,16 @@ class DrivingScreen extends StatefulWidget {
 
 }
 
-
+///This class describes the state of the widgets on the driving interface.
 class DrivingScreenState extends State<DrivingScreen>
     with SingleTickerProviderStateMixin {
   ///If the users are driving, the [drivingCondition] is true, else is false.
   bool drivingCondition = false;
-  ///The list contains [Position].
+  ///The list contains the [Position] objects.
   final positions = <Position>[];
-  ///The list contains [AccelerometerEvent].
+  ///The list contains the [AccelerometerEvent] objects.
   final accelerometerEvent = <AccelerometerEvent>[];
-  ///Location information collected.
+  ///Location information collection.
   Position position;
   ///The event starts all location sensors on the device and will keep them
   /// active until you cancel listening to the stream or when the application
@@ -44,25 +43,25 @@ class DrivingScreenState extends State<DrivingScreen>
   final positionStream = Geolocator.getPositionStream();
   ///The subscription on events from a [positionStream] and holds the callbacks.
   StreamSubscription<Position> positionStreamSubscription;
-  ///The Acceleration data collected by sensor.
+  ///The Acceleration event collected by sensor and it is use to obtain the acceleration data in x, y, z axis.
   AccelerometerEvent event;
-  ///The subscription on events from a [accelerometerEvents] and holds the callbacks.
+  ///The subscription on events from a accelerometerEvents and holds the callbacks.
   StreamSubscription<AccelerometerEvent> streamSubscriptions;
 
-
+  ///The start time of this round of driving.
+  DateTime startTime;
+  ///The end time of this round of driving.
+  DateTime endTime;
   ///The map stores the [startTime] and [endTime].
   Map<String,DateTime > time;
-  ///The start time of this round of driving
-  DateTime startTime;
-  ///The end time of this round of driving
-  DateTime endTime;
-  ///The instance of the [DrivingDataProcess]
+
+  ///The instance of the [DrivingDataProcess] class.
   DrivingDataProcess dataProcess = new DrivingDataProcess();
-  ///The list stores the data collected
+  ///The list stores the data collected.
   List<Map<String,double>> storeList = <Map<String,double>>[];
   ///The list stores the data filtered.
   List<Map<String,double>> finalList = <Map<String,double>>[]; //list after second filter
-  /// The new DateFormat
+  /// The new DateFormat.
   DateFormat dateFormat;
 
 
@@ -72,7 +71,7 @@ class DrivingScreenState extends State<DrivingScreen>
     // TODO: implement initState
     super.initState();
     time=new Map<String,DateTime >();
-    dateFormat=DateFormat("yyyy-MM-dd HH:mm:ss");
+    dateFormat=DateFormat("yyyy-MM-dd HH:mm:ss");//initial the new date format
   }
 
 
@@ -81,6 +80,7 @@ class DrivingScreenState extends State<DrivingScreen>
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+    //Initialize and set the fit size and font size to scale
     return Scaffold(
       body: SafeArea(
 
@@ -170,11 +170,12 @@ class DrivingScreenState extends State<DrivingScreen>
                       ),
                       onPressed: () {
                         setState(() {
-                          toggleListening();
+                          toggleListening();// start listening or stop listening
                         });
 
                       },
-                    ),
+                    )// The button use for start and stop
+
                   ),
 
                 ],
@@ -226,7 +227,7 @@ class DrivingScreenState extends State<DrivingScreen>
    *** @version:1.2
    **/
  
-  ///Return the content of [Text] contains the Acceleration force along the z axis (including gravity) measured in m/s^2
+  ///Returns the content of [Text] contains the Acceleration force along the z axis (including gravity) measured in m/s^2
   String cardTextAccZ() {
     if (event != null&&isListeningPosition()) {
       return '${event.z.roundToDouble()}';
@@ -241,7 +242,7 @@ class DrivingScreenState extends State<DrivingScreen>
 *** @version:1.2
 **/
 
-  ///Return the content of [Text] contains the longitude of this position in degrees normalized to the interval -90.0
+  ///Returns the content of [Text] contains the longitude of this position in degrees normalized to the interval -90.0
   String cardTextLong() {
     if (position != null&&isListeningPosition()) {
       return '${position.longitude.roundToDouble()}';
@@ -255,7 +256,7 @@ class DrivingScreenState extends State<DrivingScreen>
 *** @date: 2021/3/21 7:14 PM
 *** @version:1.2
 **/
-  ///Return the content of [Text] contains the latitude of this position in degrees normalized to the interval -90.0
+  ///Returns the content of [Text] contains the latitude of this position in degrees normalized to the interval -90.0
   String cardTextLat() {
     if (position != null&&isListeningPosition()) {
       return '${position.latitude.roundToDouble()}';
@@ -270,7 +271,7 @@ class DrivingScreenState extends State<DrivingScreen>
 *** @version:2.1
 **/
 
-  ///Listens GPS
+  ///Listens the location information
   void toggleListeningGPS() {
     positionStreamSubscription =
         positionStream.listen((position) => setState(() {
@@ -317,7 +318,7 @@ class DrivingScreenState extends State<DrivingScreen>
 
   ///Called when clicking the button on this screen.
   ///
-  ///if [drivingCondition] is false, go to listen and store GPS and Acceleration force data.
+  ///If [drivingCondition] is false, go to listen and store GPS and Acceleration force data.
   ///if [drivingCondition] is true, pause the listening stream.
   toggleListening()   {
 
@@ -392,20 +393,20 @@ class DrivingScreenState extends State<DrivingScreen>
         ? Text('stop',
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontFamily: AppTheme.fontName,
+          fontFamily: 'Roboto',
           fontWeight: FontWeight.normal,
           fontSize: 24,
           letterSpacing: 0.0,
-          color: defaultButtomColor,
+          color: defaultButtonColor,
         ))
         : Text('start',
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontFamily: AppTheme.fontName,
+          fontFamily: 'Roboto',
           fontWeight: FontWeight.normal,
           fontSize: 24,
           letterSpacing: 0.0,
-          color: defaultButtomColor,
+          color: defaultButtonColor,
         ));
 
 
@@ -447,7 +448,8 @@ class DrivingScreenState extends State<DrivingScreen>
 
   ///Pops up the score page
   ///
-  ///Sends [finalList] the list of data and [time] to score page.
+  ///Sends [finalList] the list of data which should be sent to database and [time] to score page.
+  ///
   Future<dynamic> popUpScorePage(List<Map<String,double>> finalList,Map<String,DateTime> time) {
     return showDialog(
         context: context,
@@ -462,7 +464,7 @@ class DrivingScreenState extends State<DrivingScreen>
 **/
 
   @override
-  ///Called when leaving from this page and cancels the subscription
+  ///Called when leaving from this page and cancels the subscriptions.
   void dispose() {
 
     if (positionStreamSubscription != null) {

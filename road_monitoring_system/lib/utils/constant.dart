@@ -6,15 +6,13 @@ import 'app_theme.dart';
 const defaultColor = Color(0xFF3382CC);
 
 
-
-
 // Text Style
 ///The signOut Text Style
 const signOutTextStyle =TextStyle(
-  fontFamily: AppTheme.fontName,
+  fontFamily: 'Roboto',
   fontWeight: FontWeight.w600,
   fontSize: 16,
-  color: AppTheme.darkText,
+  color: Color(0xFF253840),
 );
 
 ///userName Text Style

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-/// This class defines the info page.
+/// This class defines the developer information interface.
 class AboutUs extends StatefulWidget {
   /// Constructs the [AboutUs] widget
   AboutUs({Key key}) : super(key: key);
@@ -15,6 +15,7 @@ class AboutUs extends StatefulWidget {
 
 }
 
+/// This class defines the state of the widgets in AboutUs interface
 class AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,16 @@ class AboutUsState extends State<AboutUs> {
     );
   }
 
-  ///Returns the button used to launcher the url.
+
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/3/11 6:43 PM
+   *** @version:1.0
+   **/
+
+  ///Returns the button used to launcher the [url].
+  ///the parameter [text] is the text in the button
+  ///the parameter [url] is the Uniform Resource Locator of certain website
   Widget launcherButton(String text, String url) {
     return Container(
       width: MediaQuery.of(context).size.width / 1.5,
@@ -71,8 +81,13 @@ class AboutUsState extends State<AboutUs> {
     );
   }
 
+  /**
+   *** @author: Shengnan HU ID: 20126376 Email: scysh1@nottingham.edu.cn
+   *** @date: 2021/3/11 6:43 PM
+   *** @version:1.0
+   **/
 
-  ///launch the url.
+  ///Launches the certain [url].
   launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);

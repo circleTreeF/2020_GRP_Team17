@@ -6,7 +6,7 @@ import 'package:road_monitoring_system/utils/constant.dart';
 
 
 
-///[HomeDrawer] contains the user profile and two drawers [HOME] : the driving screen and [ABOUT] : the about us screen.
+///The widget contains the user profile and [HOME] : the driving screen and [ABOUT] : the about us screen.
 
 class HomeDrawer extends StatefulWidget {
   const HomeDrawer({Key key, this.index, this.iconAnimationController, this.navigateIndex}) : super(key: key);
@@ -155,13 +155,13 @@ class HomeDrawerState extends State<HomeDrawer> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 6.0,
-                    height: 46.0,
+                    width: 7.0,
+                    height: 45.0,
                   ),
                   const Padding(
                     padding: EdgeInsets.all(4.0),
                   ),
-                  Icon(drawerList.icon.icon, color: widget.index == drawerList.index ? Colors.blue : AppTheme.nearlyBlack),
+                  Icon(drawerList.icon.icon, color: widget.index == drawerList.index ? Colors.blue : AppTheme.blackExtent1),
                   const Padding(
                     padding: EdgeInsets.all(4.0),
                   ),
@@ -170,7 +170,7 @@ class HomeDrawerState extends State<HomeDrawer> {
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
-                      color: widget.index == drawerList.index ? Colors.blue : AppTheme.nearlyBlack,
+                      color: widget.index == drawerList.index ? Colors.blue : AppTheme.blackExtent1,
                     ),
                     textAlign: TextAlign.left,
                   ),
@@ -183,19 +183,19 @@ class HomeDrawerState extends State<HomeDrawer> {
               builder: (BuildContext context, Widget child) {
                 return Transform(
                   transform: Matrix4.translationValues(
-                      (MediaQuery.of(context).size.width * 0.75 - 64) * (1.0 - widget.iconAnimationController.value - 1.0), 0.0, 0.0),
+                      (MediaQuery.of(context).size.width * 0.73 - 61) * (1.0 - widget.iconAnimationController.value - 1.0), 0.0, 0.0),
                   child: Padding(
                     padding: EdgeInsets.only(top: 8, bottom: 8),
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.75 - 64,
+                      width: MediaQuery.of(context).size.width * 0.73 - 61,
                       height: 46,
                       decoration: BoxDecoration(
                         color: Colors.blue.withOpacity(0.2),
                         borderRadius: new BorderRadius.only(
                           topLeft: Radius.circular(0),
-                          topRight: Radius.circular(28),
+                          topRight: Radius.circular(30),
                           bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(28),
+                          bottomRight: Radius.circular(30),
                         ),
                       ),
                     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-///[BottomBarIcon] describes the icons on the bottom navigation bar.
+///The class describes the bottom bar icon widget on the bottom navigation bar.
 class BottomBarIcon {
   BottomBarIcon({
     this.index = 0,

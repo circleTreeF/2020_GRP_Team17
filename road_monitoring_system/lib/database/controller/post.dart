@@ -25,7 +25,8 @@ String register= header+ 'app/user/register';
 *** @date: 2021/3/1 6:43 PM
 *** @version:1.0
 **/
-///Creates [POST] for users to login
+
+///Creates HTTP [POST] Request for users to login
 Future<http.Response> createPostToLogin(User post) async{
   final response = await http.post('$login',
       headers: {
@@ -41,7 +42,7 @@ Future<http.Response> createPostToLogin(User post) async{
 *** @date: 2021/3/1 6:43 PM
 *** @version:1.0
 **/
-///Creates [POST] for users to register
+///Creates HTTP [POST] Request for users to register
 Future<http.Response> createPostToRegister(User post) async{
   final response = await http.post('$register',
       headers: {
@@ -58,7 +59,7 @@ Future<http.Response> createPostToRegister(User post) async{
 *** @date: 2021/3/1 6:44 PM
 *** @version:1.0
 **/
-///Creates [POST] for adding history data record
+///Creates HTTP [POST] Request for adding history data record
 Future<http.Response> createPostToAddRecord(String data) async{
   final response = await http.post('$addRecord',
       headers: {
