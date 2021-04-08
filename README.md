@@ -2,15 +2,13 @@
 
 ![Build status](https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17/badges/master/pipeline.svg)
 
-[TOC]
-
-
+[[_TOC_]]
 
 ## What
 
 This repository is a project,  **Distributed Road Network Monitoring System**, developed by the 2020 GRP Team 17, School of Computer Science, University of Nottingham Ningbo China. See more about our project as the [project website](http://cslinux.nottingham.edu.cn/~Team202017/). This project is part of module Software Engineering Group Project (COMP 2043), School of Computer Science, University of Nottingham Ningbo China.
 
- ## Getting Started
+## Getting Started
 
 This project consists of 3 component, mobile application, website, and back end.
 
@@ -22,7 +20,7 @@ Prerequisites
 
 The server component is only developed and tested on 64-bit [Cent OS release 8.3.2011](https://wiki.centos.org/action/show/Manuals/ReleaseNotes/CentOS8.2011?action=show&redirect=Manuals%2FReleaseNotes%2FCentOSLinux8). Thanks to [Docker](https://www.docker.com/), these servers may work on other planforms, as long as meeting the following prerequisites.
 
-#### Prerequisites 
+#### Prerequisites
 
 - [Docker](https://www.docker.com/)
 - [Docker Engine](https://docs.docker.com/engine/)
@@ -32,21 +30,21 @@ The server component is only developed and tested on 64-bit [Cent OS release 8.3
 
 1. Clone the repo
 
-    `git clone git@csprojects.nottingham.edu.cn:scyyf1/2020_grp_17.git`
+   `git clone git@csprojects.nottingham.edu.cn:scyyf1/2020_grp_17.git`
 
 2. Find the back end directory
 
-    ` cd 2020_grp_17/src/back/`
+   ` cd 2020_grp_17/src/back/`
 
 3. Add host into the `ALLOWED_HOSTS` in `myServer/settings.py`
 
     ```python
     ALLOWED_HOSTS = ['10.6.2.61', '<NEW_HOST_NAME']
     ```
-    
+
 4. Make sure the position correct, `src/myServer`, which contains `manage.py`
 
-    example:
+   example:
 
     ```bash
     pwd
@@ -55,7 +53,7 @@ The server component is only developed and tested on 64-bit [Cent OS release 8.3
 
 5. Start the back end servers
 
-  `docker-compose up` 
+   `docker-compose up`
 
 ## Project development log
 
