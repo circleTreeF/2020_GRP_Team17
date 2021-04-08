@@ -82,7 +82,7 @@ This part will show you the prerequisites before you start to develop our projec
 ###### Guidance 
 
 1. You should follow all steps in the [Flutter Official website: Installation for Windows](https://flutter.dev/docs/get-started/install/windows)
-2. You should follow all steps in the [[Flutter Official website:: Setting up the editor](https://flutter.dev/docs/get-started/editor)
+2. You should follow all steps in the [Flutter Official website:: Setting up the editor](https://flutter.dev/docs/get-started/editor)
 
 
 
