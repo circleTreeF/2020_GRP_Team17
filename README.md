@@ -205,7 +205,14 @@ $ npm run build
 ## Document
 
 - [Mobile Application Project Document](src/mobile_app/doc/api/index.html)
+
 - [API Document](https://documenter.getpostman.com/view/12382637/Tz5nce5H)
+
+    
+## Test
+
+- [Mobile Application Test](docs/log/app_test_log.md)
+- [API Test Log](docs/logs/API_test_log.md)
 
 ## Contributing
 
