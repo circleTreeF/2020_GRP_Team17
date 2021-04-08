@@ -1,15 +1,13 @@
-<<<<<<< HEAD
 stages:
-  - web_validate
-  - app_test
+  - test
   - app_build
-  - server_test
+
 
 build_debug:
   image: "cirrusci/flutter:2.0.0"
   stage: app_build
   before_script:
-    - cd road_monitoring_system/
+    - cd src/mobile_app/
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
   script:
     - flutter pub get
@@ -23,7 +21,7 @@ build_release:
   image: "cirrusci/flutter:2.0.0"
   stage: app_build
   before_script:
-    - cd road_monitoring_system/
+    - cd src/mobile_app/
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
   script:
     - flutter pub get
@@ -35,9 +33,9 @@ build_release:
 
 code_quality:
   image: "cirrusci/flutter:2.0.0"
-  stage: app_test
+  stage: test
   before_script:
-    - cd road_monitoring_system/
+    - cd src/mobile_app/
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
     - pub global activate dart_code_metrics
   script:
@@ -52,9 +50,9 @@ code_quality:
 
 test:
   image: "cirrusci/flutter:2.0.0"
-  stage: app_test
+  stage: test
   before_script:
-    - cd road_monitoring_system/
+    - cd src/mobile_app/
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
     - pub global activate junitreport
   script:
@@ -71,11 +69,11 @@ test:
 
 
 web_validate:
-    stage: web_validate
+    stage: test
     image: node:latest
     # Validate that the repository contains a package.json and extract a few values from it.
     before_script:
-      - cd website/road_monitoring_system/
+      - cd src/web/road_monitoring_system/
       - |
         if [[ ! -f package.json ]]; then
           echo "No package.json found! A package.json file is required to publish a package to GitLab's NPM registry."
@@ -91,9 +89,10 @@ web_validate:
     script:
       - npm run build
 
-test_server:
+server_test:
   # To config services postgres
-  stage: test_server
+  stage: test
+  image: python:3.9
   variables:
     POSTGRES_HOST: "db"
     POSTGRES_DB: "postgres"

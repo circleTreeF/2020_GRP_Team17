@@ -1,8 +1,10 @@
-# Contributing
+# Distributed Road Network Monitoring System Contributing Guide
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change. 
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
+
+[[_TOC_]]
 
 ## Pull Request Process
 
@@ -14,6 +16,9 @@ Please note we have a code of conduct, please follow it in all your interactions
    Pull Request would represent.
 4. You may merge the Pull Request in once you have the sign-off of two other developers, or if you 
    do not have permission to do that, you may request the second reviewer to merge it for you.
+5. If fixing bug:
+   - If you are resolving a special issue, add `(fix #xxxx[,#xxxx])` (#xxxx is the issue id) in your PR title for a better release log.
+   - Add appropriate test coverage if applicable.
 
 ## Code of Conduct
 
@@ -95,3 +100,141 @@ members of the project's leadership.
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
 available at [http://contributor-covenant.org/version/1/4][version]
+
+## Project Structure
+
+### Mobile application project
+
+This project is located at `src/road_monitoring_system`. For the third-party package, please refer to the package management file in this directory. `pubspec.yaml`.
+
+- **`android`**: contains build-related scripts and configuration files for android application. Usually, you don't need to touch them. However, you need to familiar with the  condiguration file **AndroidManifest.xml**, the main update for configuration is shown below.
+
+    ```
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"
+        android:maxSdkVersion="30" />
+    ```
+
+- **`ios`**:  contains build-related scripts and configuration files for ios application. Usually, you don't need to touch them. However, you need to familiar with the  condiguration file **info.pList** , the main update for configuration is shown below.
+
+    ![](https://raw.githubusercontent.com/circleTreeF/myImg/master/flutter_config.jpg)
+
+- **`test`**: contains all unit-tests. 
+
+- **`lib`**: contains the source code. 
+
+- **`doc/api`**: contains the code documentation
+
+### Website
+
+This website of project "Road Monitoring System" is built based on the framework [Vue.js](https://vuejs.org/), [Element](https://element.eleme.cn/#/en-US) library and the [Amap](https://lbs.amap.com/) API. In addition, the login and registration pages use the  [reCAPTCHA v2](https://vuejsexamples.com/google-recaptcha-component-for-vue-js/) widget provided by Google. This web project is placed in the `src/web/road_monitoring_system` of this repository root.  For the third-party package, please refer to the package management file in this directory. `package.json`.
+
+```bash
+├── build			# Project build (Webpack) related code.
+├── config			# Configuration directory, including port number, etc.
+├── dist			# The directory of the packaged project files.
+├── node_modules	# Project dependency module loaded by npm.
+└── src				# Main development folder.
+    ├── assets          # Place some images, such as logos, etc.
+    ├── components		# There are some component file.
+    ├── router      	# Router Configuration.
+    ├── App.vue  		# Project entry file.
+    └── main.js			# The core file of the project.
+├── static				# A directory of static resources.
+├── .babelrc			
+├── .editorconfig
+├── .gitignore		# git configuration
+├── .postcssrc.js
+├── index.html		# Home entry file.
+├── pacckage-lock.json
+├── package.json	# Project profile.
+├── README.md		# Documentation of the project in Markdown format.
+└── yarn.lock
+```
+
+### Server
+
+The server of this project is built with the [Django](https://www.djangoproject.com/), [Docker](https://www.docker.com/), and [PostgreSQL](https://www.postgresql.org/) . This web server project is placed in the `src/back/` of this repository root.  For the third-party package, please refer to the package management file in this directory. `requirements.txt`.
+
+```bash
+├─model
+│  ├─engine
+│  ├─management
+│  │  └─commands
+│  └─migrations
+├─myServer
+├─static
+│  ├─admin
+│  │  ├─css
+│  │  │  └─vendor
+│  │  │      └─select2
+│  │  ├─fonts
+│  │  ├─img
+│  │  │  └─gis
+│  │  └─js
+│  │      ├─admin
+│  │      └─vendor
+│  │          ├─jquery
+│  │          ├─select2
+│  │          │  └─i18n
+│  │          └─xregexp
+│  ├─css
+│  │  ├─static
+│  │  │  ├─fonts
+│  │  │  ├─img
+│  │  │  └─js
+│  │  ├─statics
+│  │  │  └─fonts
+│  │  └─statistics
+│  ├─fonts
+│  ├─img
+│  ├─js
+│  └─static
+│      ├─css
+│      ├─fonts
+│      └─js
+└─statistics
+    ├─migrations
+    ├─templates
+    │  └─statistics
+    │      ├─css
+    │      │  └─static
+    │      │      ├─fonts
+    │      │      └─img
+    │      ├─fonts
+    │      ├─img
+    │      └─js
+    ├─test
+```
+
+
+
+## Release Contribution
+
+if you want to build and release the application, follow the guidance in the following website:
+
+- [Release application Guide](https://developer.android.google.cn/studio/publish#publishing-prepare)
+
+- [build and release an Android app](https://flutter.dev/docs/deployment/android)
+
+    notice: The Key information are in android->Key->info.md
+
+- [build and release an iOS app](https://flutter.dev/docs/deployment/ios)
+
+
+## Code documentation Contribution
+
+If you want to generate the code documentation, follow the guidance in the following website:
+
+- [Dartdoc in the dart package]( https://pub.flutter-io.cn/packages/dartdoc)
+- [Dartdoc command](https://dart.cn/tools/dartdoc)
+
