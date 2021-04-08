@@ -1,7 +1,7 @@
 # Distributed Road Network Monitoring System
 
 ![Build status](https://csprojects.nottingham.edu.cn/scyyf1/2020_grp_17/badges/master/pipeline.svg)
-[![License](https://img.shields.io/badge/license-mit-green.svg)](LICENSE)What
+[![License](https://img.shields.io/badge/license-mit-green.svg)](LICENSE)
 
 [[_TOC_]]
 
