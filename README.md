@@ -23,16 +23,18 @@ This project consists of 3 component, mobile application, website, and back end.
 Prerequisites
 
 - [Git](https://git-scm.com)
+- University of Nottingham Ningbo China Campus VPN Connection if use our working server
 
 ### Back End
 
-The server component is only developed and tested on 64-bit [Cent OS release 8.3.2011](https://wiki.centos.org/action/show/Manuals/ReleaseNotes/CentOS8.2011?action=show&redirect=Manuals%2FReleaseNotes%2FCentOSLinux8). Thanks to [Docker](https://www.docker.com/), these servers may work on other planforms, as long as meeting the following prerequisites.
+The server component is only developed and tested on 64-bit [Cent OS release 8.3.2011](https://wiki.centos.org/action/show/Manuals/ReleaseNotes/CentOS8.2011?action=show&redirect=Manuals%2FReleaseNotes%2FCentOSLinux8). Thanks to [Docker](https://www.docker.com/), these servers may work on other planforms, as long as meeting the following prerequisites. To access the website, please specify the port to 8866.
 
 #### Prerequisites
 
 - [Docker](https://www.docker.com/)
 - [Docker Engine](https://docs.docker.com/engine/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- Accessibility of the port 8866
 
 #### Installation
 
@@ -205,7 +207,16 @@ $ npm run build
 ## Document
 
 - [Mobile Application Project Document](src/mobile_app/doc/api/index.html)
+
 - [API Document](https://documenter.getpostman.com/view/12382637/Tz5nce5H)
+
+- [Website Project Readme](src/web/road_monitoring_system/README.md)
+
+    
+## Test
+
+- [Mobile Application Test](docs/log/app_test_log.md)
+- [API Test Log](docs/logs/API_test_log.md)
 
 ## Contributing
 
