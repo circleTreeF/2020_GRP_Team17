@@ -1,0 +1,23 @@
+version: "3.9"
+   
+services:
+  db:
+    image: unncgrpteam17/server_db:post_beta
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "18888:22"
+
+  web:
+    image: unncgrpteam17/server_web:post_beta
+    build: .
+    command: bash -c "apt update -y && apt upgrade -y && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8866 && python manage.py updatedatabase"
+    volumes:
+      - .:/code
+    ports:
+      - "8866:8866"
+      - "8888:22"
+    depends_on:
+      - db
