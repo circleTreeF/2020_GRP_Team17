@@ -37,11 +37,15 @@ The server component is only developed and tested on 64-bit [Cent OS release 8.3
 
 1. Clone the repo
 
-   `git clone git@csprojects.nottingham.edu.cn:scyyf1/2020_grp_17.git`
+   ```bash
+   git clone git@csprojects.nottingham.edu.cn:scyyf1/2020_grp_17.git
+   ```
 
 2. Find the back end directory
 
-   ` cd 2020_grp_17/src/back/`
+   ```bash
+   cd 2020_grp_17/src/back/
+   ```
 
 
 3. Add host into the `ALLOWED_HOSTS` in `myServer/settings.py`
@@ -60,7 +64,9 @@ The server component is only developed and tested on 64-bit [Cent OS release 8.3
 
 5. Start the back end servers
 
-   `docker-compose up`
+   ```bash
+   docker-compose up
+   ```
 
 ### Mobile Application
 
