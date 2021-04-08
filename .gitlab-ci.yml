@@ -48,7 +48,7 @@ code_quality:
 
 
 
-test:
+app_test:
   image: "cirrusci/flutter:2.0.0"
   stage: test
   before_script:
