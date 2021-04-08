@@ -26,7 +26,7 @@ test_server:
   before_script:
     - python -V  # Print out python version for debugging
     - apt-get update -q
-    - cd src/server
+    - cd src/back
     - pip install -r requirements.txt
 
   stage: test_server
