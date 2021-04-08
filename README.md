@@ -20,19 +20,25 @@ This project developed with the following roadmap, and is now finished.
 
 This project consists of 3 component, mobile application, website, and back end.
 
-Prerequisites
+### Prerequisites
 
 - [Git](https://git-scm.com)
+- University of Nottingham Ningbo China Campus VPN Connection if use our working server
+
+### Users Manuals
+- [User Manuals of Website for the Goverment Users](docs/user_manuals/web_manuals.pdf)
+- [User Manuals of Mobile Application for the Drivers](docs/user_manuals/app_manuals.pdf)
 
 ### Back End
 
-The server component is only developed and tested on 64-bit [Cent OS release 8.3.2011](https://wiki.centos.org/action/show/Manuals/ReleaseNotes/CentOS8.2011?action=show&redirect=Manuals%2FReleaseNotes%2FCentOSLinux8). Thanks to [Docker](https://www.docker.com/), these servers may work on other planforms, as long as meeting the following prerequisites.
+The server component is only developed and tested on 64-bit [Cent OS release 8.3.2011](https://wiki.centos.org/action/show/Manuals/ReleaseNotes/CentOS8.2011?action=show&redirect=Manuals%2FReleaseNotes%2FCentOSLinux8). Thanks to [Docker](https://www.docker.com/), these servers may work on other planforms, as long as meeting the following prerequisites. To access the website, please specify the port to 8866.
 
 #### Prerequisites
 
 - [Docker](https://www.docker.com/)
 - [Docker Engine](https://docs.docker.com/engine/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- Accessibility of the port 8866
 
 #### Installation
 
@@ -147,13 +153,17 @@ $ cd 2020_grp_17/src/RoadMonitoringSystemApp/
 
         - ​      Click `File`->`Open Simulato`r->`IOS 14.4` ->Choose one phone
 
-    - If you want to test the IOS Application using real devices on Mac,  enter 
+    - If you want to test the IOS Application using real devices on Mac, 
+         1. Open **mobile_app/ios/Runner.xcworkspace** in Xcode, 
+         2. Choose the iOS devices
+         3. Click the Run button in Xcode.
+        then if you want to test the release version on real devices, run 
 
         ```
         $ flutter run --release
         ```
 
-        in the terminal or click the Run button in Xcode.
+        in the terminal in AndroidStudio.
 
 ### Website
 
@@ -207,6 +217,8 @@ $ npm run build
 - [Mobile Application Project Document](src/mobile_app/doc/api/index.html)
 
 - [API Document](https://documenter.getpostman.com/view/12382637/Tz5nce5H)
+
+- [Website Project Readme](src/web/road_monitoring_system/README.md)
 
     
 ## Test

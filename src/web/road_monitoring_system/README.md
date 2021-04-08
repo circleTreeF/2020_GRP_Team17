@@ -2,6 +2,8 @@
 
 > GRP Team17 road monitoring system
 
+**Author** : Shihui QUE
+
 ## Build Setup
 
 ``` bash

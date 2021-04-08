@@ -105,7 +105,7 @@ available at [http://contributor-covenant.org/version/1/4][version]
 
 ### Mobile application project
 
-This project is located at `src/road_monitoring_system`. For the third-party package, please refer to the package management file in this directory. `pubspec.yaml`.
+This project is located at `src/mobile_app`. For the third-party package, please refer to the package management file in this directory. `pubspec.yaml`.
 
 - **`android`**: contains build-related scripts and configuration files for android application. Usually, you don't need to touch them. However, you need to familiar with the  condiguration file **AndroidManifest.xml**, the main update for configuration is shown below.
 
@@ -224,11 +224,11 @@ if you want to build and release the application, follow the guidance in the fol
 
 - [Release application Guide](https://developer.android.google.cn/studio/publish#publishing-prepare)
 
-- [build and release an Android app](https://flutter.dev/docs/deployment/android)
+- [Build and release an Android app](https://flutter.dev/docs/deployment/android)
 
     notice: The Key information are in android->Key->info.md
 
-- [build and release an iOS app](https://flutter.dev/docs/deployment/ios)
+- [Build and release an iOS app](https://flutter.dev/docs/deployment/ios)
 
 
 ## Code documentation Contribution
