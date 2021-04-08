@@ -74,7 +74,7 @@ web_validate:
     image: node:latest
     # Validate that the repository contains a package.json and extract a few values from it.
     before_script:
-      - cd website/road_monitoring_system/
+      - cd src/web/road_monitoring_system/
       - |
         if [[ ! -f package.json ]]; then
           echo "No package.json found! A package.json file is required to publish a package to GitLab's NPM registry."
