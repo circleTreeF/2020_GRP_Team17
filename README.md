@@ -122,10 +122,10 @@ $ git clone git@csprojects.nottingham.edu.cn:scyyf1/2020_grp_17.git
 2. After cloning the repo, find the RoadMonitoringSystemApp directory:
 
 ``` bash
-$ cd 2020_grp_17/src/RoadMonitoringSystemApp/
+$ cd 2020_grp_17/src/mobile_app/
 ```
 
-3. Open the project RoadMonitoringSystemApp in AndroidStudio
+3. Open the project mobile_app in AndroidStudio
 
 4. Open the `pubspec.yaml `file in Android Studio 
 
@@ -145,7 +145,7 @@ $ cd 2020_grp_17/src/RoadMonitoringSystemApp/
 
         - ​     Click `Open IOS Simulator `  in the Target Selector
 
-        - ​      Click `File`->`Open Simulato`r->`IOS 14.4` ->Choose one phone
+        - ​     Click `File`->`Open Simulator`->`IOS 14.4` ->Choose one phone
 
     - If you want to test the IOS Application using real devices on Mac,  enter 
 
