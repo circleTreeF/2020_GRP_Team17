@@ -1,8 +1,7 @@
 stages:
-  - web_validate
-  - app_test
+  - test
   - app_build
-  - server_test
+
 
 build_debug:
   image: "cirrusci/flutter:2.0.0"
@@ -34,7 +33,7 @@ build_release:
 
 code_quality:
   image: "cirrusci/flutter:2.0.0"
-  stage: app_test
+  stage: test
   before_script:
     - cd src/mobile_app/
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
@@ -51,7 +50,7 @@ code_quality:
 
 test:
   image: "cirrusci/flutter:2.0.0"
-  stage: app_test
+  stage: test
   before_script:
     - cd src/mobile_app/
     - export PATH="$PATH":"$HOME/.pub-cache/bin"
@@ -70,7 +69,7 @@ test:
 
 
 web_validate:
-    stage: web_validate
+    stage: test
     image: node:latest
     # Validate that the repository contains a package.json and extract a few values from it.
     before_script:
@@ -92,7 +91,7 @@ web_validate:
 
 server_test:
   # To config services postgres
-  stage: server_test
+  stage: test
   image: python:3.9
   variables:
     POSTGRES_HOST: "db"
