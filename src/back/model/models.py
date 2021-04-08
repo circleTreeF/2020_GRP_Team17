@@ -1,3 +1,7 @@
+"""
+This is to set the model classes to use ORM to query the database
+"""
+
 from django.db import models
 
 

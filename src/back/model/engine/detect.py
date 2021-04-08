@@ -1,3 +1,7 @@
+"""
+This is to detect the potholes from the driving records
+"""
+
 import numpy as np
 import dtw
 from model.models import NormalRoadTemplate, AbnormalRoadTemplate

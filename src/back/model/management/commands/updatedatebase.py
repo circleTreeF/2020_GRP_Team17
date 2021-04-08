@@ -1,3 +1,7 @@
+"""
+Set the regular task by the fixed time to update the database for the bad points on the roads
+"""
+
 import logging
 
 from django.conf import settings

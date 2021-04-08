@@ -1,3 +1,7 @@
+"""
+This is to manage the admin features of this application
+"""
+
 from django.contrib import admin
 from .models import NormalRoadTemplate, AbnormalRoadTemplate
 
