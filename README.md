@@ -149,13 +149,16 @@ $ cd 2020_grp_17/src/RoadMonitoringSystemApp/
 
         - ​      Click `File`->`Open Simulato`r->`IOS 14.4` ->Choose one phone
 
-    - If you want to test the IOS Application using real devices on Mac,  enter 
+    - If you want to test the IOS Application using real devices on Mac, 
+        Open **mobile_app/ios/Runner.xcworkspace** in Xcode, 
+        choose the ios devices then click the Run button in Xcode.
+        then if you want to test the release version on real devices, run 
 
         ```
         $ flutter run --release
         ```
 
-        in the terminal or click the Run button in Xcode.
+        in the terminal.
 
 ### Website
 
