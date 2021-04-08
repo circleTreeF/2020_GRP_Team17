@@ -23,6 +23,7 @@ This project consists of 3 component, mobile application, website, and back end.
 Prerequisites
 
 - [Git](https://git-scm.com)
+- University of Nottingham Ningbo China Campus VPN Connection if use our working server
 
 ### Back End
 
