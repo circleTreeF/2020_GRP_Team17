@@ -26,13 +26,14 @@ Prerequisites
 
 ### Back End
 
-The server component is only developed and tested on 64-bit [Cent OS release 8.3.2011](https://wiki.centos.org/action/show/Manuals/ReleaseNotes/CentOS8.2011?action=show&redirect=Manuals%2FReleaseNotes%2FCentOSLinux8). Thanks to [Docker](https://www.docker.com/), these servers may work on other planforms, as long as meeting the following prerequisites.
+The server component is only developed and tested on 64-bit [Cent OS release 8.3.2011](https://wiki.centos.org/action/show/Manuals/ReleaseNotes/CentOS8.2011?action=show&redirect=Manuals%2FReleaseNotes%2FCentOSLinux8). Thanks to [Docker](https://www.docker.com/), these servers may work on other planforms, as long as meeting the following prerequisites. To access the website, please specify the port to 8866.
 
 #### Prerequisites
 
 - [Docker](https://www.docker.com/)
 - [Docker Engine](https://docs.docker.com/engine/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- Accessibility of the port 8866
 
 #### Installation
 
@@ -122,10 +123,10 @@ $ git clone git@csprojects.nottingham.edu.cn:scyyf1/2020_grp_17.git
 2. After cloning the repo, find the RoadMonitoringSystemApp directory:
 
 ``` bash
-$ cd 2020_grp_17/src/mobile_app/
+$ cd 2020_grp_17/src/RoadMonitoringSystemApp/
 ```
 
-3. Open the project mobile_app in AndroidStudio
+3. Open the project RoadMonitoringSystemApp in AndroidStudio
 
 4. Open the `pubspec.yaml `file in Android Studio 
 
@@ -145,7 +146,7 @@ $ cd 2020_grp_17/src/mobile_app/
 
         - ​     Click `Open IOS Simulator `  in the Target Selector
 
-        - ​     Click `File`->`Open Simulator`->`IOS 14.4` ->Choose one phone
+        - ​      Click `File`->`Open Simulato`r->`IOS 14.4` ->Choose one phone
 
     - If you want to test the IOS Application using real devices on Mac,  enter 
 
