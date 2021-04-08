@@ -93,6 +93,7 @@ web_validate:
 server_test:
   # To config services postgres
   stage: server_test
+  images: python:3.9
   variables:
     POSTGRES_HOST: "db"
     POSTGRES_DB: "postgres"
