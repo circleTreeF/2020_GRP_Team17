@@ -90,9 +90,9 @@ web_validate:
     script:
       - npm run build
 
-test_server:
+server_test:
   # To config services postgres
-  stage: test_server
+  stage: server_test
   variables:
     POSTGRES_HOST: "db"
     POSTGRES_DB: "postgres"
