@@ -9,6 +9,12 @@
 
 This repository is a project,  **Distributed Road Network Monitoring System**, developed by the 2020 GRP Team 17, School of Computer Science, University of Nottingham Ningbo China. See more about our project as the [project website](http://cslinux.nottingham.edu.cn/~Team202017/). This project is part of module Software Engineering Group Project (COMP 2043), School of Computer Science, University of Nottingham Ningbo China.
 
+## Status
+
+This project developed with the following roadmap, and is now finished.
+
+![timeline](../images/timeline.png)
+
 ## Getting Started
 
 This project consists of 3 component, mobile application, website, and back end.
@@ -56,35 +62,13 @@ The server component is only developed and tested on 64-bit [Cent OS release 8.3
 
    `docker-compose up`
 
-## Project development log
+### Mobile Application
 
-The development log is [here](../log/devLog.md).
-
-## Contributing
-
-
-
-## Contributors
-
-We are Software Engineering Group Project 2020 Team 17. Here are our contact.
-
-| Name          | Email                                                       |
-| ------------- | ----------------------------------------------------------- |
-| Yizirui Fang  | [scyyf1@nottingham.edu.cn](mailto:scyyf1@nottingham.edu.cn) |
-| Shengnan Hu   | [scysh1@nottingham.edu.cn](mailto:scysh1@nottingham.edu.cn) |
-| Hongming Ping | [scyhp1@nottingham.edu.cn](mailto:scyhp1@nottingham.edu.cn) |
-| Shihui Que    | [scysq1@nottingham.edu.cn](mailto:scysq1@nottingham.edu.cn) |
-| Qiyuan Wang   | [scyqw3@nottingham.edu.cn](mailto:scyqw3@nottingham.edu.cn) |
-
-
-
-# Usage
-
-### Prerequisites
+#### Prerequisites
 
 This part will show you the prerequisites before you start to develop our project.
 
-#### For Windows
+##### For Windows
 
 ###### System requirements
 
@@ -102,7 +86,7 @@ This part will show you the prerequisites before you start to develop our projec
 
 
 
-#### For Mac
+##### For Mac
 
 ###### System requirements
 
@@ -120,7 +104,7 @@ This part will show you the prerequisites before you start to develop our projec
 
 
 
-### **Installation**
+#### **Installation**
 
 1. Clone the repository
 
@@ -140,45 +124,102 @@ $ cd 2020_grp_17/src/RoadMonitoringSystemApp/
 
 5. Click 
 
-   ```
-   Pub get
-   ```
+    ```
+    Pub get
+    ```
 
-   to gets dependencies for a non-Flutter package. (see [pub get](https://dart.dev/tools/pub/cmd) )
+    to gets dependencies for a non-Flutter package. (see [pub get](https://dart.dev/tools/pub/cmd) )
 
 6. To run our project, you can follow the approach to run the app introduced in [Flutter official website:  test-drive .](https://flutter.dev/docs/get-started/test-drive)
 
-   Some other ways you may want to choose to run our code :
+    Some other ways you may want to choose to run our code :
 
-   - If  you want to test the IOS Application using simulator on Mac, you can choose to open simulator in the following steps
+    - If  you want to test the IOS Application using simulator on Mac, you can choose to open simulator in the following steps
 
-     - ​     Click `Open IOS Simulator `  in the Target Selector
+        - ​     Click `Open IOS Simulator `  in the Target Selector
 
-     - ​      Click `File`->`Open Simulato`r->`IOS 14.4` ->Choose one phone
+        - ​      Click `File`->`Open Simulato`r->`IOS 14.4` ->Choose one phone
 
-   - If you want to test the IOS Application using real devices on Mac,  enter 
+    - If you want to test the IOS Application using real devices on Mac,  enter 
 
-     ```
-     $ flutter run --release
-     ```
+        ```
+        $ flutter run --release
+        ```
 
-     in the terminal or click the Run button in Xcode.
+        in the terminal or click the Run button in Xcode.
 
-     
+### Website
 
-     
+#### Introduction
+
+
+This front-end project "Road Monitoring System" is built based on the framework [Vue.js](https://vuejs.org/), [Element](https://element.eleme.cn/#/en-US) library and the [Amap](https://lbs.amap.com/) API. In addition, the login and registration pages use the  [reCAPTCHA v2](https://vuejsexamples.com/google-recaptcha-component-for-vue-js/) widget provided by Google . which provides high-level visualization of the collected data about the road condition.  The website has three parts "Login ", registration and "Map".
 
 
 
-# Project development log
+#### Installation project dependency
+
+You will need [Node.js](http://nodejs.org/) **version 8+** and npm  (or [yarn](https://yarnpkg.com/en/docs/install)). After cloning the repo, run:
+
+$ yarn # install the dependencies of the project
+
+```
+$ npm install webpack -g  # install the webpack
+```
+
+```
+$ npm install vue-cli -g  # install vue-cli
+```
+
+```
+$ yarn # install the dependencies of the project
+```
+
+**or**
+
+```
+$ npm install # install the dependencies of the project
+```
+
+you can see resources on [npm-install | npm Docs](https://docs.npmjs.com/cli/v7/commands/npm-install)
+
+
+
+#### Commonly used NPM scripts
+
+```
+# watch and auto re-build dist/vue.js
+$ npm run dev
+
+# build all dist files, including npm packages
+$ npm run build
+```
+
+## Project development log
 
 The development log is [here](../log/devLog.md).
 
-## Status
+## Contributing
 
-This project is under developing now. You may refer to the timeline of this project.
+To contribute to this project , please refer to the [`CONTRIBUTION.md](CONTRIBUTION.md)
 
-![timeline](../images/timeline.png)
+## Contributors
+
+We are Software Engineering Group Project 2020 Team 17. Here are our contact.
+
+| Name          | Email                                                       |
+| ------------- | ----------------------------------------------------------- |
+| Yizirui Fang  | [scyyf1@nottingham.edu.cn](mailto:scyyf1@nottingham.edu.cn) |
+| Shengnan Hu   | [scysh1@nottingham.edu.cn](mailto:scysh1@nottingham.edu.cn) |
+| Hongming Ping | [scyhp1@nottingham.edu.cn](mailto:scyhp1@nottingham.edu.cn) |
+| Shihui Que    | [scysq1@nottingham.edu.cn](mailto:scysq1@nottingham.edu.cn) |
+| Qiyuan Wang   | [scyqw3@nottingham.edu.cn](mailto:scyqw3@nottingham.edu.cn) |
+
+## Project development log
+
+The development log is [here](../log/devLog.md).
+
+
 
 ## More info
 
