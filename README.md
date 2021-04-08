@@ -202,13 +202,14 @@ $ npm run dev
 $ npm run build
 ```
 
-## Project development log
+## Document
 
-The development log is [here](../log/devLog.md).
+- [Mobile Application Project Document](src/mobile_app/doc/api/index.html)
+- [API Document](https://documenter.getpostman.com/view/12382637/Tz5nce5H)
 
 ## Contributing
 
-To contribute to this project , please refer to the [`CONTRIBUTION.md](CONTRIBUTION.md)
+To contribute to this project , please refer to the [`CONTRIBUTION.md]`(CONTRIBUTION.md)
 
 ## Contributors
 
